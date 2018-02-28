@@ -1,0 +1,720 @@
+10:11:46[INFO    ][script]: **********************************************************************
+10:11:46[INFO    ][script]: ** Starting "ovs_performance.py"
+10:11:46[INFO    ][script]: **********************************************************************
+10:11:46[DEBUG   ][script]: Configured values:
+10:11:46[DEBUG   ][script]:   Debug                  : True
+10:11:46[DEBUG   ][script]:   Debug DUT Shell        : False
+10:11:46[DEBUG   ][script]:   Debug Scapy            : False
+10:11:46[DEBUG   ][script]:   Debug Script           : False
+10:11:46[DEBUG   ][script]:   Debug Tester           : False
+10:11:46[DEBUG   ][script]:   Flow Type              : L3
+10:11:46[DEBUG   ][script]:   Perf tracing           : False
+10:11:46[DEBUG   ][script]:   Tester Type            : trex
+10:11:46[DEBUG   ][script]:   Tester Address         : localhost
+10:11:46[DEBUG   ][script]:   Tester Interface       : 0
+10:11:46[DEBUG   ][script]:   Second Tester Interface: 
+10:11:46[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+10:11:46[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+10:11:46[DEBUG   ][script]:   OVS DUT Login          : root
+10:11:46[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+10:11:46[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+10:11:46[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+10:11:46[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+10:11:46[DEBUG   ][script]:   OVS VM Login           : root
+10:11:46[DEBUG   ][script]:   OVS VM NIC queues      : 2
+10:11:46[DEBUG   ][script]:   Physical Interface     : dpdk0
+10:11:46[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+10:11:46[DEBUG   ][script]:   Virtual Interface      : vhost0
+10:11:46[DEBUG   ][script]:   2nd Virtual Interface  : 
+10:11:46[DEBUG   ][script]:   MAC swap               : False
+10:11:46[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+10:11:46[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+10:11:46[DEBUG   ][script]:   Test run time          : 20 seconds
+10:11:46[DEBUG   ][script]:   Run with stream size's : 1000
+10:11:46[DEBUG   ][script]:   Run with packet size's : 64
+10:11:46[DEBUG   ][script]:   Skip PV test           : True
+10:11:46[DEBUG   ][script]:   Skip PVP test          : False
+10:11:46[DEBUG   ][script]:   Skip VV test           : True
+10:11:46[DEBUG   ][script]:   Run PP test            : False
+10:11:46[DEBUG   ][script]:   Warm-up                : False
+10:11:46[INFO    ][script]: - Connecting to the tester...
+10:13:06[INFO    ][script]: **********************************************************************
+10:13:06[INFO    ][script]: ** Starting "ovs_performance.py"
+10:13:06[INFO    ][script]: **********************************************************************
+10:13:06[DEBUG   ][script]: Configured values:
+10:13:06[DEBUG   ][script]:   Debug                  : True
+10:13:06[DEBUG   ][script]:   Debug DUT Shell        : False
+10:13:06[DEBUG   ][script]:   Debug Scapy            : False
+10:13:06[DEBUG   ][script]:   Debug Script           : False
+10:13:06[DEBUG   ][script]:   Debug Tester           : False
+10:13:06[DEBUG   ][script]:   Flow Type              : L3
+10:13:06[DEBUG   ][script]:   Perf tracing           : False
+10:13:06[DEBUG   ][script]:   Tester Type            : trex
+10:13:06[DEBUG   ][script]:   Tester Address         : localhost
+10:13:06[DEBUG   ][script]:   Tester Interface       : 0
+10:13:06[DEBUG   ][script]:   Second Tester Interface: 
+10:13:06[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+10:13:06[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+10:13:06[DEBUG   ][script]:   OVS DUT Login          : root
+10:13:06[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+10:13:06[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+10:13:06[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+10:13:06[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+10:13:06[DEBUG   ][script]:   OVS VM Login           : root
+10:13:06[DEBUG   ][script]:   OVS VM NIC queues      : 2
+10:13:06[DEBUG   ][script]:   Physical Interface     : dpdk0
+10:13:06[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+10:13:06[DEBUG   ][script]:   Virtual Interface      : vhost0
+10:13:06[DEBUG   ][script]:   2nd Virtual Interface  : 
+10:13:06[DEBUG   ][script]:   MAC swap               : False
+10:13:06[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+10:13:06[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+10:13:06[DEBUG   ][script]:   Test run time          : 20 seconds
+10:13:06[DEBUG   ][script]:   Run with stream size's : 1000
+10:13:06[DEBUG   ][script]:   Run with packet size's : 64
+10:13:06[DEBUG   ][script]:   Skip PV test           : True
+10:13:06[DEBUG   ][script]:   Skip PVP test          : False
+10:13:06[DEBUG   ][script]:   Skip VV test           : True
+10:13:06[DEBUG   ][script]:   Run PP test            : False
+10:13:06[DEBUG   ][script]:   Warm-up                : False
+10:13:06[INFO    ][script]: - Connecting to the tester...
+10:18:32[INFO    ][script]: **********************************************************************
+10:18:32[INFO    ][script]: ** Starting "ovs_performance.py"
+10:18:32[INFO    ][script]: **********************************************************************
+10:18:32[DEBUG   ][script]: Configured values:
+10:18:32[DEBUG   ][script]:   Debug                  : True
+10:18:32[DEBUG   ][script]:   Debug DUT Shell        : False
+10:18:32[DEBUG   ][script]:   Debug Scapy            : False
+10:18:32[DEBUG   ][script]:   Debug Script           : False
+10:18:32[DEBUG   ][script]:   Debug Tester           : False
+10:18:32[DEBUG   ][script]:   Flow Type              : L3
+10:18:32[DEBUG   ][script]:   Perf tracing           : False
+10:18:32[DEBUG   ][script]:   Tester Type            : trex
+10:18:32[DEBUG   ][script]:   Tester Address         : localhost
+10:18:32[DEBUG   ][script]:   Tester Interface       : 0
+10:18:32[DEBUG   ][script]:   Second Tester Interface: 
+10:18:32[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+10:18:32[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+10:18:32[DEBUG   ][script]:   OVS DUT Login          : root
+10:18:32[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+10:18:32[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+10:18:32[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+10:18:32[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+10:18:32[DEBUG   ][script]:   OVS VM Login           : root
+10:18:32[DEBUG   ][script]:   OVS VM NIC queues      : 2
+10:18:32[DEBUG   ][script]:   Physical Interface     : dpdk0
+10:18:32[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+10:18:32[DEBUG   ][script]:   Virtual Interface      : vhost0
+10:18:32[DEBUG   ][script]:   2nd Virtual Interface  : 
+10:18:32[DEBUG   ][script]:   MAC swap               : False
+10:18:32[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+10:18:32[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+10:18:32[DEBUG   ][script]:   Test run time          : 20 seconds
+10:18:32[DEBUG   ][script]:   Run with stream size's : 1000
+10:18:32[DEBUG   ][script]:   Run with packet size's : 64
+10:18:32[DEBUG   ][script]:   Skip PV test           : True
+10:18:32[DEBUG   ][script]:   Skip PVP test          : False
+10:18:32[DEBUG   ][script]:   Skip VV test           : True
+10:18:32[DEBUG   ][script]:   Run PP test            : False
+10:18:32[DEBUG   ][script]:   Warm-up                : False
+10:18:32[INFO    ][script]: - Connecting to the tester...
+10:20:58[INFO    ][script]: **********************************************************************
+10:20:58[INFO    ][script]: ** Starting "ovs_performance.py"
+10:20:58[INFO    ][script]: **********************************************************************
+10:20:58[DEBUG   ][script]: Configured values:
+10:20:58[DEBUG   ][script]:   Debug                  : True
+10:20:58[DEBUG   ][script]:   Debug DUT Shell        : False
+10:20:58[DEBUG   ][script]:   Debug Scapy            : False
+10:20:58[DEBUG   ][script]:   Debug Script           : False
+10:20:58[DEBUG   ][script]:   Debug Tester           : False
+10:20:58[DEBUG   ][script]:   Flow Type              : L3
+10:20:58[DEBUG   ][script]:   Perf tracing           : False
+10:20:58[DEBUG   ][script]:   Tester Type            : trex
+10:20:58[DEBUG   ][script]:   Tester Address         : localhost
+10:20:58[DEBUG   ][script]:   Tester Interface       : 0
+10:20:58[DEBUG   ][script]:   Second Tester Interface: 
+10:20:58[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+10:20:58[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+10:20:58[DEBUG   ][script]:   OVS DUT Login          : root
+10:20:58[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+10:20:58[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+10:20:58[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+10:20:58[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+10:20:58[DEBUG   ][script]:   OVS VM Login           : root
+10:20:58[DEBUG   ][script]:   OVS VM NIC queues      : 2
+10:20:58[DEBUG   ][script]:   Physical Interface     : dpdk0
+10:20:58[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+10:20:58[DEBUG   ][script]:   Virtual Interface      : vhost0
+10:20:58[DEBUG   ][script]:   2nd Virtual Interface  : 
+10:20:58[DEBUG   ][script]:   MAC swap               : False
+10:20:58[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+10:20:58[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+10:20:58[DEBUG   ][script]:   Test run time          : 20 seconds
+10:20:58[DEBUG   ][script]:   Run with stream size's : 1000
+10:20:58[DEBUG   ][script]:   Run with packet size's : 64
+10:20:58[DEBUG   ][script]:   Skip PV test           : True
+10:20:58[DEBUG   ][script]:   Skip PVP test          : False
+10:20:58[DEBUG   ][script]:   Skip VV test           : True
+10:20:58[DEBUG   ][script]:   Run PP test            : False
+10:20:58[DEBUG   ][script]:   Warm-up                : False
+10:20:58[INFO    ][script]: - Connecting to the tester...
+10:21:36[INFO    ][script]: **********************************************************************
+10:21:36[INFO    ][script]: ** Starting "ovs_performance.py"
+10:21:36[INFO    ][script]: **********************************************************************
+10:21:36[DEBUG   ][script]: Configured values:
+10:21:36[DEBUG   ][script]:   Debug                  : True
+10:21:36[DEBUG   ][script]:   Debug DUT Shell        : False
+10:21:36[DEBUG   ][script]:   Debug Scapy            : False
+10:21:36[DEBUG   ][script]:   Debug Script           : False
+10:21:36[DEBUG   ][script]:   Debug Tester           : False
+10:21:36[DEBUG   ][script]:   Flow Type              : L3
+10:21:36[DEBUG   ][script]:   Perf tracing           : False
+10:21:36[DEBUG   ][script]:   Tester Type            : trex
+10:21:36[DEBUG   ][script]:   Tester Address         : localhost
+10:21:36[DEBUG   ][script]:   Tester Interface       : 0
+10:21:36[DEBUG   ][script]:   Second Tester Interface: 
+10:21:36[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+10:21:36[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+10:21:36[DEBUG   ][script]:   OVS DUT Login          : root
+10:21:36[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+10:21:36[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+10:21:36[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+10:21:36[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+10:21:36[DEBUG   ][script]:   OVS VM Login           : root
+10:21:36[DEBUG   ][script]:   OVS VM NIC queues      : 2
+10:21:36[DEBUG   ][script]:   Physical Interface     : dpdk0
+10:21:36[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+10:21:36[DEBUG   ][script]:   Virtual Interface      : vhost0
+10:21:36[DEBUG   ][script]:   2nd Virtual Interface  : 
+10:21:36[DEBUG   ][script]:   MAC swap               : False
+10:21:36[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+10:21:36[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+10:21:36[DEBUG   ][script]:   Test run time          : 20 seconds
+10:21:36[DEBUG   ][script]:   Run with stream size's : 1000
+10:21:36[DEBUG   ][script]:   Run with packet size's : 64
+10:21:36[DEBUG   ][script]:   Skip PV test           : True
+10:21:36[DEBUG   ][script]:   Skip PVP test          : False
+10:21:36[DEBUG   ][script]:   Skip VV test           : True
+10:21:36[DEBUG   ][script]:   Run PP test            : False
+10:21:36[DEBUG   ][script]:   Warm-up                : False
+10:21:36[INFO    ][script]: - Connecting to the tester...
+10:25:44[INFO    ][script]: **********************************************************************
+10:25:44[INFO    ][script]: ** Starting "ovs_performance.py"
+10:25:44[INFO    ][script]: **********************************************************************
+10:25:44[DEBUG   ][script]: Configured values:
+10:25:44[DEBUG   ][script]:   Debug                  : True
+10:25:44[DEBUG   ][script]:   Debug DUT Shell        : False
+10:25:44[DEBUG   ][script]:   Debug Scapy            : False
+10:25:44[DEBUG   ][script]:   Debug Script           : False
+10:25:44[DEBUG   ][script]:   Debug Tester           : False
+10:25:44[DEBUG   ][script]:   Flow Type              : L3
+10:25:44[DEBUG   ][script]:   Perf tracing           : False
+10:25:44[DEBUG   ][script]:   Tester Type            : trex
+10:25:44[DEBUG   ][script]:   Tester Address         : localhost
+10:25:44[DEBUG   ][script]:   Tester Interface       : 0
+10:25:44[DEBUG   ][script]:   Second Tester Interface: 
+10:25:44[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+10:25:44[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+10:25:44[DEBUG   ][script]:   OVS DUT Login          : root
+10:25:44[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+10:25:44[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+10:25:44[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+10:25:44[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+10:25:44[DEBUG   ][script]:   OVS VM Login           : root
+10:25:44[DEBUG   ][script]:   OVS VM NIC queues      : 2
+10:25:44[DEBUG   ][script]:   Physical Interface     : dpdk0
+10:25:44[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+10:25:44[DEBUG   ][script]:   Virtual Interface      : vhost0
+10:25:44[DEBUG   ][script]:   2nd Virtual Interface  : 
+10:25:44[DEBUG   ][script]:   MAC swap               : False
+10:25:44[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+10:25:44[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+10:25:44[DEBUG   ][script]:   Test run time          : 20 seconds
+10:25:44[DEBUG   ][script]:   Run with stream size's : 1000
+10:25:44[DEBUG   ][script]:   Run with packet size's : 64
+10:25:44[DEBUG   ][script]:   Skip PV test           : True
+10:25:44[DEBUG   ][script]:   Skip PVP test          : False
+10:25:44[DEBUG   ][script]:   Skip VV test           : True
+10:25:44[DEBUG   ][script]:   Run PP test            : False
+10:25:44[DEBUG   ][script]:   Warm-up                : False
+10:25:44[INFO    ][script]: - Connecting to the tester...
+10:26:17[INFO    ][script]: **********************************************************************
+10:26:17[INFO    ][script]: ** Starting "ovs_performance.py"
+10:26:17[INFO    ][script]: **********************************************************************
+10:26:17[DEBUG   ][script]: Configured values:
+10:26:17[DEBUG   ][script]:   Debug                  : True
+10:26:17[DEBUG   ][script]:   Debug DUT Shell        : False
+10:26:17[DEBUG   ][script]:   Debug Scapy            : False
+10:26:17[DEBUG   ][script]:   Debug Script           : False
+10:26:17[DEBUG   ][script]:   Debug Tester           : False
+10:26:17[DEBUG   ][script]:   Flow Type              : L3
+10:26:17[DEBUG   ][script]:   Perf tracing           : False
+10:26:17[DEBUG   ][script]:   Tester Type            : trex
+10:26:17[DEBUG   ][script]:   Tester Address         : localhost
+10:26:17[DEBUG   ][script]:   Tester Interface       : 0
+10:26:17[DEBUG   ][script]:   Second Tester Interface: 
+10:26:17[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+10:26:17[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+10:26:17[DEBUG   ][script]:   OVS DUT Login          : root
+10:26:17[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+10:26:17[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+10:26:17[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+10:26:17[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+10:26:17[DEBUG   ][script]:   OVS VM Login           : root
+10:26:17[DEBUG   ][script]:   OVS VM NIC queues      : 2
+10:26:17[DEBUG   ][script]:   Physical Interface     : dpdk0
+10:26:17[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+10:26:17[DEBUG   ][script]:   Virtual Interface      : vhost0
+10:26:17[DEBUG   ][script]:   2nd Virtual Interface  : 
+10:26:17[DEBUG   ][script]:   MAC swap               : False
+10:26:17[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+10:26:17[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+10:26:17[DEBUG   ][script]:   Test run time          : 20 seconds
+10:26:17[DEBUG   ][script]:   Run with stream size's : 1000
+10:26:17[DEBUG   ][script]:   Run with packet size's : 64
+10:26:17[DEBUG   ][script]:   Skip PV test           : True
+10:26:17[DEBUG   ][script]:   Skip PVP test          : False
+10:26:17[DEBUG   ][script]:   Skip VV test           : True
+10:26:17[DEBUG   ][script]:   Run PP test            : False
+10:26:17[DEBUG   ][script]:   Warm-up                : False
+10:26:17[INFO    ][script]: - Connecting to the tester...
+10:31:42[INFO    ][script]: **********************************************************************
+10:31:42[INFO    ][script]: ** Starting "ovs_performance.py"
+10:31:42[INFO    ][script]: **********************************************************************
+10:31:42[DEBUG   ][script]: Configured values:
+10:31:42[DEBUG   ][script]:   Debug                  : True
+10:31:42[DEBUG   ][script]:   Debug DUT Shell        : False
+10:31:42[DEBUG   ][script]:   Debug Scapy            : False
+10:31:42[DEBUG   ][script]:   Debug Script           : False
+10:31:42[DEBUG   ][script]:   Debug Tester           : False
+10:31:42[DEBUG   ][script]:   Flow Type              : L3
+10:31:42[DEBUG   ][script]:   Perf tracing           : False
+10:31:42[DEBUG   ][script]:   Tester Type            : trex
+10:31:42[DEBUG   ][script]:   Tester Address         : localhost
+10:31:42[DEBUG   ][script]:   Tester Interface       : 0
+10:31:42[DEBUG   ][script]:   Second Tester Interface: 
+10:31:42[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+10:31:42[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+10:31:42[DEBUG   ][script]:   OVS DUT Login          : root
+10:31:42[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+10:31:42[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+10:31:42[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+10:31:42[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+10:31:42[DEBUG   ][script]:   OVS VM Login           : root
+10:31:42[DEBUG   ][script]:   OVS VM NIC queues      : 2
+10:31:42[DEBUG   ][script]:   Physical Interface     : dpdk0
+10:31:42[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+10:31:42[DEBUG   ][script]:   Virtual Interface      : vhost0
+10:31:42[DEBUG   ][script]:   2nd Virtual Interface  : 
+10:31:42[DEBUG   ][script]:   MAC swap               : False
+10:31:42[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+10:31:42[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+10:31:42[DEBUG   ][script]:   Test run time          : 20 seconds
+10:31:42[DEBUG   ][script]:   Run with stream size's : 1000
+10:31:42[DEBUG   ][script]:   Run with packet size's : 64
+10:31:42[DEBUG   ][script]:   Skip PV test           : True
+10:31:42[DEBUG   ][script]:   Skip PVP test          : False
+10:31:42[DEBUG   ][script]:   Skip VV test           : True
+10:31:42[DEBUG   ][script]:   Run PP test            : False
+10:31:42[DEBUG   ][script]:   Warm-up                : False
+10:31:42[INFO    ][script]: - Connecting to the tester...
+10:32:15[INFO    ][script]: **********************************************************************
+10:32:15[INFO    ][script]: ** Starting "ovs_performance.py"
+10:32:15[INFO    ][script]: **********************************************************************
+10:32:15[DEBUG   ][script]: Configured values:
+10:32:15[DEBUG   ][script]:   Debug                  : True
+10:32:15[DEBUG   ][script]:   Debug DUT Shell        : False
+10:32:15[DEBUG   ][script]:   Debug Scapy            : False
+10:32:15[DEBUG   ][script]:   Debug Script           : False
+10:32:15[DEBUG   ][script]:   Debug Tester           : False
+10:32:15[DEBUG   ][script]:   Flow Type              : L3
+10:32:15[DEBUG   ][script]:   Perf tracing           : False
+10:32:15[DEBUG   ][script]:   Tester Type            : trex
+10:32:15[DEBUG   ][script]:   Tester Address         : localhost
+10:32:15[DEBUG   ][script]:   Tester Interface       : 0
+10:32:15[DEBUG   ][script]:   Second Tester Interface: 
+10:32:15[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+10:32:15[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+10:32:15[DEBUG   ][script]:   OVS DUT Login          : root
+10:32:15[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+10:32:15[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+10:32:15[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+10:32:15[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+10:32:15[DEBUG   ][script]:   OVS VM Login           : root
+10:32:15[DEBUG   ][script]:   OVS VM NIC queues      : 2
+10:32:15[DEBUG   ][script]:   Physical Interface     : dpdk0
+10:32:15[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+10:32:15[DEBUG   ][script]:   Virtual Interface      : vhost0
+10:32:15[DEBUG   ][script]:   2nd Virtual Interface  : 
+10:32:15[DEBUG   ][script]:   MAC swap               : False
+10:32:15[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+10:32:15[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+10:32:15[DEBUG   ][script]:   Test run time          : 20 seconds
+10:32:15[DEBUG   ][script]:   Run with stream size's : 1000
+10:32:15[DEBUG   ][script]:   Run with packet size's : 64
+10:32:15[DEBUG   ][script]:   Skip PV test           : True
+10:32:15[DEBUG   ][script]:   Skip PVP test          : False
+10:32:15[DEBUG   ][script]:   Skip VV test           : True
+10:32:15[DEBUG   ][script]:   Run PP test            : False
+10:32:15[DEBUG   ][script]:   Warm-up                : False
+10:32:15[INFO    ][script]: - Connecting to the tester...
+10:32:45[INFO    ][script]: **********************************************************************
+10:32:45[INFO    ][script]: ** Starting "ovs_performance.py"
+10:32:45[INFO    ][script]: **********************************************************************
+10:32:45[DEBUG   ][script]: Configured values:
+10:32:45[DEBUG   ][script]:   Debug                  : True
+10:32:45[DEBUG   ][script]:   Debug DUT Shell        : False
+10:32:45[DEBUG   ][script]:   Debug Scapy            : False
+10:32:45[DEBUG   ][script]:   Debug Script           : False
+10:32:45[DEBUG   ][script]:   Debug Tester           : False
+10:32:45[DEBUG   ][script]:   Flow Type              : L3
+10:32:45[DEBUG   ][script]:   Perf tracing           : False
+10:32:45[DEBUG   ][script]:   Tester Type            : trex
+10:32:45[DEBUG   ][script]:   Tester Address         : localhost
+10:32:45[DEBUG   ][script]:   Tester Interface       : 0
+10:32:45[DEBUG   ][script]:   Second Tester Interface: 
+10:32:45[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+10:32:45[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+10:32:45[DEBUG   ][script]:   OVS DUT Login          : root
+10:32:45[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+10:32:45[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+10:32:45[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+10:32:45[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+10:32:45[DEBUG   ][script]:   OVS VM Login           : root
+10:32:45[DEBUG   ][script]:   OVS VM NIC queues      : 2
+10:32:45[DEBUG   ][script]:   Physical Interface     : dpdk0
+10:32:45[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+10:32:45[DEBUG   ][script]:   Virtual Interface      : vhost0
+10:32:45[DEBUG   ][script]:   2nd Virtual Interface  : 
+10:32:45[DEBUG   ][script]:   MAC swap               : False
+10:32:45[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+10:32:45[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+10:32:45[DEBUG   ][script]:   Test run time          : 20 seconds
+10:32:45[DEBUG   ][script]:   Run with stream size's : 1000
+10:32:45[DEBUG   ][script]:   Run with packet size's : 64
+10:32:45[DEBUG   ][script]:   Skip PV test           : True
+10:32:45[DEBUG   ][script]:   Skip PVP test          : False
+10:32:45[DEBUG   ][script]:   Skip VV test           : True
+10:32:45[DEBUG   ][script]:   Run PP test            : False
+10:32:45[DEBUG   ][script]:   Warm-up                : False
+10:32:45[INFO    ][script]: - Connecting to the tester...
+10:33:09[INFO    ][script]: **********************************************************************
+10:33:09[INFO    ][script]: ** Starting "ovs_performance.py"
+10:33:09[INFO    ][script]: **********************************************************************
+10:33:09[DEBUG   ][script]: Configured values:
+10:33:09[DEBUG   ][script]:   Debug                  : True
+10:33:09[DEBUG   ][script]:   Debug DUT Shell        : False
+10:33:09[DEBUG   ][script]:   Debug Scapy            : False
+10:33:09[DEBUG   ][script]:   Debug Script           : False
+10:33:09[DEBUG   ][script]:   Debug Tester           : False
+10:33:09[DEBUG   ][script]:   Flow Type              : L3
+10:33:09[DEBUG   ][script]:   Perf tracing           : False
+10:33:09[DEBUG   ][script]:   Tester Type            : trex
+10:33:09[DEBUG   ][script]:   Tester Address         : localhost
+10:33:09[DEBUG   ][script]:   Tester Interface       : 0
+10:33:09[DEBUG   ][script]:   Second Tester Interface: 
+10:33:09[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+10:33:09[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+10:33:09[DEBUG   ][script]:   OVS DUT Login          : root
+10:33:09[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+10:33:09[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+10:33:09[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+10:33:09[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+10:33:09[DEBUG   ][script]:   OVS VM Login           : root
+10:33:09[DEBUG   ][script]:   OVS VM NIC queues      : 2
+10:33:09[DEBUG   ][script]:   Physical Interface     : dpdk0
+10:33:09[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+10:33:09[DEBUG   ][script]:   Virtual Interface      : vhost0
+10:33:09[DEBUG   ][script]:   2nd Virtual Interface  : 
+10:33:09[DEBUG   ][script]:   MAC swap               : False
+10:33:09[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+10:33:09[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+10:33:09[DEBUG   ][script]:   Test run time          : 20 seconds
+10:33:09[DEBUG   ][script]:   Run with stream size's : 1000
+10:33:09[DEBUG   ][script]:   Run with packet size's : 64
+10:33:09[DEBUG   ][script]:   Skip PV test           : True
+10:33:09[DEBUG   ][script]:   Skip PVP test          : False
+10:33:09[DEBUG   ][script]:   Skip VV test           : True
+10:33:09[DEBUG   ][script]:   Run PP test            : False
+10:33:09[DEBUG   ][script]:   Warm-up                : False
+10:33:09[INFO    ][script]: - Connecting to the tester...
+11:19:37[INFO    ][script]: **********************************************************************
+11:19:37[INFO    ][script]: ** Starting "ovs_performance.py"
+11:19:37[INFO    ][script]: **********************************************************************
+11:19:37[DEBUG   ][script]: Configured values:
+11:19:37[DEBUG   ][script]:   Debug                  : True
+11:19:37[DEBUG   ][script]:   Debug DUT Shell        : False
+11:19:37[DEBUG   ][script]:   Debug Scapy            : False
+11:19:37[DEBUG   ][script]:   Debug Script           : False
+11:19:37[DEBUG   ][script]:   Debug Tester           : False
+11:19:37[DEBUG   ][script]:   Flow Type              : L3
+11:19:37[DEBUG   ][script]:   Perf tracing           : False
+11:19:37[DEBUG   ][script]:   Tester Type            : trex
+11:19:37[DEBUG   ][script]:   Tester Address         : localhost
+11:19:37[DEBUG   ][script]:   Tester Interface       : 0
+11:19:37[DEBUG   ][script]:   Second Tester Interface: 
+11:19:37[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+11:19:37[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+11:19:37[DEBUG   ][script]:   OVS DUT Login          : root
+11:19:37[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+11:19:37[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+11:19:37[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+11:19:37[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+11:19:37[DEBUG   ][script]:   OVS VM Login           : root
+11:19:37[DEBUG   ][script]:   OVS VM NIC queues      : 2
+11:19:37[DEBUG   ][script]:   Physical Interface     : dpdk0
+11:19:37[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+11:19:37[DEBUG   ][script]:   Virtual Interface      : vhost0
+11:19:37[DEBUG   ][script]:   2nd Virtual Interface  : 
+11:19:37[DEBUG   ][script]:   MAC swap               : False
+11:19:37[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+11:19:37[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+11:19:37[DEBUG   ][script]:   Test run time          : 20 seconds
+11:19:37[DEBUG   ][script]:   Run with stream size's : 1000
+11:19:37[DEBUG   ][script]:   Run with packet size's : 64
+11:19:37[DEBUG   ][script]:   Skip PV test           : True
+11:19:37[DEBUG   ][script]:   Skip PVP test          : False
+11:19:37[DEBUG   ][script]:   Skip VV test           : True
+11:19:37[DEBUG   ][script]:   Run PP test            : False
+11:19:37[DEBUG   ][script]:   Warm-up                : False
+11:19:37[INFO    ][script]: - Connecting to the tester...
+11:20:00[INFO    ][script]: **********************************************************************
+11:20:00[INFO    ][script]: ** Starting "ovs_performance.py"
+11:20:00[INFO    ][script]: **********************************************************************
+11:20:00[DEBUG   ][script]: Configured values:
+11:20:00[DEBUG   ][script]:   Debug                  : True
+11:20:00[DEBUG   ][script]:   Debug DUT Shell        : False
+11:20:00[DEBUG   ][script]:   Debug Scapy            : False
+11:20:00[DEBUG   ][script]:   Debug Script           : False
+11:20:00[DEBUG   ][script]:   Debug Tester           : False
+11:20:00[DEBUG   ][script]:   Flow Type              : L3
+11:20:00[DEBUG   ][script]:   Perf tracing           : False
+11:20:00[DEBUG   ][script]:   Tester Type            : trex
+11:20:00[DEBUG   ][script]:   Tester Address         : localhost
+11:20:00[DEBUG   ][script]:   Tester Interface       : 0
+11:20:00[DEBUG   ][script]:   Second Tester Interface: 
+11:20:00[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+11:20:00[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+11:20:00[DEBUG   ][script]:   OVS DUT Login          : root
+11:20:00[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+11:20:00[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+11:20:00[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+11:20:00[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+11:20:00[DEBUG   ][script]:   OVS VM Login           : root
+11:20:00[DEBUG   ][script]:   OVS VM NIC queues      : 2
+11:20:00[DEBUG   ][script]:   Physical Interface     : dpdk0
+11:20:00[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+11:20:00[DEBUG   ][script]:   Virtual Interface      : vhost0
+11:20:00[DEBUG   ][script]:   2nd Virtual Interface  : 
+11:20:00[DEBUG   ][script]:   MAC swap               : False
+11:20:00[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+11:20:00[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+11:20:00[DEBUG   ][script]:   Test run time          : 20 seconds
+11:20:00[DEBUG   ][script]:   Run with stream size's : 1000
+11:20:00[DEBUG   ][script]:   Run with packet size's : 64
+11:20:00[DEBUG   ][script]:   Skip PV test           : True
+11:20:00[DEBUG   ][script]:   Skip PVP test          : False
+11:20:00[DEBUG   ][script]:   Skip VV test           : True
+11:20:00[DEBUG   ][script]:   Run PP test            : False
+11:20:00[DEBUG   ][script]:   Warm-up                : False
+11:20:00[INFO    ][script]: - Connecting to the tester...
+11:33:45[INFO    ][script]: **********************************************************************
+11:33:45[INFO    ][script]: ** Starting "ovs_performance.py"
+11:33:45[INFO    ][script]: **********************************************************************
+11:33:45[DEBUG   ][script]: Configured values:
+11:33:45[DEBUG   ][script]:   Debug                  : True
+11:33:45[DEBUG   ][script]:   Debug DUT Shell        : False
+11:33:45[DEBUG   ][script]:   Debug Scapy            : False
+11:33:45[DEBUG   ][script]:   Debug Script           : False
+11:33:45[DEBUG   ][script]:   Debug Tester           : False
+11:33:45[DEBUG   ][script]:   Flow Type              : L3
+11:33:45[DEBUG   ][script]:   Perf tracing           : False
+11:33:45[DEBUG   ][script]:   Tester Type            : trex
+11:33:45[DEBUG   ][script]:   Tester Address         : localhost
+11:33:45[DEBUG   ][script]:   Tester Interface       : 0
+11:33:45[DEBUG   ][script]:   Second Tester Interface: 
+11:33:45[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+11:33:45[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+11:33:45[DEBUG   ][script]:   OVS DUT Login          : root
+11:33:45[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+11:33:45[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+11:33:45[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+11:33:45[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+11:33:45[DEBUG   ][script]:   OVS VM Login           : root
+11:33:45[DEBUG   ][script]:   OVS VM NIC queues      : 2
+11:33:45[DEBUG   ][script]:   Physical Interface     : dpdk0
+11:33:45[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+11:33:45[DEBUG   ][script]:   Virtual Interface      : vhost0
+11:33:45[DEBUG   ][script]:   2nd Virtual Interface  : 
+11:33:45[DEBUG   ][script]:   MAC swap               : False
+11:33:45[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+11:33:45[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+11:33:45[DEBUG   ][script]:   Test run time          : 20 seconds
+11:33:45[DEBUG   ][script]:   Run with stream size's : 1000
+11:33:45[DEBUG   ][script]:   Run with packet size's : 64
+11:33:45[DEBUG   ][script]:   Skip PV test           : True
+11:33:45[DEBUG   ][script]:   Skip PVP test          : False
+11:33:45[DEBUG   ][script]:   Skip VV test           : True
+11:33:45[DEBUG   ][script]:   Run PP test            : False
+11:33:45[DEBUG   ][script]:   Warm-up                : False
+11:33:45[INFO    ][script]: - Connecting to the tester...
+11:34:25[INFO    ][script]: **********************************************************************
+11:34:25[INFO    ][script]: ** Starting "ovs_performance.py"
+11:34:25[INFO    ][script]: **********************************************************************
+11:34:25[DEBUG   ][script]: Configured values:
+11:34:25[DEBUG   ][script]:   Debug                  : True
+11:34:25[DEBUG   ][script]:   Debug DUT Shell        : False
+11:34:25[DEBUG   ][script]:   Debug Scapy            : False
+11:34:25[DEBUG   ][script]:   Debug Script           : False
+11:34:25[DEBUG   ][script]:   Debug Tester           : False
+11:34:25[DEBUG   ][script]:   Flow Type              : L3
+11:34:25[DEBUG   ][script]:   Perf tracing           : False
+11:34:25[DEBUG   ][script]:   Tester Type            : trex
+11:34:25[DEBUG   ][script]:   Tester Address         : localhost
+11:34:25[DEBUG   ][script]:   Tester Interface       : 0
+11:34:25[DEBUG   ][script]:   Second Tester Interface: 
+11:34:25[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+11:34:25[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+11:34:25[DEBUG   ][script]:   OVS DUT Login          : root
+11:34:25[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+11:34:25[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+11:34:25[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+11:34:25[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+11:34:25[DEBUG   ][script]:   OVS VM Login           : root
+11:34:25[DEBUG   ][script]:   OVS VM NIC queues      : 2
+11:34:25[DEBUG   ][script]:   Physical Interface     : dpdk0
+11:34:25[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+11:34:25[DEBUG   ][script]:   Virtual Interface      : vhost0
+11:34:25[DEBUG   ][script]:   2nd Virtual Interface  : 
+11:34:25[DEBUG   ][script]:   MAC swap               : False
+11:34:25[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+11:34:25[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+11:34:25[DEBUG   ][script]:   Test run time          : 20 seconds
+11:34:25[DEBUG   ][script]:   Run with stream size's : 1000
+11:34:25[DEBUG   ][script]:   Run with packet size's : 64
+11:34:25[DEBUG   ][script]:   Skip PV test           : True
+11:34:25[DEBUG   ][script]:   Skip PVP test          : False
+11:34:25[DEBUG   ][script]:   Skip VV test           : True
+11:34:25[DEBUG   ][script]:   Run PP test            : False
+11:34:25[DEBUG   ][script]:   Warm-up                : False
+11:34:25[INFO    ][script]: - Connecting to the tester...
+11:35:01[INFO    ][script]: **********************************************************************
+11:35:01[INFO    ][script]: ** Starting "ovs_performance.py"
+11:35:01[INFO    ][script]: **********************************************************************
+11:35:01[DEBUG   ][script]: Configured values:
+11:35:01[DEBUG   ][script]:   Debug                  : True
+11:35:01[DEBUG   ][script]:   Debug DUT Shell        : False
+11:35:01[DEBUG   ][script]:   Debug Scapy            : False
+11:35:01[DEBUG   ][script]:   Debug Script           : False
+11:35:01[DEBUG   ][script]:   Debug Tester           : False
+11:35:01[DEBUG   ][script]:   Flow Type              : L3
+11:35:01[DEBUG   ][script]:   Perf tracing           : False
+11:35:01[DEBUG   ][script]:   Tester Type            : trex
+11:35:01[DEBUG   ][script]:   Tester Address         : localhost
+11:35:01[DEBUG   ][script]:   Tester Interface       : 0
+11:35:01[DEBUG   ][script]:   Second Tester Interface: 
+11:35:01[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+11:35:01[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+11:35:01[DEBUG   ][script]:   OVS DUT Login          : root
+11:35:01[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+11:35:01[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+11:35:01[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+11:35:01[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+11:35:01[DEBUG   ][script]:   OVS VM Login           : root
+11:35:01[DEBUG   ][script]:   OVS VM NIC queues      : 2
+11:35:01[DEBUG   ][script]:   Physical Interface     : dpdk0
+11:35:01[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+11:35:01[DEBUG   ][script]:   Virtual Interface      : vhost0
+11:35:01[DEBUG   ][script]:   2nd Virtual Interface  : 
+11:35:01[DEBUG   ][script]:   MAC swap               : False
+11:35:01[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+11:35:01[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+11:35:01[DEBUG   ][script]:   Test run time          : 20 seconds
+11:35:01[DEBUG   ][script]:   Run with stream size's : 1000
+11:35:01[DEBUG   ][script]:   Run with packet size's : 64
+11:35:01[DEBUG   ][script]:   Skip PV test           : True
+11:35:01[DEBUG   ][script]:   Skip PVP test          : False
+11:35:01[DEBUG   ][script]:   Skip VV test           : True
+11:35:01[DEBUG   ][script]:   Run PP test            : False
+11:35:01[DEBUG   ][script]:   Warm-up                : False
+11:35:01[INFO    ][script]: - Connecting to the tester...
+11:45:56[INFO    ][script]: **********************************************************************
+11:45:56[INFO    ][script]: ** Starting "ovs_performance.py"
+11:45:56[INFO    ][script]: **********************************************************************
+11:45:56[DEBUG   ][script]: Configured values:
+11:45:56[DEBUG   ][script]:   Debug                  : True
+11:45:56[DEBUG   ][script]:   Debug DUT Shell        : False
+11:45:56[DEBUG   ][script]:   Debug Scapy            : False
+11:45:56[DEBUG   ][script]:   Debug Script           : False
+11:45:56[DEBUG   ][script]:   Debug Tester           : False
+11:45:56[DEBUG   ][script]:   Flow Type              : L3
+11:45:56[DEBUG   ][script]:   Perf tracing           : False
+11:45:56[DEBUG   ][script]:   Tester Type            : trex
+11:45:56[DEBUG   ][script]:   Tester Address         : localhost
+11:45:56[DEBUG   ][script]:   Tester Interface       : 0
+11:45:56[DEBUG   ][script]:   Second Tester Interface: 
+11:45:56[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+11:45:56[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+11:45:56[DEBUG   ][script]:   OVS DUT Login          : root
+11:45:56[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+11:45:56[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+11:45:56[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+11:45:56[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+11:45:56[DEBUG   ][script]:   OVS VM Login           : root
+11:45:56[DEBUG   ][script]:   OVS VM NIC queues      : 2
+11:45:56[DEBUG   ][script]:   Physical Interface     : dpdk0
+11:45:56[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+11:45:56[DEBUG   ][script]:   Virtual Interface      : vhost0
+11:45:56[DEBUG   ][script]:   2nd Virtual Interface  : 
+11:45:56[DEBUG   ][script]:   MAC swap               : False
+11:45:56[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+11:45:56[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+11:45:56[DEBUG   ][script]:   Test run time          : 20 seconds
+11:45:56[DEBUG   ][script]:   Run with stream size's : 1000
+11:45:56[DEBUG   ][script]:   Run with packet size's : 64
+11:45:56[DEBUG   ][script]:   Skip PV test           : True
+11:45:56[DEBUG   ][script]:   Skip PVP test          : False
+11:45:56[DEBUG   ][script]:   Skip VV test           : True
+11:45:56[DEBUG   ][script]:   Run PP test            : False
+11:45:56[DEBUG   ][script]:   Warm-up                : False
+11:45:56[INFO    ][script]: - Connecting to the tester...
+11:48:15[INFO    ][script]: **********************************************************************
+11:48:15[INFO    ][script]: ** Starting "ovs_performance.py"
+11:48:15[INFO    ][script]: **********************************************************************
+11:48:15[DEBUG   ][script]: Configured values:
+11:48:15[DEBUG   ][script]:   Debug                  : True
+11:48:15[DEBUG   ][script]:   Debug DUT Shell        : False
+11:48:15[DEBUG   ][script]:   Debug Scapy            : False
+11:48:15[DEBUG   ][script]:   Debug Script           : False
+11:48:15[DEBUG   ][script]:   Debug Tester           : False
+11:48:15[DEBUG   ][script]:   Flow Type              : L3
+11:48:15[DEBUG   ][script]:   Perf tracing           : False
+11:48:15[DEBUG   ][script]:   Tester Type            : trex
+11:48:15[DEBUG   ][script]:   Tester Address         : localhost
+11:48:15[DEBUG   ][script]:   Tester Interface       : 0
+11:48:15[DEBUG   ][script]:   Second Tester Interface: 
+11:48:15[DEBUG   ][script]:   OVS Bridge Name        : ovs_pvp_br0
+11:48:15[DEBUG   ][script]:   OVS DUT Address        : 10.19.188.167
+11:48:15[DEBUG   ][script]:   OVS DUT Login          : root
+11:48:15[DEBUG   ][script]:   OVS DUT VM1 Address    : 192.168.122.134
+11:48:15[DEBUG   ][script]:   OVS DUT VM2 Address    : 
+11:48:15[DEBUG   ][script]:   OVS DUT VM1 PCI Address: 0000:00:02.0
+11:48:15[DEBUG   ][script]:   OVS DUT VM2 PCI Address: 
+11:48:15[DEBUG   ][script]:   OVS VM Login           : root
+11:48:15[DEBUG   ][script]:   OVS VM NIC queues      : 2
+11:48:15[DEBUG   ][script]:   Physical Interface     : dpdk0
+11:48:15[DEBUG   ][script]:   Physical Int. Speed    : 10 Gbit/s
+11:48:15[DEBUG   ][script]:   Virtual Interface      : vhost0
+11:48:15[DEBUG   ][script]:   2nd Virtual Interface  : 
+11:48:15[DEBUG   ][script]:   MAC swap               : False
+11:48:15[DEBUG   ][script]:   Source MAC             : 00:00:01:00:00:00
+11:48:15[DEBUG   ][script]:   Destination MAC        : 00:00:02:00:00:00
+11:48:15[DEBUG   ][script]:   Test run time          : 20 seconds
+11:48:15[DEBUG   ][script]:   Run with stream size's : 1000
+11:48:15[DEBUG   ][script]:   Run with packet size's : 64
+11:48:15[DEBUG   ][script]:   Skip PV test           : True
+11:48:15[DEBUG   ][script]:   Skip PVP test          : False
+11:48:15[DEBUG   ][script]:   Skip VV test           : True
+11:48:15[DEBUG   ][script]:   Run PP test            : False
+11:48:15[DEBUG   ][script]:   Warm-up                : False
+11:48:15[INFO    ][script]: - Connecting to the tester...
