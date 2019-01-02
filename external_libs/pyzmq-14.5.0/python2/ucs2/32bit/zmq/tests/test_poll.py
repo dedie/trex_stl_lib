@@ -1,4 +1,4 @@
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -150,7 +150,7 @@ class TestPoll(PollZMQTestCase):
         # Wait for everything to finish.
         wait()
     def test_timeout(self):
-        """make sure Poller.poll timeout has the right units (milliseconds)."""
+        """make sure Poller.poll timeout has the right units(milliseconds)."""
         s1, s2 = self.create_bound_pair(zmq.PAIR, zmq.PAIR)
         poller = self.Poller()
         poller.register(s1, zmq.POLLIN)
@@ -184,7 +184,7 @@ class TestSelect(PollZMQTestCase):
         self.assertTrue(s2 not in rlist)
 
     def test_timeout(self):
-        """make sure select timeout has the right units (seconds)."""
+        """make sure select timeout has the right units(seconds)."""
         s1, s2 = self.create_bound_pair(zmq.PAIR, zmq.PAIR)
         tic = time.time()
         r,w,x = zmq.select([s1,s2],[],[],.005)

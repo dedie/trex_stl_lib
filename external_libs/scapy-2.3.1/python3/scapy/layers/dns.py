@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -30,7 +30,7 @@ class DNSStrField(StrField):
         if x == b".":
           return b"\x00"
 
-        x = [k[:63] for k in x.split(b".")] # Truncate chunks that cannot be encoded (more than 63 bytes..)
+        x = [k[:63] for k in x.split(b".")] # Truncate chunks that cannot be encoded(more than 63 bytes..)
         x = [bytes([len(y)]) + y for y in x]
         x = b"".join(x)
         if x[-1] != 0:
@@ -41,12 +41,12 @@ class DNSStrField(StrField):
         n = b""
 
         #if ord(s[0]) == 0:
-        if (s[0]) == 0:
+        if(s[0]) == 0:
           return s[1:], b"."
 
         while 1:
             #l = ord(s[0])
-            l = (s[0])
+            l =(s[0])
             s = s[1:]
             if not l:
                 break
@@ -87,7 +87,7 @@ def DNSgetstr(s,p):
     jpath = [p]
     while 1:
         if p >= len(s):
-            warning("DNS RR prematured end (ofs=%i, len=%i)"%(p,len(s)))
+            warning("DNS RR prematured end(ofs=%i, len=%i)"%(p,len(s)))
             break
         #l = ord(s[p])
         l = s[p]
@@ -96,9 +96,9 @@ def DNSgetstr(s,p):
             if not q:
                 q = p+1
             if p >= len(s):
-                warning("DNS incomplete jump token at (ofs=%i)" % p)
+                warning("DNS incomplete jump token at(ofs=%i)" % p)
                 break
-            p = ((l & 0x3f) << 8) + s[p] - 12
+            p =((l & 0x3f) << 8) + s[p] - 12
             if p in jpath:
                 warning("DNS decompression loop detected")
                 break
@@ -149,7 +149,7 @@ class DNSRRField(StrField):
         ret = None
         c = getattr(pkt, self.countfld)
         if c > len(s):
-            warning("wrong value: DNS.%s=%i" % (self.countfld,c))
+            warning("wrong value: DNS.%s=%i" %(self.countfld,c))
             return s,b""
         while c:
             c -= 1
@@ -160,7 +160,7 @@ class DNSRRField(StrField):
             else:
                 ret.add_payload(rr)
         if self.passon:
-            return (s,p),ret
+            return(s,p),ret
         else:
             return s[p:],ret
             
@@ -191,7 +191,7 @@ class RDataField(StrLenField):
             while tmp_s:
                 tmp_len = struct.unpack("!B", bytes([tmp_s[0]]))[0] + 1
                 if tmp_len > len(tmp_s):
-                  warning("DNS RR TXT prematured end of character-string (size=%i, remaining bytes=%i)" % (tmp_len, len(tmp_s)))
+                  warning("DNS RR TXT prematured end of character-string(size=%i, remaining bytes=%i)" %(tmp_len, len(tmp_s)))
                 ret_s += tmp_s[1:tmp_len]
                 tmp_s = tmp_s[tmp_len:]
             s = ret_s
@@ -266,7 +266,7 @@ class DNS(Packet):
                     DNSRRField("ns", "nscount"),
                     DNSRRField("ar", "arcount",0) ]
     def answers(self, other):
-        return (isinstance(other, DNS)
+        return(isinstance(other, DNS)
                 and self.id == other.id
                 and self.qr == 1
                 and other.qr == 0)
@@ -282,7 +282,7 @@ class DNS(Packet):
             type = "Qry"
             if self.qdcount > 0 and isinstance(self.qd, DNSQR):
                 name = ' "%s"' % self.qd.getstrval("qname")
-        return 'DNS %s%s ' % (type, name)
+        return 'DNS %s%s ' %(type, name)
 
 dnstypes = { 0:"ANY", 255:"ALL",
              1:"A", 2:"NS", 3:"MD", 4:"MF", 5:"CNAME", 6:"SOA", 7: "MB", 8:"MG",
@@ -305,7 +305,7 @@ class DNSQR(Packet):
                     
                     
 
-# RFC 2671 - Extension Mechanisms for DNS (EDNS0)
+# RFC 2671 - Extension Mechanisms for DNS(EDNS0)
 
 class EDNS0TLV(Packet):
     name = "DNS EDNS0 TLV"
@@ -357,7 +357,7 @@ class TimeField(IntField):
         import time
         x = self.i2h(pkt, x)
         t = time.strftime("%Y%m%d%H%M%S", time.gmtime(x))
-        return "%s (%d)" % (t ,x) 
+        return "%s(%d)" %(t ,x) 
 
 
 def bitmap2RRlist(bitmap):
@@ -372,17 +372,17 @@ def bitmap2RRlist(bitmap):
     while bitmap:
 
         if len(bitmap) < 2:
-            warning("bitmap too short (%i)" % len(bitmap))
+            warning("bitmap too short(%i)" % len(bitmap))
             return
    
         #window_block = ord(bitmap[0]) # window number
-        window_block = (bitmap[0]) # window number
+        window_block =(bitmap[0]) # window number
         offset = 256*window_block # offset of the Ressource Record
         #bitmap_len = ord(bitmap[0]) # length of the bitmap in bytes
-        bitmap_len = (bitmap[1]) # length of the bitmap in bytes
+        bitmap_len =(bitmap[1]) # length of the bitmap in bytes
         
         if bitmap_len <= 0 or bitmap_len > 32:
-            warning("bitmap length is no valid (%i)" % bitmap_len)
+            warning("bitmap length is no valid(%i)" % bitmap_len)
             return
         
         tmp_bitmap = bitmap[2:2+bitmap_len]
@@ -392,7 +392,7 @@ def bitmap2RRlist(bitmap):
             v = 128
             for i in range(8):
                 #if ord(tmp_bitmap[b]) & v:
-                if (tmp_bitmap[b]) & v:
+                if(tmp_bitmap[b]) & v:
                     # each of the RR is encoded as a bit
                     RRlist += [ offset + b*8 + i ] 
                 v = v >> 1
@@ -568,7 +568,7 @@ class DNSRRDS(_DNSRRdummy):
                   ]
 
 
-# RFC 5074 - DNSSEC Lookaside Validation (DLV)
+# RFC 5074 - DNSSEC Lookaside Validation(DLV)
 class DNSRRDLV(DNSRRDS):
     name = "DNS DLV Resource Record"
     def __init__(self, *args, **kargs):
@@ -576,7 +576,7 @@ class DNSRRDLV(DNSRRDS):
        if not kargs.get('type', 0):
            self.type = 32769
 
-# RFC 5155 - DNS Security (DNSSEC) Hashed Authenticated Denial of Existence
+# RFC 5155 - DNS Security(DNSSEC) Hashed Authenticated Denial of Existence
 class DNSRRNSEC3(_DNSRRdummy):
     name = "DNS NSEC3 Resource Record"
     fields_desc = [ DNSStrField("rrname",b""),
@@ -613,7 +613,7 @@ class DNSRRNSEC3PARAM(_DNSRRdummy):
 dnssecclasses = [ DNSRROPT, DNSRRRSIG, DNSRRDLV, DNSRRDNSKEY, DNSRRNSEC, DNSRRDS, DNSRRNSEC3, DNSRRNSEC3PARAM ]
 
 def isdnssecRR(obj):
-    list = [ isinstance (obj, cls) for cls in dnssecclasses ]
+    list = [ isinstance(obj, cls) for cls in dnssecclasses ]
     ret = False
     for i in list:
       ret = ret or i
@@ -647,7 +647,7 @@ bind_layers( UDP,           DNS,           sport=53)
 @conf.commands.register
 def dyndns_add(nameserver, name, rdata, type="A", ttl=10):
     """Send a DNS add message to a nameserver for "name" to have a new "rdata"
-dyndns_add(nameserver, name, rdata, type="A", ttl=10) -> result code (0=ok)
+dyndns_add(nameserver, name, rdata, type="A", ttl=10) -> result code(0=ok)
 
 example: dyndns_add("ns1.toto.com", "dyn.toto.com", "127.0.0.1")
 RFC2136
@@ -669,7 +669,7 @@ RFC2136
 @conf.commands.register
 def dyndns_del(nameserver, name, type="ALL", ttl=10):
     """Send a DNS delete message to a nameserver for "name"
-dyndns_del(nameserver, name, type="ANY", ttl=10) -> result code (0=ok)
+dyndns_del(nameserver, name, type="ANY", ttl=10) -> result code(0=ok)
 
 example: dyndns_del("ns1.toto.com", "dyn.toto.com")
 RFC2136

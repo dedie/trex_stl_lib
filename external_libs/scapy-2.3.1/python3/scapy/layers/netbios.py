@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -113,10 +113,10 @@ class NBNSQueryResponse(Packet):
                    ShortField("NB_FLAGS", 0),
                    IPField("NB_ADDRESS", "127.0.0.1")]
 
-# Name Query Response (negative)
+# Name Query Response(negative)
 # Name Release Response
 class NBNSQueryResponseNegative(Packet):
-    name="NBNS query response (negative)"
+    name="NBNS query response(negative)"
     fields_desc = [ShortField("NAME_TRN_ID",0), 
                    ShortField("FLAGS", 0x8506),
                    ShortField("QDCOUNT",0),

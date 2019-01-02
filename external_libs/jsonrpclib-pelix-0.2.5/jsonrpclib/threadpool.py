@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -- Content-Encoding: UTF-8 --
+import threading
+import logging
 """
 Cached thread pool, inspired from Pelix/iPOPO Thread Pool
 
@@ -12,7 +14,7 @@ Cached thread pool, inspired from Pelix/iPOPO Thread Pool
 
     Copyright 2015 isandlaTech
 
-    Licensed under the Apache License, Version 2.0 (the "License");
+    Licensed under the Apache License, Version 2.0(the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
@@ -35,8 +37,6 @@ __version__ = ".".join(str(x) for x in __version_info__)
 # ------------------------------------------------------------------------------
 
 # Standard library
-import logging
-import threading
 
 try:
     # Python 3
@@ -54,6 +54,7 @@ class EventData(object):
     """
     A threading event with some associated data
     """
+
     def __init__(self):
         """
         Sets up the event
@@ -112,7 +113,7 @@ class EventData(object):
         """
         Waits for the event or for the timeout
 
-        :param timeout: Wait timeout (in seconds)
+        :param timeout: Wait timeout(in seconds)
         :return: True if the event as been set, else False
         """
         # The 'or' part is for Python 2.6
@@ -129,11 +130,12 @@ class FutureResult(object):
     """
     An object to wait for the result of a threaded execution
     """
+
     def __init__(self, logger=None):
         """
         Sets up the FutureResult object
 
-        :param logger: The Logger to use in case of error (optional)
+        :param logger: The Logger to use in case of error(optional)
         """
         self._logger = logger or logging.getLogger(__name__)
         self._done_event = EventData()
@@ -197,7 +199,7 @@ class FutureResult(object):
             # Store the result
             self._done_event.set(result)
         finally:
-            # In any case: notify the call back (if any)
+            # In any case: notify the call back(if any)
             self.__notify()
 
     def done(self):
@@ -211,7 +213,7 @@ class FutureResult(object):
         Waits up to timeout for the result the threaded job.
         Returns immediately the result if the job has already been done.
 
-        :param timeout: The maximum time to wait for a result (in seconds)
+        :param timeout: The maximum time to wait for a result(in seconds)
         :raise OSError: The timeout raised before the job finished
         :raise Exception: The exception encountered during the call, if any
         """
@@ -227,17 +229,18 @@ class ThreadPool(object):
     """
     Executes the tasks stored in a FIFO in a thread pool
     """
+
     def __init__(self, max_threads, min_threads=1, queue_size=0, timeout=60,
                  logname=None):
         """
         Sets up the thread pool.
 
-        Threads are kept alive 60 seconds (timeout argument).
+        Threads are kept alive 60 seconds(timeout argument).
 
         :param max_threads: Maximum size of the thread pool
         :param min_threads: Minimum size of the thread pool
-        :param queue_size: Size of the task queue (0 for infinite)
-        :param timeout: Queue timeout (in seconds, 60s by default)
+        :param queue_size: Size of the task queue(0 for infinite)
+        :param timeout: Queue timeout(in seconds, 60s by default)
         :param logname: Name of the logger
         :raise ValueError: Invalid number of threads
         """
@@ -246,7 +249,7 @@ class ThreadPool(object):
             max_threads = int(max_threads)
             if max_threads < 1:
                 raise ValueError("Pool size must be greater than 0")
-        except (TypeError, ValueError) as ex:
+        except(TypeError, ValueError) as ex:
             raise ValueError("Invalid pool size: {0}".format(ex))
 
         try:
@@ -255,7 +258,7 @@ class ThreadPool(object):
                 min_threads = 0
             elif min_threads > max_threads:
                 min_threads = max_threads
-        except (TypeError, ValueError) as ex:
+        except(TypeError, ValueError) as ex:
             raise ValueError("Invalid pool size: {0}".format(ex))
 
         # The logger
@@ -268,7 +271,7 @@ class ThreadPool(object):
         # The task queue
         try:
             queue_size = int(queue_size)
-        except (TypeError, ValueError):
+        except(TypeError, ValueError):
             # Not a valid integer
             queue_size = 0
 
@@ -347,7 +350,7 @@ class ThreadPool(object):
         self._done_event.set()
 
         with self.__lock:
-            # Add something in the queue (to unlock the join())
+            # Add something in the queue(to unlock the join())
             try:
                 for _ in self._threads:
                     self._queue.put(self._done_event, True, self._timeout)
@@ -422,7 +425,7 @@ class ThreadPool(object):
         """
         Waits for all the tasks to be executed
 
-        :param timeout: Maximum time to wait (in seconds)
+        :param timeout: Maximum time to wait(in seconds)
         :return: True if the queue has been emptied, else False
         """
         if self._queue.empty():
@@ -447,7 +450,7 @@ class ThreadPool(object):
 
         while not self._done_event.is_set():
             try:
-                # Wait for an action (blocking)
+                # Wait for an action(blocking)
                 task = self._queue.get(True, self._timeout)
                 if task is self._done_event:
                     # Stop event in the queue: get out

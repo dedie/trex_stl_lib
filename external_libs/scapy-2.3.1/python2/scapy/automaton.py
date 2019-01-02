@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -38,7 +38,7 @@ class Message:
         self.__dict__.update(args)
     def __repr__(self):
         return "<Message %s>" % " ".join("%s=%r"%(k,v)
-                                         for (k,v) in self.__dict__.items()
+                                         for(k,v) in self.__dict__.items()
                                          if not k.startswith("_"))
 
 class _instance_state:
@@ -264,7 +264,7 @@ class Automaton_metaclass(type):
             
 
         for v in cls.timeout.values():
-            v.sort(lambda (t1,f1),(t2,f2): cmp(t1,t2))
+            v.sort(lambda(t1,f1),(t2,f2): cmp(t1,t2))
             v.append((None, None))
         for v in itertools.chain(iter(cls.conditions.values()),
                                  iter(cls.recv_conditions.values()),
@@ -284,7 +284,7 @@ class Automaton_metaclass(type):
         se = "" # Keep initial nodes at the begining for better rendering
         for st in self.states.values():
             if st.atmt_initial:
-                se = ('\t"%s" [ style=filled, fillcolor=blue, shape=box, root=true];\n' % st.atmt_state)+se
+                se =('\t"%s" [ style=filled, fillcolor=blue, shape=box, root=true];\n' % st.atmt_state)+se
             elif st.atmt_final:
                 se += '\t"%s" [ style=filled, fillcolor=green, shape=octagon ];\n' % st.atmt_state
             elif st.atmt_error:
@@ -294,10 +294,10 @@ class Automaton_metaclass(type):
         for st in list(self.states.values()):
             for n in st.atmt_origfunc.__code__.co_names+st.atmt_origfunc.__code__.co_consts:
                 if n in self.states:
-                    s += '\t"%s" -> "%s" [ color=green ];\n' % (st.atmt_state,n)
+                    s += '\t"%s" -> "%s" [ color=green ];\n' %(st.atmt_state,n)
             
 
-        for c,k,v in ([("purple",k,v) for k,v in list(self.conditions.items())]+
+        for c,k,v in([("purple",k,v) for k,v in list(self.conditions.items())]+
                       [("red",k,v) for k,v in list(self.recv_conditions.items())]+
                       [("orange",k,v) for k,v in list(self.ioevents.items())]):
             for f in v:
@@ -306,17 +306,17 @@ class Automaton_metaclass(type):
                         l = f.atmt_condname
                         for x in self.actions[f.atmt_condname]:
                             l += "\\l>[%s]" % x.__name__
-                        s += '\t"%s" -> "%s" [label="%s", color=%s];\n' % (k,n,l,c)
+                        s += '\t"%s" -> "%s" [label="%s", color=%s];\n' %(k,n,l,c)
         for k,v in self.timeout.items():
             for t,f in v:
                 if f is None:
                     continue
                 for n in f.__code__.co_names+f.__code__.co_consts:
                     if n in self.states:
-                        l = "%s/%.1fs" % (f.atmt_condname,t)                        
+                        l = "%s/%.1fs" %(f.atmt_condname,t)                        
                         for x in self.actions[f.atmt_condname]:
                             l += "\\l>[%s]" % x.__name__
-                        s += '\t"%s" -> "%s" [label="%s",color=blue];\n' % (k,n,l)
+                        s += '\t"%s" -> "%s" [label="%s",color=blue];\n' %(k,n,l)
         s += "}\n"
         return do_graph(s, **kargs)
         
@@ -451,7 +451,7 @@ class Automaton(metaclass=Automaton_metaclass):
         for n in self.ionames:
             extfd = external_fd.get(n)
             if type(extfd) is not tuple:
-                extfd = (extfd,extfd)
+                extfd =(extfd,extfd)
             ioin,ioout = extfd                
             if ioin is None:
                 ioin = ObjectPipe()
@@ -485,10 +485,10 @@ class Automaton(metaclass=Automaton_metaclass):
 
     def _run_condition(self, cond, *args, **kargs):
         try:
-            self.debug(5, "Trying %s [%s]" % (cond.atmt_type, cond.atmt_condname))
+            self.debug(5, "Trying %s [%s]" %(cond.atmt_type, cond.atmt_condname))
             cond(self,*args, **kargs)
         except ATMT.NewStateRequested as state_req:
-            self.debug(2, "%s [%s] taken to state [%s]" % (cond.atmt_type, cond.atmt_condname, state_req.state))
+            self.debug(2, "%s [%s] taken to state [%s]" %(cond.atmt_type, cond.atmt_condname, state_req.state))
             if cond.atmt_type == ATMT.RECV:
                 self.packets.append(args[0])
             for action in self.actions[cond.atmt_condname]:
@@ -496,10 +496,10 @@ class Automaton(metaclass=Automaton_metaclass):
                 action(self, *state_req.action_args, **state_req.action_kargs)
             raise
         except Exception as e:
-            self.debug(2, "%s [%s] raised exception [%s]" % (cond.atmt_type, cond.atmt_condname, e))
+            self.debug(2, "%s [%s] raised exception [%s]" %(cond.atmt_type, cond.atmt_condname, e))
             raise
         else:
-            self.debug(2, "%s [%s] not taken" % (cond.atmt_type, cond.atmt_condname))
+            self.debug(2, "%s [%s] not taken" %(cond.atmt_type, cond.atmt_condname))
 
     def _do_start(self, *args, **kargs):
         
@@ -553,10 +553,10 @@ class Automaton(metaclass=Automaton_metaclass):
                 c = Message(type=_ATMT_Command.END, result=e.args[0])
                 self.cmdout.send(c)
             except Exception as e:
-                self.debug(3, "Transfering exception [%s] from tid=%i"% (e,self.threadid))
+                self.debug(3, "Transfering exception [%s] from tid=%i"%(e,self.threadid))
                 m = Message(type = _ATMT_Command.EXCEPTION, exception=e, exc_info=sys.exc_info())
                 self.cmdout.send(m)        
-            self.debug(3, "Stopping control thread (tid=%i)"%self.threadid)
+            self.debug(3, "Stopping control thread(tid=%i)"%self.threadid)
             self.threadid = None
     
     def _do_iter(self):
@@ -572,13 +572,13 @@ class Automaton(metaclass=Automaton_metaclass):
                 self.breakpointed = None
                 state_output = self.state.run()
                 if self.state.error:
-                    raise self.ErrorState("Reached %s: [%r]" % (self.state.state, state_output), 
+                    raise self.ErrorState("Reached %s: [%r]" %(self.state.state, state_output), 
                                           result=state_output, state=self.state.state)
                 if self.state.final:
                     raise StopIteration(state_output)
     
                 if state_output is None:
-                    state_output = ()
+                    state_output =()
                 elif type(state_output) is not list:
                     state_output = state_output,
                 
@@ -587,7 +587,7 @@ class Automaton(metaclass=Automaton_metaclass):
                     self._run_condition(cond, *state_output)
     
                 # If still there and no conditions left, we are stuck!
-                if ( len(self.recv_conditions[self.state.state]) == 0 and
+                if( len(self.recv_conditions[self.state.state]) == 0 and
                      len(self.ioevents[self.state.state]) == 0 and
                      len(self.timeout[self.state.state]) == 1 ):
                     raise self.Stuck("stuck in [%s]" % self.state.state,
@@ -637,7 +637,7 @@ class Automaton(metaclass=Automaton_metaclass):
                                     self._run_condition(ioevt, fd, *state_output)
     
             except ATMT.NewStateRequested as state_req:
-                self.debug(2, "switching from [%s] to [%s]" % (self.state.state,state_req.state))
+                self.debug(2, "switching from [%s] to [%s]" %(self.state.state,state_req.state))
                 self.state = state_req
                 yield state_req
 

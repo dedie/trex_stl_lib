@@ -1,4 +1,4 @@
-JSONRPClib (patched for Pelix)
+JSONRPClib(patched for Pelix)
 ##############################
 
 .. image:: https://pypip.in/license/jsonrpclib-pelix/badge.svg
@@ -13,7 +13,7 @@ JSONRPClib (patched for Pelix)
 
 This library is an implementation of the JSON-RPC specification.
 It supports both the original 1.0 specification, as well as the
-new (proposed) 2.0 specification, which includes batch submission, keyword
+new(proposed) 2.0 specification, which includes batch submission, keyword
 arguments, etc.
 
 It is licensed under the Apache License, Version 2.0
@@ -52,7 +52,7 @@ Services, but it is **not** a Pelix specific implementation.
     * Custom headers can be sent with request and associated tests
 
 * The support for Unix sockets has been removed, as it is not trivial to convert
-  to Python 3 (and I don't use them)
+  to Python 3(and I don't use them)
 * This version cannot be installed with the original ``jsonrpclib``, as it uses
   the same package name.
 
@@ -68,9 +68,9 @@ be modified to use JSON and experiment with the differences.
 It is backwards-compatible with the 1.0 specification, and supports all of the
 new proposed features of 2.0, including:
 
-* Batch submission (via MultiCall)
+* Batch submission(via MultiCall)
 * Keyword arguments
-* Notifications (both in a batch and 'normal')
+* Notifications(both in a batch and 'normal')
 * Class translation using the ``__jsonclass__`` key.
 
 I've added a "SimpleJSONRPCServer", which is intended to emulate the
@@ -81,7 +81,7 @@ Requirements
 ************
 
 It supports ``cjson`` and ``simplejson``, and looks for the parsers in that
-order (searching first for ``cjson``, then for the *built-in* ``json`` in 2.6+,
+order(searching first for ``cjson``, then for the *built-in* ``json`` in 2.6+,
 and then the ``simplejson`` external library).
 One of these must be installed to use this library, although if you have a
 standard distribution of 2.6+, you should already have one.
@@ -95,7 +95,7 @@ installed.
 Installation
 ************
 
-You can install this from PyPI with one of the following commands (sudo
+You can install this from PyPI with one of the following commands(sudo
 may be required):
 
 .. code-block:: console
@@ -117,9 +117,9 @@ with the following commands:
 SimpleJSONRPCServer
 *******************
 
-This is identical in usage (or should be) to the SimpleXMLRPCServer in the
+This is identical in usage(or should be) to the SimpleXMLRPCServer in the
 Python standard library. Some of the differences in features are that it
-obviously supports notification, batch calls, class translation (if left on),
+obviously supports notification, batch calls, class translation(if left on),
 etc.
 Note: The import line is slightly different from the regular SimpleXMLRPCServer,
 since the SimpleJSONRPCServer is distributed within the ``jsonrpclib`` library.
@@ -182,7 +182,7 @@ using the ``set_notification_pool()`` method:
    try:
        server.serve_forever()
    finally:
-       # Stop the thread pool (let threads finish their current task)
+       # Stop the thread pool(let threads finish their current task)
        pool.stop()
        server.set_notification_pool(None)
 
@@ -224,7 +224,7 @@ with a request pool doesn't have a notification pool.
    try:
        server.serve_forever()
    finally:
-       # Stop the thread pools (let threads finish their current task)
+       # Stop the thread pools(let threads finish their current task)
        request_pool.stop()
        nofif_pool.stop()
        server.set_notification_pool(None)
@@ -232,7 +232,7 @@ with a request pool doesn't have a notification pool.
 Client Usage
 ************
 
-This is (obviously) taken from a console session.
+This is(obviously) taken from a console session.
 
 .. code-block:: python
 
@@ -339,18 +339,18 @@ I've recently added "automatic" class translation support, although it is
 turned off by default. This can be devastatingly slow if improperly used, so
 the following is just a short list of things to keep in mind when using it.
 
-* Keep It (the object) Simple Stupid. (for exceptions, keep reading.)
-* Do not require init params (for exceptions, keep reading)
-* Getter properties without setters could be dangerous (read: not tested)
+* Keep It(the object) Simple Stupid.(for exceptions, keep reading.)
+* Do not require init params(for exceptions, keep reading)
+* Getter properties without setters could be dangerous(read: not tested)
 
-If any of the above are issues, use the _serialize method. (see usage below)
+If any of the above are issues, use the _serialize method.(see usage below)
 The server and client must BOTH have use_jsonclass configuration item on and
 they must both have access to the same libraries used by the objects for
 this to work.
 
 If you have excessively nested arguments, it would be better to turn off the
 translation and manually invoke it on specific objects using
-``jsonrpclib.jsonclass.dump`` / ``jsonrpclib.jsonclass.load`` (since the default
+``jsonrpclib.jsonclass.dump`` / ``jsonrpclib.jsonclass.load``(since the default
 behavior recursively goes through attributes and lists / dicts / tuples).
 
  Sample file: *test_obj.py*
@@ -363,14 +363,14 @@ behavior recursively goes through attributes and lists / dicts / tuples).
        foo = 'bar'
 
    # This object requires __init__ params, so it uses the _serialize method
-   # and returns a tuple of init params and attribute values (the init params
+   # and returns a tuple of init params and attribute values(the init params
    # can be a dict or a list, but the attribute values must be a dict.)
    class TestSerial(object):
        foo = 'bar'
        def __init__(self, *args):
            self.args = args
        def _serialize(self):
-           return (self.args, {'foo':self.foo,})
+           return(self.args, {'foo':self.foo,})
 
 * Sample usage
 
@@ -403,7 +403,7 @@ This behavior is turned by default. To deactivate it, just set the
 If you want to use a per-class serialization method, set its name in the
 ``serialize_method`` member of a server ``Config``.
 Finally, if you are using classes that you have defined in the implementation
-(as in, not a separate library), you'll need to add those (on BOTH the server
+(as in, not a separate library), you'll need to add those(on BOTH the server
 and the client) using the ``config.classes.add()`` method.
 
 Feedback on this "feature" is very, VERY much appreciated.
@@ -413,17 +413,17 @@ Why JSON-RPC?
 
 In my opinion, there are several reasons to choose JSON over XML for RPC:
 
-* Much simpler to read (I suppose this is opinion, but I know I'm right. :)
+* Much simpler to read(I suppose this is opinion, but I know I'm right. :)
 * Size / Bandwidth - Main reason, a JSON object representation is just much smaller.
 * Parsing - JSON should be much quicker to parse than XML.
-* Easy class passing with ``jsonclass`` (when enabled)
+* Easy class passing with ``jsonclass``(when enabled)
 
 In the interest of being fair, there are also a few reasons to choose XML
 over JSON:
 
-* Your server doesn't do JSON (rather obvious)
-* Wider XML-RPC support across APIs (can we change this? :))
-* Libraries are more established, i.e. more stable (Let's change this too.)
+* Your server doesn't do JSON(rather obvious)
+* Wider XML-RPC support across APIs(can we change this? :))
+* Libraries are more established, i.e. more stable(Let's change this too.)
 
 Tests
 *****

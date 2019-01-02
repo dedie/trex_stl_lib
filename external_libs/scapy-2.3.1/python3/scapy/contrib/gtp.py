@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-## Copyright (C) 2014 Guillaume Valadon <guillaume.valadon@ssi.gouv.fr>
+## Copyright(C) 2014 Guillaume Valadon <guillaume.valadon@ssi.gouv.fr>
 ##               2014 Alexis Sultan    <alexis.sultan@sfr.com>
 ##               2012 ffranz <ffranz@iniqua.com>
 ##
@@ -137,7 +137,7 @@ class TBCDByteField(StrFixedLenField):
         return ret_string
 
 class GTPHeader(Packet):
-    # 3GPP TS 29.060 V9.1.0 (2009-12)
+    # 3GPP TS 29.060 V9.1.0(2009-12)
     name = "GTP Header"
     fields_desc=[ BitField("version", 1, 3),
                   BitField("PT", 1, 1),
@@ -160,12 +160,12 @@ class GTPHeader(Packet):
         return struct.pack("B", self.version) + self.payload.hashret()
 
     def answers(self, other):
-        return (isinstance(other, GTPHeader) and
+        return(isinstance(other, GTPHeader) and
                 self.version == other.version and
                 self.payload.answers(other.payload))
 
 class GTPEchoRequest(Packet):
-    # 3GPP TS 29.060 V9.1.0 (2009-12)
+    # 3GPP TS 29.060 V9.1.0(2009-12)
     name = "GTP Echo Request"
     fields_desc = [ XBitField("seq", 0, 16),
                     ByteField("npdu", 0),
@@ -288,8 +288,8 @@ class IE_EndUserAddress(Packet):
     fields_desc = [ ByteEnumField("ietype", 128, IEType),
                     #         data network accessed by the GGPRS subscribers.
                     #            - Request
-                    #                1    Type (1byte)
-                    #                2-3    Length (2bytes) - value 2
+                    #                1    Type(1byte)
+                    #                2-3    Length(2bytes) - value 2
                     #                4    Spare + PDP Type Organization
                     #                5    PDP Type Number    
                     #            - Response
@@ -309,7 +309,7 @@ class APNStrLenField(StrLenField):
         while tmp_s:
             tmp_len = struct.unpack("!B", tmp_s[0])[0] + 1
             if tmp_len > len(tmp_s):
-                warning("APN prematured end of character-string (size=%i, remaining bytes=%i)" % (tmp_len, len(tmp_s)))
+                warning("APN prematured end of character-string(size=%i, remaining bytes=%i)" %(tmp_len, len(tmp_s)))
             ret_s +=  tmp_s[1:tmp_len] 
             tmp_s = tmp_s[tmp_len:]
             if len(tmp_s) :
@@ -413,7 +413,7 @@ def IE_Dispatcher(s):
   return cls(s)
 
 class GTPEchoResponse(Packet):
-    # 3GPP TS 29.060 V9.1.0 (2009-12)
+    # 3GPP TS 29.060 V9.1.0(2009-12)
     name = "GTP Echo Response"
     fields_desc = [ XBitField("seq", 0, 16),
                     ByteField("npdu", 0),
@@ -428,7 +428,7 @@ class GTPEchoResponse(Packet):
 
 
 class GTPCreatePDPContextRequest(Packet):
-    # 3GPP TS 29.060 V9.1.0 (2009-12)
+    # 3GPP TS 29.060 V9.1.0(2009-12)
     name = "GTP Create PDP Context Request"
     fields_desc = [ ShortField("seq", RandShort()),
                     ByteField("npdu", 0),
@@ -441,7 +441,7 @@ class GTPCreatePDPContextRequest(Packet):
         return struct.pack("H", self.seq)
 
 class GTPCreatePDPContextResponse(Packet):
-    # 3GPP TS 29.060 V9.1.0 (2009-12)
+    # 3GPP TS 29.060 V9.1.0(2009-12)
     name = "GTP Create PDP Context Response"
     fields_desc = [ ShortField("seq", RandShort()),
                     ByteField("npdu", 0),
@@ -455,7 +455,7 @@ class GTPCreatePDPContextResponse(Packet):
         return self.seq == other.seq
 
 class GTPErrorIndication(Packet):
-    # 3GPP TS 29.060 V9.1.0 (2009-12)
+    # 3GPP TS 29.060 V9.1.0(2009-12)
     name = "GTP Error Indication"
     fields_desc = [ XBitField("seq", 0, 16),
                     ByteField("npdu", 0),
@@ -463,7 +463,7 @@ class GTPErrorIndication(Packet):
                     PacketListField("IE_list", [], IE_Dispatcher) ]
 
 class GTPDeletePDPContextRequest(Packet):
-    # 3GPP TS 29.060 V9.1.0 (2009-12)
+    # 3GPP TS 29.060 V9.1.0(2009-12)
     name = "GTP Delete PDP Context Request"
     fields_desc = [ XBitField("seq", 0, 16),
                     ByteField("npdu", 0),
@@ -471,7 +471,7 @@ class GTPDeletePDPContextRequest(Packet):
                     PacketListField("IE_list", [], IE_Dispatcher) ]
 
 class GTPDeletePDPContextResponse(Packet):
-    # 3GPP TS 29.060 V9.1.0 (2009-12)
+    # 3GPP TS 29.060 V9.1.0(2009-12)
     name = "GTP Delete PDP Context Response"
     fields_desc = [ XBitField("seq", 0, 16),
                     ByteField("npdu", 0),
@@ -479,7 +479,7 @@ class GTPDeletePDPContextResponse(Packet):
                     PacketListField("IE_list", [], IE_Dispatcher) ]
 
 class GTPPDUNotificationRequest(Packet):
-    # 3GPP TS 29.060 V9.1.0 (2009-12)
+    # 3GPP TS 29.060 V9.1.0(2009-12)
     name = "GTP PDU Notification Request"
     fields_desc = [ XBitField("seq", 0, 16),
                     ByteField("npdu", 0),
@@ -492,9 +492,9 @@ class GTPPDUNotificationRequest(Packet):
                         ], IE_Dispatcher) ]
 
 class GTP_U_Header(Packet):
-    # 3GPP TS 29.060 V9.1.0 (2009-12)
+    # 3GPP TS 29.060 V9.1.0(2009-12)
     name = "GTP-U Header"
-    # GTP-U protocol is used to transmit T-PDUs between GSN pairs (or between an SGSN and an RNC in UMTS), 
+    # GTP-U protocol is used to transmit T-PDUs between GSN pairs(or between an SGSN and an RNC in UMTS), 
     # encapsulated in G-PDUs. A G-PDU is a packet including a GTP-U header and a T-PDU. The Path Protocol 
     # defines the path and the GTP-U header defines the tunnel. Several tunnels may be multiplexed on a single path. 
     fields_desc = [ BitField("version", 1,3),
@@ -519,7 +519,7 @@ class GTP_U_Header(Packet):
         return p
 
 class GTPmorethan1500(Packet):
-    # 3GPP TS 29.060 V9.1.0 (2009-12)
+    # 3GPP TS 29.060 V9.1.0(2009-12)
     name = "GTP More than 1500"
     fields_desc = [ ByteEnumField("IE_Cause", "Cause", IEType),
                     BitField("IE", 1, 12000),]

@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -15,7 +15,7 @@ from scapy.error import warning, log_runtime
 class _SuperSocket_metaclass(type):
     def __repr__(self):
         if self.desc is not None:
-            return "<%s: %s>" % (self.__name__,self.desc)
+            return "<%s: %s>" %(self.__name__,self.desc)
         else:
             return "<%s>" % self.__name__
 
@@ -57,7 +57,7 @@ class SuperSocket(metaclass = _SuperSocket_metaclass):
         return sendrecv.sniff(opened_socket=self, *args, **kargs)
 
 class L3RawSocket(SuperSocket):
-    desc = "Layer 3 using Raw sockets (PF_INET/SOCK_RAW)"
+    desc = "Layer 3 using Raw sockets(PF_INET/SOCK_RAW)"
     def __init__(self, type = ETH_P_IP, filter=None, iface=None, promisc=None, nofilter=0):
         self.outs = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
         self.outs.setsockopt(socket.SOL_IP, socket.IP_HDRINCL, 1)
@@ -76,7 +76,7 @@ class L3RawSocket(SuperSocket):
             lvl = 3
         else:
             cls = conf.default_l2
-            warning("Unable to guess type (interface=%s protocol=%#x family=%i). Using %s" % (sa_ll[0],sa_ll[1],sa_ll[3],cls.name))
+            warning("Unable to guess type(interface=%s protocol=%#x family=%i). Using %s" %(sa_ll[0],sa_ll[1],sa_ll[3],cls.name))
             lvl = 3
 
         try:

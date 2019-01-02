@@ -37,7 +37,7 @@ def main(argv):
                 
                 
         if PCAP_IN is None:
-            raise getopt.GetoptError("Missing pcap file (-i)")
+            raise getopt.GetoptError("Missing pcap file(-i)")
     
     except getopt.GetoptError as e:
         print("ERROR: %s" % e, file = sys.stderr)
@@ -91,7 +91,7 @@ def main(argv):
             pcap_out.write(p1)
     i+=1
     correct = i-differ-failed
-    print("%i total packets. %i ok, %i differed, %i failed. %.2f%% correct." % (i, correct, differ,
+    print("%i total packets. %i ok, %i differed, %i failed. %.2f%% correct." %(i, correct, differ,
                                                                                 failed, i and 100.0*(correct)/i))
     
         

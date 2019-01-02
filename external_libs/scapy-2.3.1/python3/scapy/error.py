@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -30,7 +30,7 @@ class ScapyFreqFilter(logging.Filter):
                 if n == 'warning':
                     break
                 caller = l
-            tm,nb = self.warning_table.get(caller, (0,0))
+            tm,nb = self.warning_table.get(caller,(0,0))
             ltm = time.time()
             if ltm-tm > wt:
                 tm = ltm
@@ -42,7 +42,7 @@ class ScapyFreqFilter(logging.Filter):
                         record.msg = "more "+record.msg
                 else:
                     return 0
-            self.warning_table[caller] = (tm,nb)
+            self.warning_table[caller] =(tm,nb)
         return 1    
 
 log_scapy = logging.getLogger("scapy")

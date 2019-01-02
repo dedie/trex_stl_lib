@@ -36,7 +36,7 @@ class SetGen(Gen):
                         yield j
                         j += 1
 
-            elif isinstance(i, Gen) and (self._iterpacket or not isinstance(i, BasePacket)):
+            elif isinstance(i, Gen) and(self._iterpacket or not isinstance(i, BasePacket)):
                 for j in i:
                     yield j
 
@@ -56,21 +56,21 @@ class Net(Gen):
     def _parse_digit(a, netmask):
         netmask = min(8, max(netmask, 0))
         if a == '*':
-            a = (0, 256)
+            a =(0, 256)
         elif a.find('-') >= 0:
             x, y = list(map(int, a.split('-')))
             if x > y:
                 y = x
-            a = (x & 255 << netmask, max(y, x | 255 >> 8 - netmask) + 1)
+            a =(x & 255 << netmask, max(y, x | 255 >> 8 - netmask) + 1)
         else:
-            a = (int(a) & 255 << netmask, (int(a) | 255 >> 8 - netmask) + 1)
+            a =(int(a) & 255 << netmask,(int(a) | 255 >> 8 - netmask) + 1)
         return a
 
     @classmethod
     def _parse_net(cls, net):
         tmp = net.split('/') + ['32']
         netmask = int(tmp[1])
-        return (list(map(lambda x, y: cls._parse_digit(x, y), tmp[0].split('.'), list(map(lambda x, nm = netmask: x - nm, (8, 16, 24, 32))))), netmask)
+        return(list(map(lambda x, y: cls._parse_digit(x, y), tmp[0].split('.'), list(map(lambda x, nm = netmask: x - nm,(8, 16, 24, 32))))), netmask)
 
     def __init__(self, net):
         self.repr = net
@@ -81,7 +81,7 @@ class Net(Gen):
             for c in range(*self.parsed[2]):
                 for b in range(*self.parsed[1]):
                     for a in range(*self.parsed[0]):
-                        yield '%i.%i.%i.%i' % (a,
+                        yield '%i.%i.%i.%i' %(a,
                          b,
                          c,
                          d)
@@ -108,7 +108,7 @@ class Net(Gen):
             p2 = other.parsed
         else:
             p2, nm2 = self._parse_net(other)
-        for (a1, b1), (a2, b2) in zip(self.parsed, p2):
+        for(a1, b1),(a2, b2) in zip(self.parsed, p2):
             if a1 > a2 or b1 < b2:
                 return False
 
@@ -209,7 +209,7 @@ class Packet_metaclass(type):
 
 
 class NewDefaultValues(Packet_metaclass):
-    """NewDefaultValues is deprecated (not needed anymore)
+    """NewDefaultValues is deprecated(not needed anymore)
     
     remove this:
         __metaclass__ = NewDefaultValues
@@ -226,10 +226,10 @@ class NewDefaultValues(Packet_metaclass):
                     break
 
         except:
-            f, l = ('??', -1)
+            f, l =('??', -1)
             raise
 
-        log_loading.warning('Deprecated (no more needed) use of NewDefaultValues  (%s l. %i).' % (f, l))
+        log_loading.warning('Deprecated(no more needed) use of NewDefaultValues (%s l. %i).' %(f, l))
         return super(NewDefaultValues, cls).__new__(cls, name, bases, dct)
 
 

@@ -11,10 +11,10 @@ from scapy.layers.inet import TCP
 
 
 class BGPIPField(Field):
-	"""Represents how bgp dose an ip prefix in (length, prefix)"""
+	"""Represents how bgp dose an ip prefix in(length, prefix)"""
 	def mask2iplen(self,mask):
 		"""turn the mask into the length in bytes of the ip field"""
-		return (mask + 7) // 8
+		return(mask + 7) // 8
 	def h2i(self, pkt, h):
 		"""human x.x.x.x/y to internal"""
 		ip,mask = re.split( '/', h)
@@ -30,7 +30,7 @@ class BGPIPField(Field):
 		mask, ip = i
 		return self.mask2iplen(mask) + 1
 	def i2m(self, pkt, i):
-		"""internal (ip as bytes, mask as int) to machine"""
+		"""internal(ip as bytes, mask as int) to machine"""
 		mask, ip = i
 		ip = inet_aton( ip )
 		return struct.pack(">B",mask) + ip[:self.mask2iplen(mask)] 
@@ -42,7 +42,7 @@ class BGPIPField(Field):
 	def m2i(self,pkt,m):
 		mask = struct.unpack(">B",m[0])[0]
 		ip = "".join( [ m[i + 1] if i < self.mask2iplen(mask) else '\x00' for i in range(4)] )
-		return (mask,inet_ntoa(ip))
+		return(mask,inet_ntoa(ip))
 
 class BGPHeader(Packet):
 	"""The first part of any BGP packet"""
@@ -130,13 +130,13 @@ class BGPUpdate(Packet):
 	]
 	def post_build(self,p,pay):
 		wl = self.withdrawn_len
-		subpacklen = lambda p: len ( str( p ))
+		subpacklen = lambda p: len( str( p ))
 		subfieldlen = lambda p: BGPIPField("", "0.0.0.0/0").i2len(self,  p )
 		if wl is None:
-			wl = sum ( map ( subfieldlen , self.withdrawn))
+			wl = sum( map( subfieldlen , self.withdrawn))
 			p = p[:0]+struct.pack("!H", wl)+p[2:]
 		if self.tp_len is None:
-			l = sum ( map ( subpacklen , self.total_path))
+			l = sum( map( subpacklen , self.total_path))
 			p = p[:2+wl]+struct.pack("!H", l)+p[4+wl:]
 		return p+pay
 

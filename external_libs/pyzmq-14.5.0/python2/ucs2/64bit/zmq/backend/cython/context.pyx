@@ -1,8 +1,8 @@
 """0MQ Context class."""
 # coding: utf-8
 
-# Copyright (c) PyZMQ Developers.
-# Distributed under the terms of the Lesser GNU Public License (LGPL).
+# Copyright(c) PyZMQ Developers.
+# Distributed under the terms of the Lesser GNU Public License(LGPL).
 
 from libc.stdlib cimport free, malloc, realloc
 

@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -77,13 +77,13 @@ def queso_sig(target, dport=80, timeout=3):
             rs = "- - - -"
         else:
             s,r = ans[0]
-            rs = "%i" % (r.seq != 0)
+            rs = "%i" %(r.seq != 0)
             if not r.ack:
                 r += " 0"
             elif r.ack-s.seq > 666:
                 rs += " R" % 0
             else:
-                rs += " +%i" % (r.ack-s.seq)
+                rs += " +%i" %(r.ack-s.seq)
             rs += " %X" % r.window
             rs += " %x" % r.payload.flags
         ret.append(rs)

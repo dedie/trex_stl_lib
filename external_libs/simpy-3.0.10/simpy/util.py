@@ -18,7 +18,7 @@ def start_delayed(env, generator, delay):
         >>> from simpy import Environment
         >>> from simpy.util import start_delayed
         >>> def my_process(env, x):
-        ...     print('%s, %s' % (env.now, x))
+        ...     print('%s, %s' %(env.now, x))
         ...     yield env.timeout(1)
         ...
         >>> env = Environment()

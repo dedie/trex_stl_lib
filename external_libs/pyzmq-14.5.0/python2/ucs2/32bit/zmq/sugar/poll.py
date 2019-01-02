@@ -1,6 +1,6 @@
 """0MQ polling related functions and classes."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -44,7 +44,7 @@ class Poller(object):
         if flags:
             if socket in self._map:
                 idx = self._map[socket]
-                self.sockets[idx] = (socket, flags)
+                self.sockets[idx] =(socket, flags)
             else:
                 idx = len(self.sockets)
                 self.sockets.append((socket, flags))
@@ -80,7 +80,7 @@ class Poller(object):
         Parameters
         ----------
         timeout : float, int
-            The timeout in milliseconds. If None, no `timeout` (infinite). This
+            The timeout in milliseconds. If None, no `timeout`(infinite). This
             is in milliseconds to be compatible with ``select.poll()``. The
             underlying zmq_poll uses microseconds and we convert to that in
             this function.
@@ -90,7 +90,7 @@ class Poller(object):
         events : list of tuples
             The list of events that are ready to be processed.
             This is a list of tuples of the form ``(socket, event)``, where the 0MQ Socket
-            or integer fd is the first element, and the poll event mask (POLLIN, POLLOUT) is the second.
+            or integer fd is the first element, and the poll event mask(POLLIN, POLLOUT) is the second.
             It is common to call ``events = dict(poller.poll())``,
             which turns the list of tuples into a mapping of ``socket : event``.
         """
@@ -102,7 +102,7 @@ class Poller(object):
 
 
 def select(rlist, wlist, xlist, timeout=None):
-    """select(rlist, wlist, xlist, timeout=None) -> (rlist, wlist, xlist)
+    """select(rlist, wlist, xlist, timeout=None) ->(rlist, wlist, xlist)
 
     Return the result of poll as a lists of sockets ready for r/w/exception.
 
@@ -111,7 +111,7 @@ def select(rlist, wlist, xlist, timeout=None):
     Parameters
     ----------
     timeout : float, int, optional
-        The timeout in seconds. If None, no timeout (infinite). This is in seconds to be
+        The timeout in seconds. If None, no timeout(infinite). This is in seconds to be
         compatible with ``select.select()``. The underlying zmq_poll uses microseconds
         and we convert to that in this function.
     rlist : list of sockets/FDs
@@ -123,7 +123,7 @@ def select(rlist, wlist, xlist, timeout=None):
     
     Returns
     -------
-    (rlist, wlist, xlist) : tuple of lists of sockets (length 3)
+   (rlist, wlist, xlist) : tuple of lists of sockets(length 3)
         Lists correspond to sockets available for read/write/error events respectively.
     """
     if timeout is None:

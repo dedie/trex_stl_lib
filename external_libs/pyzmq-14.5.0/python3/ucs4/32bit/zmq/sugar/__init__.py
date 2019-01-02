@@ -1,16 +1,16 @@
 """pure-Python sugar wrappers for core 0MQ objects."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
-from zmq.sugar import (
+from zmq.sugar import(
     constants, context, frame, poll, socket, tracker, version
 )
 from zmq import error
 
 __all__ = ['constants']
-for submod in (
+for submod in(
     constants, context, error, frame, poll, socket, tracker, version
 ):
     __all__.extend(submod.__all__)

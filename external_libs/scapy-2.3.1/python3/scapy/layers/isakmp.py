@@ -1,10 +1,10 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
-ISAKMP (Internet Security Association and Key Management Protocol).
+ISAKMP(Internet Security Association and Key Management Protocol).
 """
 
 import struct
@@ -16,7 +16,7 @@ from scapy.sendrecv import sr
 
 
 # see http://www.iana.org/assignments/ipsec-registry for details
-ISAKMPAttributeTypes= { "Encryption":    (1, { "DES-CBC"  : 1,
+ISAKMPAttributeTypes= { "Encryption":   (1, { "DES-CBC"  : 1,
                                                 "IDEA-CBC" : 2,
                                                 "Blowfish-CBC" : 3,
                                                 "RC5-R16-B64-CBC" : 4,
@@ -24,7 +24,7 @@ ISAKMPAttributeTypes= { "Encryption":    (1, { "DES-CBC"  : 1,
                                                 "CAST-CBC" : 6, 
                                                 "AES-CBC" : 7, 
                                                 "CAMELLIA-CBC" : 8, }, 0),
-                         "Hash":          (2, { "MD5": 1,
+                         "Hash":         (2, { "MD5": 1,
                                                 "SHA": 2,
                                                 "Tiger": 3,
                                                 "SHA2-256": 4,
@@ -52,7 +52,7 @@ ISAKMPAttributeTypes= { "Encryption":    (1, { "DES-CBC"  : 1,
                                                 "XAUTHRespRSAEncryption": 65008,
                                                 "XAUTHInitRSARevisedEncryption": 65009,
                                                 "XAUTHRespRSARevisedEncryptio": 65010, }, 0),
-                         "GroupDesc":     (4, { "768MODPgr"  : 1,
+                         "GroupDesc":    (4, { "768MODPgr"  : 1,
                                                 "1024MODPgr" : 2, 
                                                 "EC2Ngr155"  : 3,
                                                 "EC2Ngr185"  : 4,
@@ -62,24 +62,24 @@ ISAKMPAttributeTypes= { "Encryption":    (1, { "DES-CBC"  : 1,
                                                 "4096MODPgr" : 16, 
                                                 "6144MODPgr" : 17, 
                                                 "8192MODPgr" : 18, }, 0),
-                         "GroupType":      (5,  {"MODP":       1,
+                         "GroupType":     (5,  {"MODP":       1,
                                                  "ECP":        2,
                                                  "EC2N":       3}, 0),
-                         "GroupPrime":     (6,  {}, 1),
+                         "GroupPrime":    (6,  {}, 1),
                          "GroupGenerator1":(7,  {}, 1),
                          "GroupGenerator2":(8,  {}, 1),
-                         "GroupCurveA":    (9,  {}, 1),
-                         "GroupCurveB":    (10, {}, 1),
-                         "LifeType":       (11, {"Seconds":     1,
+                         "GroupCurveA":   (9,  {}, 1),
+                         "GroupCurveB":   (10, {}, 1),
+                         "LifeType":      (11, {"Seconds":     1,
                                                  "Kilobytes":   2,  }, 0),
-                         "LifeDuration":   (12, {}, 1),
-                         "PRF":            (13, {}, 0),
-                         "KeyLength":      (14, {}, 0),
-                         "FieldSize":      (15, {}, 0),
-                         "GroupOrder":     (16, {}, 1),
+                         "LifeDuration":  (12, {}, 1),
+                         "PRF":           (13, {}, 0),
+                         "KeyLength":     (14, {}, 0),
+                         "FieldSize":     (15, {}, 0),
+                         "GroupOrder":    (16, {}, 1),
                          }
 
-# the name 'ISAKMPTransformTypes' is actually a misnomer (since the table 
+# the name 'ISAKMPTransformTypes' is actually a misnomer(since the table 
 # holds info for all ISAKMP Attribute types, not just transforms, but we'll 
 # keep it for backwards compatibility... for now at least
 ISAKMPTransformTypes = ISAKMPAttributeTypes
@@ -90,7 +90,7 @@ for n in ISAKMPTransformTypes:
     tmp = {}
     for e in val[1]:
         tmp[val[1][e]] = e
-    ISAKMPTransformNum[val[0]] = (n,tmp, val[2])
+    ISAKMPTransformNum[val[0]] =(n,tmp, val[2])
 del(n)
 del(e)
 del(tmp)
@@ -99,14 +99,14 @@ del(val)
 
 class ISAKMPTransformSetField(StrLenField):
     islist=1
-    #def type2num(self, (typ,val)):
+    #def type2num(self,(typ,val)):
     def type2num(self, typval):
         typ = typval[0]
         val = typval[1]
-        type_val,enc_dict,tlv = ISAKMPTransformTypes.get(typval[0], (typval[0],{},0))
+        type_val,enc_dict,tlv = ISAKMPTransformTypes.get(typval[0],(typval[0],{},0))
         val = enc_dict.get(val, val)
         s = b""
-        if (val & ~0xffff):
+        if(val & ~0xffff):
             if not tlv:
                 warning("%r should not be TLV but is too big => using TLV encoding" % typval[0])
             n = 0
@@ -121,7 +121,7 @@ class ISAKMPTransformSetField(StrLenField):
     def num2type(self, typ, enc):
         val = ISAKMPTransformNum.get(typ,(typ,{}))
         enc = val[1].get(enc,enc)
-        return (val[0],enc)
+        return(val[0],enc)
     def i2m(self, pkt, i):
         if i is None:
             return b""
@@ -131,12 +131,12 @@ class ISAKMPTransformSetField(StrLenField):
         # I try to ensure that we don't read off the end of our packet based
         # on bad length fields we're provided in the packet. There are still
         # conditions where struct.unpack() may not get enough packet data, but
-        # worst case that should result in broken attributes (which would
-        # be expected). (wam)
+        # worst case that should result in broken attributes(which would
+        # be expected).(wam)
         lst = []
         while len(m) >= 4:
             trans_type, = struct.unpack("!H", m[:2])
-            is_tlv = not (trans_type & 0x8000)
+            is_tlv = not(trans_type & 0x8000)
             if is_tlv:
                 # We should probably check to make sure the attribute type we
                 # are looking at is allowed to have a TLV format and issue a 
@@ -146,10 +146,10 @@ class ISAKMPTransformSetField(StrLenField):
                     warning("Bad length for ISAKMP tranform type=%#6x" % trans_type)
                 value = m[4:4+value_len]
                 r = 0
-                for i in struct.unpack("!%s" % ("B"*len(value),), value):
-                    r = (r << 8) | i
+                for i in struct.unpack("!%s" %("B"*len(value),), value):
+                    r =(r << 8) | i
                 value = r
-                #value = reduce(lambda x,y: (x<<8)|y, struct.unpack("!%s" % ("B"*len(value),), value),0)
+                #value = reduce(lambda x,y:(x<<8)|y, struct.unpack("!%s" %("B"*len(value),), value),0)
             else:
                 trans_type &= 0x7fff
                 value_len=0

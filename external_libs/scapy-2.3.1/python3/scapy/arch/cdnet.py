@@ -49,51 +49,51 @@ dnet_intf_name = c_char * INTF_NAME_LEN
 class dnet_intf_list(Structure):
   pass
 
-dnet_intf_list._fields_ = [ ('length', c_int),
-                            ('interfaces', dnet_intf_name * 20) ]
+dnet_intf_list._fields_ = [('length', c_int),
+                           ('interfaces', dnet_intf_name * 20) ]
 
 class dnet_eth_addr(Structure):
   pass
 
-dnet_eth_addr._fields_ = [ ('data', uint8_t * ETH_ADDR_LEN) ]
+dnet_eth_addr._fields_ = [('data', uint8_t * ETH_ADDR_LEN) ]
 dnet_eth_addr_t = dnet_eth_addr
 
 class dnet_ip6_addr(Structure):
   pass
 
-dnet_ip6_addr._fields_ = [ ('data', uint8_t * IP6_ADDR_LEN) ]
+dnet_ip6_addr._fields_ = [('data', uint8_t * IP6_ADDR_LEN) ]
 dnet_ip6_addr_t = dnet_ip6_addr
 
 class dnet_addr_u(Union):
   pass
 
-dnet_addr_u._fields_ = [ ('eth', dnet_eth_addr_t),
-                         ('ip', dnet_ip_addr_t),
-                         ('ip6', dnet_ip6_addr_t),
-                         ('data8', uint8_t * 16),
-                         ('data16', uint16_t * 8),
-                         ('data32', uint32_t * 4) ]
+dnet_addr_u._fields_ = [('eth', dnet_eth_addr_t),
+                        ('ip', dnet_ip_addr_t),
+                        ('ip6', dnet_ip6_addr_t),
+                        ('data8', uint8_t * 16),
+                        ('data16', uint16_t * 8),
+                        ('data32', uint32_t * 4) ]
 
 class dnet_addr(Structure):
   pass
-dnet_addr._anonymous_ = ('__addr_u', )
-dnet_addr._fields_ = [ ('addr_type', uint16_t),
-                       ('addr_bits', uint16_t),
-                       ('__addr_u', dnet_addr_u) ] 
+dnet_addr._anonymous_ =('__addr_u', )
+dnet_addr._fields_ = [('addr_type', uint16_t),
+                      ('addr_bits', uint16_t),
+                      ('__addr_u', dnet_addr_u) ] 
 
 class dnet_intf_entry(Structure):
   pass
 
-dnet_intf_entry._fields_ = [ ('intf_len', c_uint),
-                             ('intf_name', c_char * INTF_NAME_LEN),
-                             ('intf_type', c_ushort),
-                             ('intf_flags', c_ushort),
-                             ('intf_mtu', c_uint),
-                             ('intf_addr', dnet_addr),
-                             ('intf_dst_addr', dnet_addr),
-                             ('intf_link_addr', dnet_addr),
-                             ('intf_alias_num', c_uint),
-                             ('intf_alias_addrs', dnet_addr * INTF_ALIAS_COUNT) ]
+dnet_intf_entry._fields_ = [('intf_len', c_uint),
+                            ('intf_name', c_char * INTF_NAME_LEN),
+                            ('intf_type', c_ushort),
+                            ('intf_flags', c_ushort),
+                            ('intf_mtu', c_uint),
+                            ('intf_addr', dnet_addr),
+                            ('intf_dst_addr', dnet_addr),
+                            ('intf_link_addr', dnet_addr),
+                            ('intf_alias_num', c_uint),
+                            ('intf_alias_addrs', dnet_addr * INTF_ALIAS_COUNT) ]
 
 
 eth_t = c_void_p

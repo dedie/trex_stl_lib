@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -102,7 +102,7 @@ def sndrcv(pks, pkt, timeout = None, inter = 0, verbose=None, chainCC=0, retry=0
                     try:
                         os.setpgrp() # Chance process group to avoid ctrl-C
                         sent_times = [p.sent_time for p in all_stimuli if p.sent_time]
-                        pickle.dump( (conf.netcache,sent_times), wrpipe )
+                        pickle.dump((conf.netcache,sent_times), wrpipe )
                         wrpipe.close()
                     except:
                         pass
@@ -199,13 +199,13 @@ def sndrcv(pks, pkt, timeout = None, inter = 0, verbose=None, chainCC=0, retry=0
         debug.match=plist.SndRcvList(ans[:])
 
     #clean the ans list to delete the field _answered
-    if (multi):
+    if(multi):
         for s,r in ans:
             if hasattr(s, '_answered'):
                 del(s._answered)
     
     if verbose:
-        print("\nReceived %i packets, got %i answers, remaining %i packets" % (nbrecv+len(ans), len(ans), notans))
+        print("\nReceived %i packets, got %i answers, remaining %i packets" %(nbrecv+len(ans), len(ans), notans))
     return plist.SndRcvList(ans),plist.PacketList(remain,"Unanswered")
 
 
@@ -302,7 +302,7 @@ def sendpfast(x, pps=None, mbps=None, realtime=None, loop=0, file_cache=False, i
         except KeyboardInterrupt:
             log_interactive.info("Interrupted by user")
         except Exception as e:
-            log_interactive.error("while trying to exec [%s]: %s" % (argv[0],e))
+            log_interactive.error("while trying to exec [%s]: %s" %(argv[0],e))
         finally:
             os.unlink(f)
 
@@ -424,7 +424,7 @@ def __sr_loop(srfunc, pkts, prn=lambda x:x[1].summary(), prnfail=lambda x:x.summ
                 for p in res[1]:
                     print(col(prnfail(p)))
                     print(" "*len(msg), end = " ")
-            if verbose > 1 and not (prn or prnfail):
+            if verbose > 1 and not(prn or prnfail):
                 print("recv:%i  fail:%i" % tuple(map(len, res[:2])))
             if store:
                 ans += res[0]
@@ -436,7 +436,7 @@ def __sr_loop(srfunc, pkts, prn=lambda x:x[1].summary(), prnfail=lambda x:x.summ
         pass
  
     if verbose and n>0:
-        print(ct.normal("\nSent %i packets, received %i packets. %3.1f%% hits." % (n,r,100.0*r/n)))
+        print(ct.normal("\nSent %i packets, received %i packets. %3.1f%% hits." %(n,r,100.0*r/n)))
     return plist.SndRcvList(ans),plist.PacketList(unans)
 
 @conf.commands.register
@@ -452,7 +452,7 @@ srloop(pkts, [prn], [inter], [count], ...) --> None"""
     return __sr_loop(srp, pkts, *args, **kargs)
 
 
-#def sndrcvflood(pks, pkt, prn=lambda (s,r):r.summary(), chainCC=0, store=1, unique=0):
+#def sndrcvflood(pks, pkt, prn=lambda(s,r):r.summary(), chainCC=0, store=1, unique=0):
 def sndrcvflood(pks, pkt, prn=lambda a:a[1].summary(), chainCC=0, store=1, unique=0):
     if not isinstance(pkt, Gen):
         pkt = SetGen(pkt)
@@ -510,7 +510,7 @@ def sndrcvflood(pks, pkt, prn=lambda a:a[1].summary(), chainCC=0, store=1, uniqu
 def srflood(x,filter=None, iface=None, nofilter=None, *args,**kargs):
     """Flood and receive packets at layer 3
 prn:      function applied to packets received. Ret val is printed if not None
-store:    if 1 (default), store answers and return them
+store:    if 1(default), store answers and return them
 unique:   only consider packets whose print 
 nofilter: put 1 to avoid use of bpf filters
 filter:   provide a BPF filter
@@ -524,7 +524,7 @@ iface:    listen answers only on the given interface"""
 def srpflood(x,filter=None, iface=None, iface_hint=None, nofilter=None, *args,**kargs):
     """Flood and receive packets at layer 2
 prn:      function applied to packets received. Ret val is printed if not None
-store:    if 1 (default), store answers and return them
+store:    if 1(default), store answers and return them
 unique:   only consider packets whose print 
 nofilter: put 1 to avoid use of bpf filters
 filter:   provide a BPF filter
@@ -554,7 +554,7 @@ lfilter: python function applied to each packet to determine
          if further action may be done
          ex: lfilter = lambda x: x.haslayer(Padding)
 offline: pcap file to read packets from, instead of sniffing them
-timeout: stop sniffing after a given time (default: None)
+timeout: stop sniffing after a given time(default: None)
 L2socket: use the provided L2socket
 opened_socket: provide an object ready to use .recv() on
 stop_filter: python function applied to each packet to determine
@@ -622,7 +622,7 @@ bridge_and_sniff([count=0,] [prn=None,] [store=1,] [offline=None,] [lfilter=None
 lfilter: python function applied to each packet to determine
          if further action may be done
          ex: lfilter = lambda x: x.haslayer(Padding)
-timeout: stop sniffing after a given time (default: None)
+timeout: stop sniffing after a given time(default: None)
 L2socket: use the provided L2socket
 stop_filter: python function applied to each packet to determine
              if we have to stop the capture after this packet
@@ -660,7 +660,7 @@ stop_filter: python function applied to each packet to determine
                     if prn:
                         r = prn(p)
                         if r is not None:
-                            print("%s: %s" % (label[s],r))
+                            print("%s: %s" %(label[s],r))
                     if stop_filter and stop_filter(p):
                         break
                     if count > 0 and c >= count:

@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 #
 # texttable - module for creating simple ASCII tables
-# Copyright (C) 2003-2015 Gerome Fournier <jef(at)foutaise.org>
+# Copyright(C) 2003-2015 Gerome Fournier <jef(at)foutaise.org>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
-# version 2.1 of the License, or (at your option) any later version.
+# version 2.1 of the License, or(at your option) any later version.
 #
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,8 +33,8 @@ Example:
     table = Texttable()
     table.set_deco(Texttable.HEADER)
     table.set_cols_dtype(['t',  # text 
-                          'f',  # float (decimal)
-                          'e',  # float (exponent)
+                          'f',  # float(decimal)
+                          'e',  # float(exponent)
                           'i',  # integer
                           'a']) # automatic
     table.set_cols_align(["l", "r", "r", "r", "l"])
@@ -152,10 +152,10 @@ class TextCodesStripper:
     pattern = re.compile("|".join(keys))
 
     @staticmethod
-    def strip (s):
+    def strip(s):
         return re.sub(TextCodesStripper.pattern, '', s)
 
-def ansi_len (iterable):
+def ansi_len(iterable):
     return len(TextCodesStripper.strip(iterable))
 
 
@@ -221,7 +221,7 @@ class Texttable:
         if len(array) != 4:
             raise ArraySizeError("array should contain 4 characters")
         array = [ x[:1] for x in [ str(s) for s in array ] ]
-        (self._char_horiz, self._char_vert,
+       (self._char_horiz, self._char_vert,
             self._char_corner, self._char_header) = array
 
     def set_deco(self, deco):
@@ -274,7 +274,7 @@ class Texttable:
 
         - the elements of the array should be either "a", "t", "f", "e" or "i":
 
-            * "a": automatic (try to use the most appropriate datatype)
+            * "a": automatic(try to use the most appropriate datatype)
             * "t": treat as text
             * "f": treat as float in decimal format
             * "e": treat as float in exponential format
@@ -408,22 +408,22 @@ class Texttable:
         if dtype == 'i':
             return str(int(round(f)))
         elif dtype == 'f':
-            return '%.*f' % (n, f)
+            return '%.*f' %(n, f)
         elif dtype == 'e':
-            return '%.*e' % (n, f)
+            return '%.*e' %(n, f)
         elif dtype == 't':
             return str(x)
         else:
             if f - round(f) == 0:
                 if abs(f) > 1e8:
-                    return '%.*e' % (n, f)
+                    return '%.*e' %(n, f)
                 else:
                     return str(int(round(f)))
             else:
                 if abs(f) > 1e8:
-                    return '%.*e' % (n, f)
+                    return '%.*e' %(n, f)
                 else:
-                    return '%.*f' % (n, f)
+                    return '%.*f' %(n, f)
 
     def _check_row_size(self, array):
         """Check that the specified array fits the previous rows size
@@ -478,16 +478,16 @@ class Texttable:
         rows
         """
         horiz = self._char_horiz
-        if (is_header):
+        if(is_header):
             horiz = self._char_header
         # compute cell separator
-        s = "%s%s%s" % (horiz, [horiz, self._char_corner][self._has_vlines()],
+        s = "%s%s%s" %(horiz, [horiz, self._char_corner][self._has_vlines()],
             horiz)
         # build the line
         l = s.join([horiz * n for n in self._width])
         # add border if needed
         if self._has_border():
-            l = "%s%s%s%s%s\n" % (self._char_corner, horiz, l, horiz,
+            l = "%s%s%s%s%s\n" %(self._char_corner, horiz, l, horiz,
                 self._char_corner)
         else:
             l += "\n"
@@ -508,7 +508,7 @@ class Texttable:
             for part, i in zip(parts, list(range(1, len(parts) + 1))):
                 length = length + len(part)
                 if i < len(parts):
-                    length = (length//8 + 1) * 8
+                    length =(length//8 + 1) * 8
             maxi = max(maxi, length)
         return maxi
 
@@ -529,7 +529,7 @@ class Texttable:
             for cell,i in zip(row, list(range(len(row)))):
                 try:
                     maxi[i] = max(maxi[i], self._len_cell(cell))
-                except (TypeError, IndexError):
+                except(TypeError, IndexError):
                     maxi.append(self._len_cell(cell))
         items = len(maxi)
         length = reduce(lambda x, y: x+y, maxi)
@@ -567,12 +567,12 @@ class Texttable:
                 if isheader:
                     align = "c"
                 if align == "r":
-                    out += "%s " % (fill * space + cell_line)
+                    out += "%s " %(fill * space + cell_line)
                 elif align == "c":
-                    out += "%s " % (int(fill/2) * space + cell_line \
+                    out += "%s " %(int(fill/2) * space + cell_line \
                             + int(fill/2 + fill%2) * space)
                 else:
-                    out += "%s " % (cell_line + fill * space)
+                    out += "%s " %(cell_line + fill * space)
                 if length < len(line):
                     out += "%s " % [space, self._char_vert][self._has_vlines()]
             out += "%s\n" % ['', self._char_vert][self._has_border()]
@@ -592,7 +592,7 @@ class Texttable:
                 try:
                     c = str(c)
                 except UnicodeDecodeError as strerror:
-                    sys.stderr.write("UnicodeDecodeError exception for string '%s': %s\n" % (c, strerror))
+                    sys.stderr.write("UnicodeDecodeError exception for string '%s': %s\n" %(c, strerror))
                     if sys.version >= '3.0':
                         c = str(c, 'utf', 'replace')
                     else:
@@ -612,9 +612,9 @@ class Texttable:
                 cell[:0] = [""] * int(missing / 2)
                 cell.extend([""] * int(missing / 2 + missing % 2))
             elif valign == "b":
-                cell[:0] = [""] * (max_cell_lines - len(cell))
+                cell[:0] = [""] *(max_cell_lines - len(cell))
             else:
-                cell.extend([""] * (max_cell_lines - len(cell)))
+                cell.extend([""] *(max_cell_lines - len(cell)))
         return line_wrapped
 
 
@@ -630,8 +630,8 @@ if __name__ == '__main__':
     table = Texttable()
     table.set_deco(Texttable.HEADER)
     table.set_cols_dtype(['t',  # text 
-                          'f',  # float (decimal)
-                          'e',  # float (exponent)
+                          'f',  # float(decimal)
+                          'e',  # float(exponent)
                           'i',  # integer
                           'a']) # automatic
     table.set_cols_align(["l", "r", "r", "r", "l"])

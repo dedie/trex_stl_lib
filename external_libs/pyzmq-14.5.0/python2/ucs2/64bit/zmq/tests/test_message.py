@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -51,7 +51,7 @@ class TestFrame(BaseZMQTestCase):
     def test_above_30(self):
         """Message above 30 bytes are never copied by 0MQ."""
         for i in range(5, 16):  # 32, 64,..., 65536
-            s = (2**i)*x
+            s =(2**i)*x
             self.assertEqual(grc(s), 2)
             m = zmq.Frame(s)
             self.assertEqual(grc(s), 4)
@@ -63,7 +63,7 @@ class TestFrame(BaseZMQTestCase):
     def test_str(self):
         """Test the str representations of the Frames."""
         for i in range(16):
-            s = (2**i)*x
+            s =(2**i)*x
             m = zmq.Frame(s)
             m_str = str(m)
             m_str_b = b(m_str) # py3compat
@@ -72,7 +72,7 @@ class TestFrame(BaseZMQTestCase):
     def test_bytes(self):
         """Test the Frame.bytes property."""
         for i in range(1,16):
-            s = (2**i)*x
+            s =(2**i)*x
             m = zmq.Frame(s)
             b = m.bytes
             self.assertEqual(s, m.bytes)
@@ -87,14 +87,14 @@ class TestFrame(BaseZMQTestCase):
         s = u('asdf')
         self.assertRaises(TypeError, zmq.Frame, s)
         for i in range(16):
-            s = (2**i)*u('§')
+            s =(2**i)*u('§')
             m = zmq.Frame(s.encode('utf8'))
             self.assertEqual(s, str(m.bytes,'utf8'))
 
     def test_len(self):
         """Test the len of the Frames."""
         for i in range(16):
-            s = (2**i)*x
+            s =(2**i)*x
             m = zmq.Frame(s)
             self.assertEqual(len(s), len(m))
 
@@ -102,7 +102,7 @@ class TestFrame(BaseZMQTestCase):
     def test_lifecycle1(self):
         """Run through a ref counting cycle with a copy."""
         for i in range(5, 16):  # 32, 64,..., 65536
-            s = (2**i)*x
+            s =(2**i)*x
             rc = 2
             self.assertEqual(grc(s), rc)
             m = zmq.Frame(s)
@@ -138,7 +138,7 @@ class TestFrame(BaseZMQTestCase):
     def test_lifecycle2(self):
         """Run through a different ref counting cycle with a copy."""
         for i in range(5, 16):  # 32, 64,..., 65536
-            s = (2**i)*x
+            s =(2**i)*x
             rc = 2
             self.assertEqual(grc(s), rc)
             m = zmq.Frame(s)
@@ -273,7 +273,7 @@ class TestFrame(BaseZMQTestCase):
     def test_memoryview(self):
         """test messages from memoryview"""
         major,minor = sys.version_info[:2]
-        if not (major >= 3 or (major == 2 and minor >= 7)):
+        if not(major >= 3 or(major == 2 and minor >= 7)):
             raise SkipTest("memoryviews only in python >= 2.7")
 
         s = b'carrotjuice'
@@ -315,8 +315,8 @@ class TestFrame(BaseZMQTestCase):
             import numpy
         except ImportError:
             raise SkipTest("requires numpy")
-        if sys.version_info < (2,7):
-            raise SkipTest("requires new-style buffer interface (py >= 2.7)")
+        if sys.version_info <(2,7):
+            raise SkipTest("requires new-style buffer interface(py >= 2.7)")
         rand = numpy.random.randint
         shapes = [ rand(2,5) for i in range(5) ]
         a,b = self.create_bound_pair(zmq.PAIR, zmq.PAIR)
@@ -334,7 +334,7 @@ class TestFrame(BaseZMQTestCase):
                 B = numpy.frombuffer(msg, A.dtype).reshape(A.shape)
                 self.assertEqual(A.shape, B.shape)
                 self.assertTrue((A==B).all())
-            A = numpy.empty(shape, dtype=[('a', int), ('b', float), ('c', 'a32')])
+            A = numpy.empty(shape, dtype=[('a', int),('b', float),('c', 'a32')])
             A['a'] = 1024
             A['b'] = 1e9
             A['c'] = 'hello there'

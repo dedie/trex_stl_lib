@@ -1,6 +1,6 @@
 """
 Resource for sharing homogeneous matter between processes, either continuous
-(like water) or discrete (like apples).
+(like water) or discrete(like apples).
 
 A :class:`Container` can be used to model the fuel tank of a gasoline station.
 Tankers increase and refuelled cars decrease the amount of gas in the station's
@@ -45,7 +45,7 @@ class ContainerGet(base.Get):
 
 class Container(base.BaseResource):
     """Resource containing up to *capacity* of matter which may either be
-    continuous (like water) or discrete (like apples). It supports requests to
+    continuous(like water) or discrete(like apples). It supports requests to
     put or get matter into/from the container.
 
     The *env* parameter is the :class:`~simpy.core.Environment` instance the

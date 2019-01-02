@@ -1,10 +1,10 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
-SMB (Server Message Block), also known as CIFS.
+SMB(Server Message Block), also known as CIFS.
 """
 
 from scapy.packet import *

@@ -1,7 +1,7 @@
 # coding: utf-8
 """Mixin for mapping set/getattr to self.set/get"""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -22,7 +22,7 @@ class AttributeSetter(object):
         try:
             opt = getattr(constants, upper_key)
         except AttributeError:
-            raise AttributeError("%s has no such option: %s" % (
+            raise AttributeError("%s has no such option: %s" %(
                 self.__class__.__name__, upper_key)
             )
         else:
@@ -38,7 +38,7 @@ class AttributeSetter(object):
         try:
             opt = getattr(constants, upper_key)
         except AttributeError:
-            raise AttributeError("%s has no such option: %s" % (
+            raise AttributeError("%s has no such option: %s" %(
                 self.__class__.__name__, upper_key)
             )
         else:

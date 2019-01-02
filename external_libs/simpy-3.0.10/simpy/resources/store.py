@@ -2,7 +2,7 @@
 Shared resources for storing a possibly unlimited amount of objects supporting
 requests for specific objects.
 
-The :class:`Store` operates in a FIFO (first-in, first-out) order. Objects are
+The :class:`Store` operates in a FIFO(first-in, first-out) order. Objects are
 retrieved from the store in the order they were put in. The *get* requests of a
 :class:`FilterStore` can be customized by a filter to only retrieve objects
 matching a given criterion.

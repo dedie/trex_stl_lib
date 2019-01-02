@@ -1,16 +1,16 @@
 """0MQ Constant names"""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 # dictionaries of constants new or removed in particular versions
 
 new_in = {
-    (2,2,0) : [
+   (2,2,0) : [
         'RCVTIMEO',
         'SNDTIMEO',
     ],
-    (3,2,2) : [
+   (3,2,2) : [
         # errnos
         'EMSGSIZE',
         'EAFNOSUPPORT',
@@ -54,7 +54,7 @@ new_in = {
         'EVENT_DISCONNECTED',
         'EVENT_ALL',
     ],
-    (4,0,0) : [
+   (4,0,0) : [
         # socket types
         'STREAM',
         
@@ -84,7 +84,7 @@ new_in = {
         # events
         'EVENT_MONITOR_STOPPED',
     ],
-    (4,1,0) : [
+   (4,1,0) : [
         # ctx opts
         'SOCKET_LIMIT',
         'THREAD_PRIORITY',
@@ -120,7 +120,7 @@ new_in = {
 
 
 removed_in = {
-    (3,2,2) : [
+   (3,2,2) : [
         'UPSTREAM',
         'DOWNSTREAM',
         
@@ -199,7 +199,7 @@ base_names = [
     'GSSAPI',
 
     ## ERRNO
-    # Often used (these are alse in errno.)
+    # Often used(these are alse in errno.)
     'EAGAIN',
     'EINVAL',
     'EFAULT',

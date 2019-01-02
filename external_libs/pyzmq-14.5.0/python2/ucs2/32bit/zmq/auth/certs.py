@@ -1,6 +1,6 @@
 """0MQ authentication related functions and classes."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -25,6 +25,7 @@ _cert_public_banner = u("""#   ****  Generated on {0} by pyzmq  ****
 #   directory, in the .curve subdirectory.
 
 """)
+
 
 def _write_key_file(key_filename, banner, public_key, secret_key=None, metadata=None, encoding='utf-8'):
     """Create a certificate file"""
@@ -51,7 +52,7 @@ def _write_key_file(key_filename, banner, public_key, secret_key=None, metadata=
 
 def create_certificates(key_dir, name, metadata=None):
     """Create zmq certificates.
-    
+
     Returns the file paths to the public and secret certificate files.
     """
     public_key, secret_key = zmq.curve_keypair()
@@ -75,9 +76,9 @@ def create_certificates(key_dir, name, metadata=None):
 
 def load_certificate(filename):
     """Load public and secret key from a zmq certificate.
-    
-    Returns (public_key, secret_key)
-    
+
+    Returns(public_key, secret_key)
+
     If the certificate file only contains the public key,
     secret_key will be None.
     """
@@ -97,7 +98,7 @@ def load_certificate(filename):
                 secret_key = line.split(b"=", 1)[1].strip(b' \t\'"')
             if public_key and secret_key:
                 break
-    
+
     return public_key, secret_key
 
 
@@ -108,12 +109,13 @@ def load_certificates(directory='.'):
         raise IOError("Invalid certificate directory: {0}".format(directory))
     # Follow czmq pattern of public keys stored in *.key files.
     glob_string = os.path.join(directory, "*.key")
-    
+
     cert_files = glob.glob(glob_string)
     for cert_file in cert_files:
         public_key, _ = load_certificate(cert_file)
         if public_key:
             certs[public_key] = 'OK'
     return certs
+
 
 __all__ = ['create_certificates', 'load_certificate', 'load_certificates']

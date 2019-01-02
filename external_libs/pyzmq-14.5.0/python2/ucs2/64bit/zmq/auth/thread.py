@@ -3,7 +3,7 @@
 .. versionadded:: 14.1
 """
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import logging

@@ -1,14 +1,14 @@
-"""Test libzmq security (libzmq >= 3.3.0)"""
+"""Test libzmq security(libzmq >= 3.3.0)"""
 # -*- coding: utf8 -*-
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import os
 from threading import Thread
 
 import zmq
-from zmq.tests import (
+from zmq.tests import(
     BaseZMQTestCase, SkipTest, PYPY
 )
 from zmq.utils import z85
@@ -20,7 +20,7 @@ PASS = b"password"
 class TestSecurity(BaseZMQTestCase):
     
     def setUp(self):
-        if zmq.zmq_version_info() < (4,0):
+        if zmq.zmq_version_info() <(4,0):
             raise SkipTest("security is new in libzmq 4.0")
         try:
             zmq.curve_keypair()
@@ -45,8 +45,8 @@ class TestSecurity(BaseZMQTestCase):
             self.assertEqual(identity, b"IDENT")
             reply = [version, sequence]
             if mechanism == b'CURVE' or \
-                (mechanism == b'PLAIN' and username == USER and password == PASS) or \
-                (mechanism == b'NULL'):
+               (mechanism == b'PLAIN' and username == USER and password == PASS) or \
+               (mechanism == b'NULL'):
                 reply.extend([
                     b"200",
                     b"OK",
@@ -92,7 +92,7 @@ class TestSecurity(BaseZMQTestCase):
         self.assertEqual(msg2, msg)
     
     def test_null(self):
-        """test NULL (default) security"""
+        """test NULL(default) security"""
         server = self.socket(zmq.DEALER)
         client = self.socket(zmq.DEALER)
         self.assertEqual(client.MECHANISM, zmq.NULL)
@@ -101,7 +101,7 @@ class TestSecurity(BaseZMQTestCase):
         self.assertEqual(server.plain_server, 0)
         iface = 'tcp://127.0.0.1'
         port = server.bind_to_random_port(iface)
-        client.connect("%s:%i" % (iface, port))
+        client.connect("%s:%i" %(iface, port))
         self.bounce(server, client, False)
 
     def test_plain(self):
@@ -128,7 +128,7 @@ class TestSecurity(BaseZMQTestCase):
         
         iface = 'tcp://127.0.0.1'
         port = server.bind_to_random_port(iface)
-        client.connect("%s:%i" % (iface, port))
+        client.connect("%s:%i" %(iface, port))
         self.bounce(server, client)
         self.stop_zap()
 
@@ -148,7 +148,7 @@ class TestSecurity(BaseZMQTestCase):
         
         iface = 'tcp://127.0.0.1'
         port = server.bind_to_random_port(iface)
-        client.connect("%s:%i" % (iface, port))
+        client.connect("%s:%i" %(iface, port))
         client.send(b'ping')
         server.rcvtimeo = 250
         self.assertRaisesErrno(zmq.EAGAIN, server.recv)
@@ -167,7 +167,7 @@ class TestSecurity(BaseZMQTestCase):
         self.assertEqual(len(public), 40)
         
         # verify that it is indeed Z85
-        bsecret, bpublic = [ z85.decode(key) for key in (public, secret) ]
+        bsecret, bpublic = [ z85.decode(key) for key in(public, secret) ]
         self.assertEqual(type(bsecret), bytes)
         self.assertEqual(type(bpublic), bytes)
         self.assertEqual(len(bsecret), 32)
@@ -206,7 +206,7 @@ class TestSecurity(BaseZMQTestCase):
         
         iface = 'tcp://127.0.0.1'
         port = server.bind_to_random_port(iface)
-        client.connect("%s:%i" % (iface, port))
+        client.connect("%s:%i" %(iface, port))
         self.bounce(server, client)
         self.stop_zap()
         

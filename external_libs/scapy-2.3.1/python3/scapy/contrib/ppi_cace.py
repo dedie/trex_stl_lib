@@ -1,4 +1,4 @@
-## This file is (hopefully) part of Scapy
+## This file is(hopefully) part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
 ## <jellch@harris.com>
 ## This program is published under a GPLv2 license
@@ -31,18 +31,18 @@ class dBmByteField(Field):
     def __init__(self, name, default):
         Field.__init__(self, name, default, "b")
     def i2repr(self, pkt, val):
-        if (val != None):
+        if(val != None):
             val = "%4d dBm" % val
         return val
 
 class PPITSFTField(LELongField):
     def i2h(self, pkt, val):
         flags = 0
-        if (pkt):
+        if(pkt):
             flags = pkt.getfieldval("Pkt_Flags")
         if not flags:
             flags = 0
-        if (flags & 0x02):
+        if(flags & 0x02):
             scale = 1e-3
         else:
             scale = 1e-6
@@ -53,7 +53,7 @@ class PPITSFTField(LELongField):
         if pkt:
             flags = pkt.getfieldval("Pkt_Flags")
             if flags:
-                if (flags & 0x02):
+                if(flags & 0x02):
                     scale = 1e3
         tout = int((scale * val) + 0.5)
         return tout

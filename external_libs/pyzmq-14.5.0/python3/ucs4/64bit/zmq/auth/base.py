@@ -1,6 +1,6 @@
 """Base implementation of 0MQ authentication."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import logging
@@ -20,10 +20,10 @@ class Authenticator(object):
     """Implementation of ZAP authentication for zmq connections.
 
     Note:
-    - libzmq provides four levels of security: default NULL (which the Authenticator does
+    - libzmq provides four levels of security: default NULL(which the Authenticator does
       not see), and authenticated NULL, PLAIN, and CURVE, which the Authenticator can see.
     - until you add policies, all incoming NULL connections are allowed
-    (classic ZeroMQ behavior), and all PLAIN and CURVE connections are denied.
+   (classic ZeroMQ behavior), and all PLAIN and CURVE connections are denied.
     """
 
     def __init__(self, context=None, encoding='utf-8', log=None):
@@ -55,7 +55,7 @@ class Authenticator(object):
         self.zap_socket = None
 
     def allow(self, *addresses):
-        """Allow (whitelist) IP address(es).
+        """Allow(whitelist) IP address(es).
         
         Connections from addresses not in the whitelist will be rejected.
         
@@ -69,7 +69,7 @@ class Authenticator(object):
         self.whitelist.update(addresses)
 
     def deny(self, *addresses):
-        """Deny (blacklist) IP address(es).
+        """Deny(blacklist) IP address(es).
         
         Addresses not in the blacklist will be allowed to continue with authentication.
         
@@ -128,7 +128,7 @@ class Authenticator(object):
         domain = u(domain, self.encoding, 'replace')
         address = u(address, self.encoding, 'replace')
 
-        if (version != VERSION):
+        if(version != VERSION):
             self.log.error("Invalid ZAP version: %r", msg)
             self._send_zap_reply(request_id, b"400", b"Invalid version")
             return
@@ -148,20 +148,20 @@ class Authenticator(object):
         if self.whitelist:
             if address in self.whitelist:
                 allowed = True
-                self.log.debug("PASSED (whitelist) address=%s", address)
+                self.log.debug("PASSED(whitelist) address=%s", address)
             else:
                 denied = True
                 reason = b"Address not in whitelist"
-                self.log.debug("DENIED (not in whitelist) address=%s", address)
+                self.log.debug("DENIED(not in whitelist) address=%s", address)
 
         elif self.blacklist:
             if address in self.blacklist:
                 denied = True
                 reason = b"Address is blacklisted"
-                self.log.debug("DENIED (blacklist) address=%s", address)
+                self.log.debug("DENIED(blacklist) address=%s", address)
             else:
                 allowed = True
-                self.log.debug("PASSED (not in blacklist) address=%s", address)
+                self.log.debug("PASSED(not in blacklist) address=%s", address)
 
         # Perform authentication mechanism-specific checks if necessary
         username = u("user")
@@ -169,7 +169,7 @@ class Authenticator(object):
 
             if mechanism == b'NULL' and not allowed:
                 # For NULL, we allow if the address wasn't blacklisted
-                self.log.debug("ALLOWED (NULL)")
+                self.log.debug("ALLOWED(NULL)")
                 allowed = True
 
             elif mechanism == b'PLAIN':
@@ -216,7 +216,7 @@ class Authenticator(object):
                 reason = b"Invalid domain"
 
             if allowed:
-                self.log.debug("ALLOWED (PLAIN) domain=%s username=%s password=%s",
+                self.log.debug("ALLOWED(PLAIN) domain=%s username=%s password=%s",
                     domain, username, password,
                 )
             else:
@@ -224,7 +224,7 @@ class Authenticator(object):
 
         else:
             reason = b"No passwords defined"
-            self.log.debug("DENIED (PLAIN) %s", reason)
+            self.log.debug("DENIED(PLAIN) %s", reason)
 
         return allowed, reason
 
@@ -235,7 +235,7 @@ class Authenticator(object):
         if self.allow_any:
             allowed = True
             reason = b"OK"
-            self.log.debug("ALLOWED (CURVE allow any client)")
+            self.log.debug("ALLOWED(CURVE allow any client)")
         else:
             # If no explicit domain is specified then use the default domain
             if not domain:
@@ -251,7 +251,7 @@ class Authenticator(object):
                     reason = b"Unknown key"
 
                 status = "ALLOWED" if allowed else "DENIED"
-                self.log.debug("%s (CURVE) domain=%s client_key=%s",
+                self.log.debug("%s(CURVE) domain=%s client_key=%s",
                     status, domain, z85_client_key,
                 )
             else:

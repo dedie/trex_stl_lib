@@ -2,7 +2,7 @@
 #
 # Copyright 2010 Facebook
 #
-# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# Licensed under the Apache License, Version 2.0(the "License"); you may
 # not use this file except in compliance with the License. You may obtain
 # a copy of the License at
 #
@@ -18,16 +18,16 @@
 that follows execution as it moves to other execution contexts.
 
 The motivating examples are to eliminate the need for explicit
-``async_callback`` wrappers (as in `tornado.web.RequestHandler`), and to
+``async_callback`` wrappers(as in `tornado.web.RequestHandler`), and to
 allow some additional context to be kept for logging.
 
 This is slightly magic, but it's an extension of the idea that an
 exception handler is a kind of stack-local state and when that stack
 is suspended and resumed in a new context that state needs to be
 preserved.  `StackContext` shifts the burden of restoring that state
-from each call site (e.g.  wrapping each `.AsyncHTTPClient` callback
+from each call site(e.g.  wrapping each `.AsyncHTTPClient` callback
 in ``async_callback``) to the mechanisms that transfer control from
-one context to another (e.g. `.AsyncHTTPClient` itself, `.IOLoop`,
+one context to another(e.g. `.AsyncHTTPClient` itself, `.IOLoop`,
 thread pools, etc).
 
 Example usage::
@@ -52,17 +52,17 @@ Here are a few rules of thumb for when it's necessary:
 
 * If you're writing an asynchronous library that doesn't rely on a
   stack_context-aware library like `tornado.ioloop` or `tornado.iostream`
-  (for example, if you're writing a thread pool), use
+ (for example, if you're writing a thread pool), use
   `.stack_context.wrap()` before any asynchronous operations to capture the
   stack context from where the operation was started.
 
 * If you're writing an asynchronous library that has some shared
-  resources (such as a connection pool), create those shared resources
+  resources(such as a connection pool), create those shared resources
   within a ``with stack_context.NullContext():`` block.  This will prevent
   ``StackContexts`` from leaking from one request to another.
 
 * If you want to write something like an exception handler that will
-  persist across asynchronous calls, create a new `StackContext` (or
+  persist across asynchronous calls, create a new `StackContext`(or
   `ExceptionStackContext`), and make your asynchronous calls in a ``with``
   block that references your `StackContext`.
 """
@@ -81,7 +81,7 @@ class StackContextInconsistentError(Exception):
 
 class _State(threading.local):
     def __init__(self):
-        self.contexts = (tuple(), None)
+        self.contexts =(tuple(), None)
 _state = _State()
 
 
@@ -100,7 +100,7 @@ class StackContext(object):
 
     The result of ``with StackContext() as cb:`` is a deactivation
     callback.  Run this callback when the StackContext is no longer
-    needed to ensure that it is not propagated any further (note that
+    needed to ensure that it is not propagated any further(note that
     deactivating a context does not affect any instances of that
     context that are currently pending).  This is an advanced feature
     and not necessary in most applications.
@@ -128,7 +128,7 @@ class StackContext(object):
     # the full generality of this class.
     def __enter__(self):
         self.old_contexts = _state.contexts
-        self.new_contexts = (self.old_contexts[0] + (self,), self)
+        self.new_contexts =(self.old_contexts[0] +(self,), self)
         _state.contexts = self.new_contexts
 
         try:
@@ -150,11 +150,11 @@ class StackContext(object):
             # effects interact badly.  Check here for signs of
             # the stack getting out of sync.
             # Note that this check comes after restoring _state.context
-            # so that if it fails things are left in a (relatively)
+            # so that if it fails things are left in a(relatively)
             # consistent state.
             if final_contexts is not self.new_contexts:
                 raise StackContextInconsistentError(
-                    'stack_context inconsistency (may be caused by yield '
+                    'stack_context inconsistency(may be caused by yield '
                     'within a "with StackContext" block)')
 
             # Break up a reference to itself to allow for faster GC on CPython.
@@ -187,7 +187,7 @@ class ExceptionStackContext(object):
 
     def __enter__(self):
         self.old_contexts = _state.contexts
-        self.new_contexts = (self.old_contexts[0], self)
+        self.new_contexts =(self.old_contexts[0], self)
         _state.contexts = self.new_contexts
 
         return self._deactivate
@@ -202,7 +202,7 @@ class ExceptionStackContext(object):
 
             if final_contexts is not self.new_contexts:
                 raise StackContextInconsistentError(
-                    'stack_context inconsistency (may be caused by yield '
+                    'stack_context inconsistency(may be caused by yield '
                     'within a "with StackContext" block)')
 
             # Break up a reference to itself to allow for faster GC on CPython.
@@ -212,13 +212,13 @@ class ExceptionStackContext(object):
 class NullContext(object):
     """Resets the `StackContext`.
 
-    Useful when creating a shared resource on demand (e.g. an
+    Useful when creating a shared resource on demand(e.g. an
     `.AsyncHTTPClient`) where the stack that caused the creating is
     not relevant to future operations.
     """
     def __enter__(self):
         self.old_contexts = _state.contexts
-        _state.contexts = (tuple(), None)
+        _state.contexts =(tuple(), None)
 
     def __exit__(self, type, value, traceback):
         _state.contexts = self.old_contexts
@@ -247,7 +247,7 @@ def _remove_deactivated(contexts):
 
         ctx = parent
 
-    return (stack_contexts, head)
+    return(stack_contexts, head)
 
 
 def wrap(fn):
@@ -255,7 +255,7 @@ def wrap(fn):
     when executed.
 
     Use this whenever saving a callback to be executed later in a
-    different execution context (either in a different thread or
+    different execution context(either in a different thread or
     asynchronously in the same thread).
     """
     # Check if function is already wrapped
@@ -279,7 +279,7 @@ def wrap(fn):
             _state.contexts = contexts
 
             # Current exception
-            exc = (None, None, None)
+            exc =(None, None, None)
             top = None
 
             # Apply stack contexts
@@ -327,7 +327,7 @@ def wrap(fn):
                     exc = _handle_exception(top, exc)
 
             # If exception was not handled, raise it
-            if exc != (None, None, None):
+            if exc !=(None, None, None):
                 raise_exc_info(exc)
         finally:
             _state.contexts = current_state
@@ -341,7 +341,7 @@ def _handle_exception(tail, exc):
     while tail is not None:
         try:
             if tail.exit(*exc):
-                exc = (None, None, None)
+                exc =(None, None, None)
         except:
             exc = sys.exc_info()
 

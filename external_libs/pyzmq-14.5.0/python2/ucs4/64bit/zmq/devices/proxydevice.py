@@ -1,6 +1,6 @@
 """Proxy classes and functions."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import zmq
@@ -44,7 +44,7 @@ class ProxyBase(object):
         ctx = self._context
         mons = ctx.socket(self.mon_type)
         
-        # set sockopts (must be done first, in case of zmq.IDENTITY)
+        # set sockopts(must be done first, in case of zmq.IDENTITY)
         for opt,value in self._mon_sockopts:
             mons.setsockopt(opt, value)
         

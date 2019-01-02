@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -43,7 +43,7 @@ class CountryLocKnowledgeBase(KnowledgeBase):
                 continue
             c,lat,int = l
             
-            self.base[c] = (float(int),float(lat))
+            self.base[c] =(float(int),float(lat))
         f.close()
             
         
@@ -59,8 +59,8 @@ def locate_ip(ip):
 
     d=0
     f=len(db)-1
-    while (f-d) > 1:
-        guess = (d+f)/2
+    while(f-d) > 1:
+        guess =(d+f)/2
         if ip > db[guess][0]:
             d = guess
         else:

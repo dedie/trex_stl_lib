@@ -8,7 +8,7 @@ from unittest import TestCase
 from zmq.tests import BaseZMQTestCase, SkipTest
 
 try:
-    from zmq.backend.cffi import (
+    from zmq.backend.cffi import(
         zmq_version_info,
         PUSH, PULL, IDENTITY,
         REQ, REP, POLLIN, POLLOUT,

@@ -12,7 +12,7 @@
 
     :Thanks:
 
-    - TLV code derived from the CDP implementation of scapy. (Thanks to Nicolas Bareil and Arnaud Ebalard)
+    - TLV code derived from the CDP implementation of scapy.(Thanks to Nicolas Bareil and Arnaud Ebalard)
         http://trac.secdev.org/scapy/ticket/18
 """
 

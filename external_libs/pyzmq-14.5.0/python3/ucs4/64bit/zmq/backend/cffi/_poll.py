@@ -1,7 +1,7 @@
 # coding: utf-8
 """zmq poll function"""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 from ._cffi import C, ffi, zmq_version_info

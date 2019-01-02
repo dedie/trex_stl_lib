@@ -1,10 +1,10 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
-VoIP (Voice over IP) related functions
+VoIP(Voice over IP) related functions
 """
 
 import os
@@ -40,7 +40,7 @@ def voip_play(s1,list=None,**kargs):
     os.mkfifo(FIFO1)
     os.mkfifo(FIFO2)
     try:
-        os.system("soxmix -t .ul %s -t .ul %s -t ossdsp /dev/dsp &" % (FIFO1,FIFO2))
+        os.system("soxmix -t .ul %s -t .ul %s -t ossdsp /dev/dsp &" %(FIFO1,FIFO2))
         
         c1=open(FIFO1,"w", 4096)
         c2=open(FIFO2,"w", 4096)

@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -31,7 +31,7 @@ SIOCGIFFLAGS   = 0x8913          # get flags
 SIOCSIFFLAGS   = 0x8914          # set flags               
 SIOCGIFINDEX   = 0x8933          # name -> if_index mapping
 SIOCGIFCOUNT   = 0x8938          # get number of devices
-SIOCGSTAMP     = 0x8906          # get packet timestamp (as a timeval)
+SIOCGSTAMP     = 0x8906          # get packet timestamp(as a timeval)
 
 # From if.h
 IFF_UP = 0x1               # Interface is up.
@@ -123,9 +123,9 @@ def attach_filter(s, filter):
     if not TCPDUMP:
         return
     try:
-        f = os.popen("%s -i %s -ddd -s 1600 '%s'" % (conf.prog.tcpdump,conf.iface,filter))
+        f = os.popen("%s -i %s -ddd -s 1600 '%s'" %(conf.prog.tcpdump,conf.iface,filter))
     except OSError as msg:
-        log_interactive.warning("Failed to execute tcpdump: (%s)")
+        log_interactive.warning("Failed to execute tcpdump:(%s)")
         return
     lines = f.readlines()
     if f.close():
@@ -139,7 +139,7 @@ def attach_filter(s, filter):
     # python object header seems to be 20 bytes. 36 bytes for x86 64bits arch.
     bpf_buf = ctypes.create_string_buffer(bpf)
     class BpfProgram(ctypes.Structure):
-      _fields_ = [ ("bf_len", ctypes.c_int), ("bf_insn", ctypes.POINTER(type(bpf_buf))) ]
+      _fields_ = [("bf_len", ctypes.c_int),("bf_insn", ctypes.POINTER(type(bpf_buf))) ]
     #if scapy.arch.X86_64:
     #    bpfh = struct.pack("HL", nb, id(bpf)+36)
     #else:
@@ -174,7 +174,7 @@ def read_routes():
         ifaddr = scapy.utils.inet_ntoa(ifreq[20:24])
         routes.append((dst, msk, "0.0.0.0", LOOPBACK_NAME, ifaddr))
     else:
-        warning("Interface lo: unkown address family (%i)"% addrfamily)
+        warning("Interface lo: unkown address family(%i)"% addrfamily)
 
     for l in f.readlines()[1:]:
         iff,dst,gw,flags,x,x,x,msk,x,x,x = l.split()
@@ -192,7 +192,7 @@ def read_routes():
             if addrfamily == socket.AF_INET:
                 ifaddr = scapy.utils.inet_ntoa(ifreq[20:24])
             else:
-                warning("Interface %s: unkown address family (%i)"%(iff, addrfamily))
+                warning("Interface %s: unkown address family(%i)"%(iff, addrfamily))
                 continue
         routes.append((socket.htonl(int(dst,16))&0xffffffff,
                        socket.htonl(int(msk,16))&0xffffffff,
@@ -208,7 +208,7 @@ def read_routes():
 
 def in6_getifaddr():
     """
-    Returns a list of 3-tuples of the form (addr, scope, iface) where
+    Returns a list of 3-tuples of the form(addr, scope, iface) where
     'addr' is the address of scope 'scope' associated to the interface
     'ifcace'.
 
@@ -226,7 +226,7 @@ def in6_getifaddr():
         tmp = i.split()
         addr = struct.unpack('4s4s4s4s4s4s4s4s', tmp[0])
         addr = scapy.utils6.in6_ptop(b':'.join(addr).decode('ascii'))
-        ret.append((addr, int(tmp[3], 16), tmp[5].decode('ascii'))) # (addr, scope, iface)
+        ret.append((addr, int(tmp[3], 16), tmp[5].decode('ascii'))) #(addr, scope, iface)
     f.close()
     return ret
 
@@ -241,8 +241,8 @@ def read_routes6():
     # 4. source prefix length
     # 5. next hop
     # 6. metric
-    # 7. reference counter (?!?)
-    # 8. use counter (?!?)
+    # 7. reference counter(?!?)
+    # 8. use counter(?!?)
     # 9. flags
     # 10. device name
     routes = []
@@ -265,7 +265,7 @@ def read_routes6():
         s = proc2r(s) ; sp = int(sp, 16)
         nh = proc2r(nh)
 
-        cset = [] # candidate set (possible source addresses)
+        cset = [] # candidate set(possible source addresses)
         if dev == LOOPBACK_NAME:
             if d == '::':
                 continue
@@ -330,9 +330,9 @@ class L3PacketSocket(SuperSocket):
         if not nofilter:
             if conf.except_filter:
                 if filter:
-                    filter = "(%s) and not (%s)" % (filter, conf.except_filter)
+                    filter = "(%s) and not(%s)" %(filter, conf.except_filter)
                 else:
-                    filter = "not (%s)" % conf.except_filter
+                    filter = "not(%s)" % conf.except_filter
             if filter is not None:
                 attach_filter(self.ins, filter)
         _flush_fd(self.ins)
@@ -372,7 +372,7 @@ class L3PacketSocket(SuperSocket):
             lvl = 3
         else:
             cls = conf.default_l2
-            warning("Unable to guess type (interface=%s protocol=%#x family=%i). Using %s" % (sa_ll[0],sa_ll[1],sa_ll[3],cls.name))
+            warning("Unable to guess type(interface=%s protocol=%#x family=%i). Using %s" %(sa_ll[0],sa_ll[1],sa_ll[3],cls.name))
             lvl = 2
 
         try:
@@ -394,12 +394,12 @@ class L3PacketSocket(SuperSocket):
         iff,a,gw  = x.route()
         if iff is None:
             iff = conf.iface
-        sdto = (iff, self.type)
+        sdto =(iff, self.type)
         self.outs.bind(sdto)
         sn = self.outs.getsockname()
         ll = lambda x:x
         if type(x) in conf.l3types:
-            sdto = (iff, conf.l3types[type(x)])
+            sdto =(iff, conf.l3types[type(x)])
         if sn[3] in conf.l2types:
             ll = lambda x:conf.l2types[sn[3]]()/x
         try:
@@ -426,9 +426,9 @@ class L2Socket(SuperSocket):
         if not nofilter: 
             if conf.except_filter:
                 if filter:
-                    filter = "(%s) and not (%s)" % (filter, conf.except_filter)
+                    filter = "(%s) and not(%s)" %(filter, conf.except_filter)
                 else:
-                    filter = "not (%s)" % conf.except_filter
+                    filter = "not(%s)" % conf.except_filter
             if filter is not None:
                 attach_filter(self.ins, filter)
         self.ins.bind((iface, type))
@@ -443,7 +443,7 @@ class L2Socket(SuperSocket):
             self.LL = conf.l3types[sa_ll[1]]
         else:
             self.LL = conf.default_l2
-            warning("Unable to guess type (interface=%s protocol=%#x family=%i). Using %s" % (sa_ll[0],sa_ll[1],sa_ll[3],self.LL.name))
+            warning("Unable to guess type(interface=%s protocol=%#x family=%i). Using %s" %(sa_ll[0],sa_ll[1],sa_ll[3],self.LL.name))
             
     def recv(self, x=MTU):
         pkt, sa_ll = self.ins.recvfrom(x)
@@ -473,9 +473,9 @@ class L2ListenSocket(SuperSocket):
         if not nofilter:
             if conf.except_filter:
                 if filter:
-                    filter = "(%s) and not (%s)" % (filter, conf.except_filter)
+                    filter = "(%s) and not(%s)" %(filter, conf.except_filter)
                 else:
-                    filter = "not (%s)" % conf.except_filter
+                    filter = "not(%s)" % conf.except_filter
             if filter is not None:
                 attach_filter(self.ins, filter)
         if promisc is None:
@@ -507,7 +507,7 @@ class L2ListenSocket(SuperSocket):
             cls = conf.l3types[sa_ll[1]]
         else:
             cls = conf.default_l2
-            warning("Unable to guess type (interface=%s protocol=%#x family=%i). Using %s" % (sa_ll[0],sa_ll[1],sa_ll[3],cls.name))
+            warning("Unable to guess type(interface=%s protocol=%#x family=%i). Using %s" %(sa_ll[0],sa_ll[1],sa_ll[3],cls.name))
 
         try:
             pkt = cls(pkt)

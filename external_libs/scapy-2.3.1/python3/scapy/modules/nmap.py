@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -81,7 +81,7 @@ def nmap_tcppacket_sig(pkt):
     r = {}
     if pkt is not None:
 #        r["Resp"] = "Y"
-        r["DF"] = (pkt.flags & 2) and "Y" or "N"
+        r["DF"] =(pkt.flags & 2) and "Y" or "N"
         r["W"] = "%X" % pkt.window
         r["ACK"] = pkt.ack==2 and "S++" or pkt.ack==1 and "S" or "O"
         r["Flags"] = TCPflags2str(pkt.payload.flags)
@@ -96,7 +96,7 @@ def nmap_udppacket_sig(S,T):
     if T is None:
         r["Resp"] = "N"
     else:
-        r["DF"] = (T.flags & 2) and "Y" or "N"
+        r["DF"] =(T.flags & 2) and "Y" or "N"
         r["TOS"] = "%X" % T.tos
         r["IPLEN"] = "%X" % T.len
         r["RIPTL"] = "%X" % T.payload.payload.len
@@ -124,10 +124,10 @@ def nmap_match_one_sig(seen, ref):
 def nmap_sig(target, oport=80, cport=81, ucport=1):
     res = {}
 
-    tcpopt = [ ("WScale", 10),
-               ("NOP",None),
-               ("MSS", 256),
-               ("Timestamp",(123,0)) ]
+    tcpopt = [("WScale", 10),
+              ("NOP",None),
+              ("MSS", 256),
+              ("Timestamp",(123,0)) ]
     tests = [ IP(dst=target, id=1)/TCP(seq=1, sport=5001, dport=oport, options=tcpopt, flags="CS"),
               IP(dst=target, id=1)/TCP(seq=1, sport=5002, dport=oport, options=tcpopt, flags=0),
               IP(dst=target, id=1)/TCP(seq=1, sport=5003, dport=oport, options=tcpopt, flags="SFUP"),
@@ -144,7 +144,7 @@ def nmap_sig(target, oport=80, cport=81, ucport=1):
         if S.sport == 5008:
             res["PU"] = nmap_udppacket_sig(S,T)
         else:
-            t = "T%i" % (S.sport-5000)
+            t = "T%i" %(S.sport-5000)
             if T is not None and T.haslayer(ICMP):
                 warning("Test %s answered by an ICMP" % t)
                 T=None
@@ -207,7 +207,7 @@ def nmap_sig2txt(sig):
             if v is None:
                 continue
             s.append("%s=%s"%(k,v))
-        txt.append("%s(%s)" % (t, "%".join(s)))
+        txt.append("%s(%s)" %(t, "%".join(s)))
     return "\n".join(txt)
             
         

@@ -1,6 +1,6 @@
 """Classes for running 0MQ Devices in the background."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -54,7 +54,7 @@ class Device:
         sets whether the thread should be run as a daemon
         Default is true, because if it is false, the thread will not
         exit unless it is killed
-    context_factory : callable (class attribute)
+    context_factory : callable(class attribute)
         Function for creating the Context. This will be Context.instance
         in ThreadDevices, and Context in ProcessDevices.  The only reason
         it is not instance() in ProcessDevices is that there may be a stale
@@ -138,7 +138,7 @@ class Device:
         else:
             outs = ctx.socket(self.out_type)
         
-        # set sockopts (must be done first, in case of zmq.IDENTITY)
+        # set sockopts(must be done first, in case of zmq.IDENTITY)
         for opt,value in self._in_sockopts:
             ins.setsockopt(opt, value)
         for opt,value in self._out_sockopts:
@@ -187,7 +187,7 @@ class Device:
         Reimplemented appropriately by subclasses."""
         tic = time.time()
         toc = tic
-        while not self.done and not (timeout is not None and toc-tic > timeout):
+        while not self.done and not(timeout is not None and toc-tic > timeout):
             time.sleep(.001)
             toc = time.time()
 

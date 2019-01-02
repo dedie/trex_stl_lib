@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -126,7 +126,7 @@ class RadioTap(Packet):
                     StrLenField('notdecoded', "", length_from= lambda pkt:pkt.len-8) ]
 
 class PPI(Packet):
-    name = "Per-Packet Information header (partial)"
+    name = "Per-Packet Information header(partial)"
     fields_desc = [ ByteField("version", 0),
                     ByteField("flags", 0),
                     FieldLenField("len", None, fmt="<H", length_of="fields", adjust=lambda pkt,x:x+8),
@@ -167,7 +167,7 @@ class Dot11(Packet):
     def mysummary(self):
         return self.sprintf("802.11 %Dot11.type% %Dot11.subtype% %Dot11.addr2% > %Dot11.addr1%")
     def guess_payload_class(self, payload):
-        if self.type == 0x02 and (self.subtype >= 0x08 and self.subtype <=0xF and self.subtype != 0xD):
+        if self.type == 0x02 and(self.subtype >= 0x08 and self.subtype <=0xF and self.subtype != 0xD):
             return Dot11QoS
 	elif self.FCfield & 0x40:
             return Dot11WEP
@@ -178,7 +178,7 @@ class Dot11(Packet):
             if self.type == 0: # management
                 if self.addr1.lower() != other.addr2.lower(): # check resp DA w/ req SA
                     return 0
-                if (other.subtype,self.subtype) in [(0,1),(2,3),(4,5)]:
+                if(other.subtype,self.subtype) in [(0,1),(2,3),(4,5)]:
                     return 1
                 if self.subtype == other.subtype == 11: # auth
                     return self.payload.answers(other.payload)
@@ -337,7 +337,7 @@ class Dot11WEP(Packet):
                 c = ARC4.new(self.iv+key)
                 p = p[:4]+c.encrypt(pay)+icv
             else:
-                warning("No WEP key set (conf.wepkey).. strange results expected..")
+                warning("No WEP key set(conf.wepkey).. strange results expected..")
         return p
             
 

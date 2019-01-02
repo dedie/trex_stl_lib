@@ -5,9 +5,9 @@
 
 #############################################################################
 ##                                                                         ##
-## cdp.py --- Cisco Discovery Protocol (CDP) extension for Scapy           ##
+## cdp.py --- Cisco Discovery Protocol(CDP) extension for Scapy           ##
 ##                                                                         ##
-## Copyright (C) 2006    Nicolas Bareil  <nicolas.bareil AT eads DOT net>  ##
+## Copyright(C) 2006    Nicolas Bareil  <nicolas.bareil AT eads DOT net>  ##
 ##                       Arnaud Ebalard  <arnaud.ebalard AT eads DOT net>  ##
 ##                       EADS/CRC security team                            ##
 ##                                                                         ##
@@ -70,8 +70,8 @@ _cdp_tlv_types = { 0x0001: "Device ID",
                    0x0009: "VTP Mangement Domain", # CDPv2
                    0x000a: "Native VLAN",    # CDPv2
                    0x000b: "Duplex",        # 
-                   0x000c: "CDP Unknown command (send us a pcap file)",
-                   0x000d: "CDP Unknown command (send us a pcap file)",
+                   0x000c: "CDP Unknown command(send us a pcap file)",
+                   0x000d: "CDP Unknown command(send us a pcap file)",
                    0x000e: "VoIP VLAN Reply",
                    0x000f: "VoIP VLAN Query",
                    0x0010: "Power",
@@ -82,8 +82,8 @@ _cdp_tlv_types = { 0x0001: "Device ID",
                    0x0015: "System OID",
                    0x0016: "Management Address",
                    0x0017: "Location",
-                   0x0018: "CDP Unknown command (send us a pcap file)",
-                   0x0019: "CDP Unknown command (send us a pcap file)",
+                   0x0018: "CDP Unknown command(send us a pcap file)",
+                   0x0019: "CDP Unknown command(send us a pcap file)",
                    0x001a: "Power Available"}
 
 def _CDPGuessPayloadClass(p, **kargs):
@@ -260,7 +260,7 @@ class _CDPPowerField(ShortField):
 
 class CDPMsgPower(CDPMsgGeneric):
     name = "Power"
-    # Check if field length is fixed (2 bytes)
+    # Check if field length is fixed(2 bytes)
     fields_desc = [ XShortEnumField("type", 0x0010, _cdp_tlv_types),
                     ShortField("len", 6),
                     _CDPPowerField("power", 1337)]
@@ -268,7 +268,7 @@ class CDPMsgPower(CDPMsgGeneric):
 
 class CDPMsgMTU(CDPMsgGeneric):
     name = "MTU"
-    # Check if field length is fixed (2 bytes)
+    # Check if field length is fixed(2 bytes)
     fields_desc = [ XShortEnumField("type", 0x0011, _cdp_tlv_types),
                     ShortField("len", 6),
                     ShortField("mtu", 1500)]

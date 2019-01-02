@@ -2,7 +2,7 @@
 #
 # Copyright 2009 Facebook
 #
-# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# Licensed under the Apache License, Version 2.0(the "License"); you may
 # not use this file except in compliance with the License. You may obtain
 # a copy of the License at
 #
@@ -66,7 +66,7 @@ class TimeoutError(Exception):
 class IOLoop(Configurable):
     """A level-triggered I/O loop.
 
-    We use ``epoll`` (Linux) or ``kqueue`` (BSD and Mac OS X) if they
+    We use ``epoll``(Linux) or ``kqueue``(BSD and Mac OS X) if they
     are available, or else we fall back on select(). If you are
     implementing a system that needs to handle thousands of
     simultaneous connections, you should use a system that supports
@@ -84,7 +84,7 @@ class IOLoop(Configurable):
                 try:
                     connection, address = sock.accept()
                 except socket.error, e:
-                    if e.args[0] not in (errno.EWOULDBLOCK, errno.EAGAIN):
+                    if e.args[0] not in(errno.EWOULDBLOCK, errno.EAGAIN):
                         raise
                     return
                 connection.setblocking(0)
@@ -109,8 +109,8 @@ class IOLoop(Configurable):
     _EPOLLERR = 0x008
     _EPOLLHUP = 0x010
     _EPOLLRDHUP = 0x2000
-    _EPOLLONESHOT = (1 << 30)
-    _EPOLLET = (1 << 31)
+    _EPOLLONESHOT =(1 << 30)
+    _EPOLLET =(1 << 31)
 
     # Our events map exactly to the epoll events
     NONE = 0
@@ -222,7 +222,7 @@ class IOLoop(Configurable):
         """Closes the `IOLoop`, freeing any resources used.
 
         If ``all_fds`` is true, all file descriptors registered on the
-        IOLoop will be closed (not just the ones created by the
+        IOLoop will be closed(not just the ones created by the
         `IOLoop` itself).
 
         Many applications will only use a single `IOLoop` that runs for the
@@ -309,7 +309,7 @@ class IOLoop(Configurable):
         If the event loop is not currently running, the next call to `start()`
         will return immediately.
 
-        To use asynchronous methods from otherwise-synchronous code (such as
+        To use asynchronous methods from otherwise-synchronous code(such as
         unit tests), you can start and stop the event loop like this::
 
           ioloop = IOLoop()
@@ -395,7 +395,7 @@ class IOLoop(Configurable):
         Returns an opaque handle that may be passed to
         `remove_timeout` to cancel.
 
-        ``deadline`` may be a number denoting a time (on the same
+        ``deadline`` may be a number denoting a time(on the same
         scale as `IOLoop.time`, normally `time.time`), or a
         `datetime.timedelta` object for a deadline relative to the
         current time.
@@ -481,8 +481,8 @@ class PollIOLoop(IOLoop):
     """Base class for IOLoops built around a select-like function.
 
     For concrete implementations, see `tornado.platform.epoll.EPollIOLoop`
-    (Linux), `tornado.platform.kqueue.KQueueIOLoop` (BSD and Mac), or
-    `tornado.platform.select.SelectIOLoop` (all platforms).
+   (Linux), `tornado.platform.kqueue.KQueueIOLoop`(BSD and Mac), or
+    `tornado.platform.select.SelectIOLoop`(all platforms).
     """
     def initialize(self, impl, time_func=None):
         super(PollIOLoop, self).initialize()
@@ -555,7 +555,7 @@ class PollIOLoop(IOLoop):
         if not logging.getLogger().handlers:
             # The IOLoop catches and logs exceptions, so it's
             # important that log output be visible.  However, python's
-            # default behavior for non-root loggers (prior to python
+            # default behavior for non-root loggers(prior to python
             # 3.2) is to print an unhelpful "no handlers could be
             # found" message rather than the actual log entry, so we
             # must explicitly configure logging if we've made it this
@@ -573,11 +573,11 @@ class PollIOLoop(IOLoop):
         # a signal may arrive at the beginning of select/poll/etc
         # before it goes into its interruptible sleep, so the signal
         # will be consumed without waking the select.  The solution is
-        # for the (C, synchronous) signal handler to write to a pipe,
+        # for the(C, synchronous) signal handler to write to a pipe,
         # which will then be seen by select.
         #
         # In python's signal handling semantics, this only matters on the
-        # main thread (fortunately, set_wakeup_fd only works on the main
+        # main thread(fortunately, set_wakeup_fd only works on the main
         # thread and will raise a ValueError otherwise).
         #
         # If someone has already set a wakeup fd, we don't want to
@@ -625,8 +625,8 @@ class PollIOLoop(IOLoop):
                         seconds = self._timeouts[0].deadline - now
                         poll_timeout = min(seconds, poll_timeout)
                         break
-                if (self._cancellations > 512
-                        and self._cancellations > (len(self._timeouts) >> 1)):
+                if(self._cancellations > 512
+                        and self._cancellations >(len(self._timeouts) >> 1)):
                     # Clean up the timeout queue when it gets large and it's
                     # more than half cancellations.
                     self._cancellations = 0
@@ -654,9 +654,9 @@ class PollIOLoop(IOLoop):
                 # different exception types may be thrown and there are
                 # two ways EINTR might be signaled:
                 # * e.errno == errno.EINTR
-                # * e.args is like (errno.EINTR, 'Interrupted system call')
-                if (getattr(e, 'errno', None) == errno.EINTR or
-                    (isinstance(getattr(e, 'args', None), tuple) and
+                # * e.args is like(errno.EINTR, 'Interrupted system call')
+                if(getattr(e, 'errno', None) == errno.EINTR or
+                   (isinstance(getattr(e, 'args', None), tuple) and
                      len(e.args) == 2 and e.args[0] == errno.EINTR)):
                     continue
                 else:
@@ -675,7 +675,7 @@ class PollIOLoop(IOLoop):
                 fd, events = self._events.popitem()
                 try:
                     self._handlers[fd](fd, events)
-                except (OSError, IOError) as e:
+                except(OSError, IOError) as e:
                     if e.args[0] == errno.EPIPE:
                         # Happens when the client closes the connection
                         pass
@@ -708,7 +708,7 @@ class PollIOLoop(IOLoop):
 
     def remove_timeout(self, timeout):
         # Removing from a heap is complicated, so just leave the defunct
-        # timeout object in the queue (see discussion in
+        # timeout object in the queue(see discussion in
         # http://docs.python.org/library/heapq.html).
         # If this turns out to be a problem, we could add a garbage
         # collection pass whenever there are too many dead timeouts.
@@ -725,7 +725,7 @@ class PollIOLoop(IOLoop):
         if list_empty and _thread.get_ident() != self._thread_ident:
             # If we're in the IOLoop's thread, we know it's not currently
             # polling.  If we're not, and we added the first callback to an
-            # empty list, we may need to wake it up (it may wake up on its
+            # empty list, we may need to wake it up(it may wake up on its
             # own, but an occasional extra wake is harmless).  Waking
             # up a polling IOLoop is relatively expensive, so we try to
             # avoid it when we can.
@@ -735,7 +735,7 @@ class PollIOLoop(IOLoop):
         with stack_context.NullContext():
             if _thread.get_ident() != self._thread_ident:
                 # if the signal is handled on another thread, we can add
-                # it normally (modulo the NullContext)
+                # it normally(modulo the NullContext)
                 self.add_callback(callback, *args, **kwargs)
             else:
                 # If we're on the IOLoop's thread, we cannot use
@@ -767,20 +767,20 @@ class _Timeout(object):
 
     @staticmethod
     def timedelta_to_seconds(td):
-        """Equivalent to td.total_seconds() (introduced in python 2.7)."""
-        return (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6) / float(10 ** 6)
+        """Equivalent to td.total_seconds()(introduced in python 2.7)."""
+        return(td.microseconds +(td.seconds + td.days * 24 * 3600) * 10 ** 6) / float(10 ** 6)
 
     # Comparison methods to sort by deadline, with object id as a tiebreaker
     # to guarantee a consistent ordering.  The heapq module uses __le__
-    # in python2.5, and __lt__ in 2.6+ (sort() and most other comparisons
+    # in python2.5, and __lt__ in 2.6+(sort() and most other comparisons
     # use __lt__).
     def __lt__(self, other):
-        return ((self.deadline, id(self)) <
-                (other.deadline, id(other)))
+        return((self.deadline, id(self)) <
+               (other.deadline, id(other)))
 
     def __le__(self, other):
-        return ((self.deadline, id(self)) <=
-                (other.deadline, id(other)))
+        return((self.deadline, id(self)) <=
+               (other.deadline, id(other)))
 
 
 class PeriodicCallback(object):

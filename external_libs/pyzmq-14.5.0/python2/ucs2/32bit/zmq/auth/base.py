@@ -1,6 +1,6 @@
 """Base implementation of 0MQ authentication."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import logging
@@ -16,18 +16,19 @@ from .certs import load_certificates
 CURVE_ALLOW_ANY = '*'
 VERSION = b'1.0'
 
+
 class Authenticator(object):
     """Implementation of ZAP authentication for zmq connections.
 
     Note:
-    - libzmq provides four levels of security: default NULL (which the Authenticator does
+    - libzmq provides four levels of security: default NULL(which the Authenticator does
       not see), and authenticated NULL, PLAIN, and CURVE, which the Authenticator can see.
     - until you add policies, all incoming NULL connections are allowed
-    (classic ZeroMQ behavior), and all PLAIN and CURVE connections are denied.
+   (classic ZeroMQ behavior), and all PLAIN and CURVE connections are denied.
     """
 
     def __init__(self, context=None, encoding='utf-8', log=None):
-        _check_version((4,0), "security")
+        _check_version((4, 0), "security")
         self.context = context or zmq.Context.instance()
         self.encoding = encoding
         self.allow_any = False
@@ -41,7 +42,7 @@ class Authenticator(object):
         # of dicts keyed by the public keys from the specified location.
         self.certs = {}
         self.log = log or logging.getLogger('zmq.auth')
-    
+
     def start(self):
         """Create and bind the ZAP socket"""
         self.zap_socket = self.context.socket(zmq.REP)
@@ -55,13 +56,13 @@ class Authenticator(object):
         self.zap_socket = None
 
     def allow(self, *addresses):
-        """Allow (whitelist) IP address(es).
-        
+        """Allow(whitelist) IP address(es).
+
         Connections from addresses not in the whitelist will be rejected.
-        
+
         - For NULL, all clients from this address will be accepted.
         - For PLAIN and CURVE, they will be allowed to continue with authentication.
-        
+
         whitelist is mutually exclusive with blacklist.
         """
         if self.blacklist:
@@ -69,10 +70,10 @@ class Authenticator(object):
         self.whitelist.update(addresses)
 
     def deny(self, *addresses):
-        """Deny (blacklist) IP address(es).
-        
+        """Deny(blacklist) IP address(es).
+
         Addresses not in the blacklist will be allowed to continue with authentication.
-        
+
         Blacklist is mutually exclusive with whitelist.
         """
         if self.whitelist:
@@ -81,7 +82,7 @@ class Authenticator(object):
 
     def configure_plain(self, domain='*', passwords=None):
         """Configure PLAIN authentication for a given domain.
-        
+
         PLAIN authentication uses a plain-text password file.
         To cover all domains, use "*".
         You can modify the password file at any time; it is reloaded automatically.
@@ -91,14 +92,14 @@ class Authenticator(object):
 
     def configure_curve(self, domain='*', location=None):
         """Configure CURVE authentication for a given domain.
-        
+
         CURVE authentication uses a directory that holds all public client certificates,
         i.e. their public keys.
-        
+
         To cover all domains, use "*".
-        
+
         You can add and remove certificates in that directory at any time.
-        
+
         To allow all client keys without checking, specify CURVE_ALLOW_ANY for the location.
         """
         # If location is CURVE_ALLOW_ANY then allow all clients. Otherwise
@@ -110,7 +111,8 @@ class Authenticator(object):
             try:
                 self.certs[domain] = load_certificates(location)
             except Exception as e:
-                self.log.error("Failed to load CURVE certs from %s: %s", location, e)
+                self.log.error(
+                    "Failed to load CURVE certs from %s: %s", location, e)
 
     def handle_zap_message(self, msg):
         """Perform ZAP authentication"""
@@ -121,24 +123,23 @@ class Authenticator(object):
             else:
                 self._send_zap_reply(msg[1], b"400", b"Not enough frames")
             return
-        
+
         version, request_id, domain, address, identity, mechanism = msg[:6]
         credentials = msg[6:]
-        
+
         domain = u(domain, self.encoding, 'replace')
         address = u(address, self.encoding, 'replace')
 
-        if (version != VERSION):
+        if(version != VERSION):
             self.log.error("Invalid ZAP version: %r", msg)
             self._send_zap_reply(request_id, b"400", b"Invalid version")
             return
 
         self.log.debug("version: %r, request_id: %r, domain: %r,"
-                      " address: %r, identity: %r, mechanism: %r",
-                      version, request_id, domain,
-                      address, identity, mechanism,
-        )
-
+                       " address: %r, identity: %r, mechanism: %r",
+                       version, request_id, domain,
+                       address, identity, mechanism,
+                       )
 
         # Is address is explicitly whitelisted or blacklisted?
         allowed = False
@@ -148,20 +149,20 @@ class Authenticator(object):
         if self.whitelist:
             if address in self.whitelist:
                 allowed = True
-                self.log.debug("PASSED (whitelist) address=%s", address)
+                self.log.debug("PASSED(whitelist) address=%s", address)
             else:
                 denied = True
                 reason = b"Address not in whitelist"
-                self.log.debug("DENIED (not in whitelist) address=%s", address)
+                self.log.debug("DENIED(not in whitelist) address=%s", address)
 
         elif self.blacklist:
             if address in self.blacklist:
                 denied = True
                 reason = b"Address is blacklisted"
-                self.log.debug("DENIED (blacklist) address=%s", address)
+                self.log.debug("DENIED(blacklist) address=%s", address)
             else:
                 allowed = True
-                self.log.debug("PASSED (not in blacklist) address=%s", address)
+                self.log.debug("PASSED(not in blacklist) address=%s", address)
 
         # Perform authentication mechanism-specific checks if necessary
         username = u("user")
@@ -169,23 +170,29 @@ class Authenticator(object):
 
             if mechanism == b'NULL' and not allowed:
                 # For NULL, we allow if the address wasn't blacklisted
-                self.log.debug("ALLOWED (NULL)")
+                self.log.debug("ALLOWED(NULL)")
                 allowed = True
 
             elif mechanism == b'PLAIN':
                 # For PLAIN, even a whitelisted address must authenticate
                 if len(credentials) != 2:
-                    self.log.error("Invalid PLAIN credentials: %r", credentials)
-                    self._send_zap_reply(request_id, b"400", b"Invalid credentials")
+                    self.log.error(
+                        "Invalid PLAIN credentials: %r", credentials)
+                    self._send_zap_reply(
+                        request_id, b"400", b"Invalid credentials")
                     return
-                username, password = [ u(c, self.encoding, 'replace') for c in credentials ]
-                allowed, reason = self._authenticate_plain(domain, username, password)
+                username, password = [u(c, self.encoding, 'replace')
+                                      for c in credentials]
+                allowed, reason = self._authenticate_plain(
+                    domain, username, password)
 
             elif mechanism == b'CURVE':
                 # For CURVE, even a whitelisted address must authenticate
                 if len(credentials) != 1:
-                    self.log.error("Invalid CURVE credentials: %r", credentials)
-                    self._send_zap_reply(request_id, b"400", b"Invalid credentials")
+                    self.log.error(
+                        "Invalid CURVE credentials: %r", credentials)
+                    self._send_zap_reply(
+                        request_id, b"400", b"Invalid credentials")
                     return
                 key = credentials[0]
                 allowed, reason = self._authenticate_curve(domain, key)
@@ -216,15 +223,15 @@ class Authenticator(object):
                 reason = b"Invalid domain"
 
             if allowed:
-                self.log.debug("ALLOWED (PLAIN) domain=%s username=%s password=%s",
-                    domain, username, password,
-                )
+                self.log.debug("ALLOWED(PLAIN) domain=%s username=%s password=%s",
+                               domain, username, password,
+                               )
             else:
                 self.log.debug("DENIED %s", reason)
 
         else:
             reason = b"No passwords defined"
-            self.log.debug("DENIED (PLAIN) %s", reason)
+            self.log.debug("DENIED(PLAIN) %s", reason)
 
         return allowed, reason
 
@@ -235,7 +242,7 @@ class Authenticator(object):
         if self.allow_any:
             allowed = True
             reason = b"OK"
-            self.log.debug("ALLOWED (CURVE allow any client)")
+            self.log.debug("ALLOWED(CURVE allow any client)")
         else:
             # If no explicit domain is specified then use the default domain
             if not domain:
@@ -251,9 +258,9 @@ class Authenticator(object):
                     reason = b"Unknown key"
 
                 status = "ALLOWED" if allowed else "DENIED"
-                self.log.debug("%s (CURVE) domain=%s client_key=%s",
-                    status, domain, z85_client_key,
-                )
+                self.log.debug("%s(CURVE) domain=%s client_key=%s",
+                               status, domain, z85_client_key,
+                               )
             else:
                 reason = b"Unknown domain"
 
@@ -266,7 +273,9 @@ class Authenticator(object):
             user_id = user_id.encode(self.encoding, 'replace')
         metadata = b''  # not currently used
         self.log.debug("ZAP reply code=%s text=%s", status_code, status_text)
-        reply = [VERSION, request_id, status_code, status_text, user_id, metadata]
+        reply = [VERSION, request_id, status_code,
+                 status_text, user_id, metadata]
         self.zap_socket.send_multipart(reply)
+
 
 __all__ = ['Authenticator', 'CURVE_ALLOW_ANY']

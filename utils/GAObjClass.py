@@ -1,7 +1,9 @@
+#!/usr/bin/python3
+
 try:  # Python2
     import queue
     from urllib2 import *
-except:  # Python3
+except Exception:  # Python3
     import queue as Queue
     from urllib.request import *
     from urllib.error import *
@@ -29,7 +31,7 @@ No single hit payload can be greater than 8K bytes.
 url_single = 'https://www.google-analytics.com/collect'  # sending single event
 url_batched = 'https://www.google-analytics.com/batch'  # sending batched events
 url_debug = 'https://www.google-analytics.com/debug/collect'  # verifying hit is valid
-#url_conn = 'http://172.217.2.196'  # testing internet connection to this address (google-analytics server)
+# url_conn = 'http://172.217.2.196'  # testing internet connection to this address(google-analytics server)
 url_conn = 'http://google.com'
 
 
@@ -121,7 +123,7 @@ class GA_TESTING_ObjClass(GA_ObjClass):
 
 Google analytics thread manager:
 
-will report and empty queue of google analytics items to GA server, every Timeout (parameter given on initialization)
+will report and empty queue of google analytics items to GA server, every Timeout(parameter given on initialization)
 will perform connectivity check every timeout*10 seconds
 
 """
@@ -138,9 +140,9 @@ class ga_Thread(threading.Thread):
         # sys.stdout.write('thread started \n')
         # sys.stdout.flush()
         while True:
-            if (keepAliveCounter == 10):
+            if(keepAliveCounter == 10):
                 keepAliveCounter = 0
-                if (self.gManager.internet_on() == True):
+                if(self.gManager.internet_on() == True):
                     self.gManager.connectedToInternet = 1
                 else:
                     self.gManager.connectedToInternet = 0
@@ -150,7 +152,7 @@ class ga_Thread(threading.Thread):
                 self.gManager.threadLock.acquire(1)
                 #               sys.stdout.write('lock acquired: reporting to GA \n')
                 #               sys.stdout.flush()
-                if (self.gManager.connectedToInternet == 1):
+                if(self.gManager.connectedToInternet == 1):
                     self.gManager.emptyAndReportQ()
                 self.gManager.threadLock.release()
 
@@ -160,7 +162,7 @@ class ga_Thread(threading.Thread):
 # .....................................................................class GAmanager.................................................................
 """
 
-Google ID - specify tracker property, example: UA-75220362-2 (when the suffix '2' specifies the analytics property profile)
+Google ID - specify tracker property, example: UA-75220362-2(when the suffix '2' specifies the analytics property profile)
 
 UserID - unique userID, this will differ between users on GA
 
@@ -199,7 +201,7 @@ class GAmanager:
         self.threadLock = threading.Lock()
         self.BlockingMode = BlockingMode
         self.connectedToInternet = 0
-        if (self.internet_on() == True):
+        if(self.internet_on() == True):
             #           sys.stdout.write('internet connection active \n')
             #           sys.stdout.flush()
             self.connectedToInternet = 1
@@ -215,13 +217,13 @@ class GAmanager:
             GA_EXCEPTION_ObjClass(self.UserID, self.GoogleID, ExceptionName, ExceptionFatal, self.appName, self.appVer))
 
     def gaAddObject(self, Object):
-        if (self.BlockingMode == 1):
-            while (self.GA_q.full()):
+        if(self.BlockingMode == 1):
+            while(self.GA_q.full()):
                 sleep(self.Timeout)
             #               sys.stdout.write('blocking mode=1 \n queue full - sleeping for timeout \n') # within Timout, the thread will empty part of the queue
             #               sys.stdout.flush()
         lockState = self.threadLock.acquire(self.BlockingMode)
-        if (lockState == 1):
+        if(lockState == 1):
             #           sys.stdout.write('got lock, adding item \n')
             #           sys.stdout.flush()
             try:
@@ -236,7 +238,7 @@ class GAmanager:
 
     def emptyQueueToList(self, obj_list):
         items = 0
-        while ((not self.GA_q.empty()) and (items < 20)):
+        while((not self.GA_q.empty()) and(items < 20)):
             obj_list.append(self.GA_q.get_nowait().payload)
             items += 1
         #           print items
@@ -251,7 +253,7 @@ class GAmanager:
     def emptyAndReportQ(self):
         obj_list = []
         obj_list = self.emptyQueueToList(obj_list)
-        if (len(obj_list) == 0):
+        if(len(obj_list) == 0):
             return
         batched = '\n'.join(obj_list)
         #       print sys.getsizeof(batched)
@@ -273,7 +275,7 @@ class GAmanager:
         return False
 
     def activate(self):
-        if (self.UserPermission == 1):
+        if(self.UserPermission == 1):
             self.thread.start()
 
 
@@ -282,14 +284,14 @@ class GAmanager:
             *-*-*-*-Google Analytics Regression Manager-*-*-*-*
             attributes:
 GoogleID - the tracker ID that Google uses in order to track the activity of a property. for regression use: 'UA-75220362-4'
-AnalyticsUserID - text value  - used by Google to differ between 2 users sending data. (will not be presented on reports). use only as a way to differ between different users
+AnalyticsUserID - text value  - used by Google to differ between 2 users sending data.(will not be presented on reports). use only as a way to differ between different users
 TRexMode - text - will be presented on analysis. put here TRexMode
 appName - text - will be presented on analysis. put here appName as string describing app name
 appVer - text - will be presented on analysis. put here the appVer
 QueueSize - integer - determines the queue size. the queue will hold pending request before submission. RECOMMENDED VALUE: 20
-Timeout - integer (seconds) - the timeout in seconds between automated reports when activating reporting thread
-UserPermission - boolean (1/0) - required in order to send packets, should be 1.
-BlockingMode - boolean (1/0) - required when each tracked event is critical and program should halt until the event is reported
+Timeout - integer(seconds) - the timeout in seconds between automated reports when activating reporting thread
+UserPermission - boolean(1/0) - required in order to send packets, should be 1.
+BlockingMode - boolean(1/0) - required when each tracked event is critical and program should halt until the event is reported
 SetupName - text - will be presented on analysis. put here setup name as string.
 """
 

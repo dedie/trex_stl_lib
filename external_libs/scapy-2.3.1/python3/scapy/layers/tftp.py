@@ -1,10 +1,10 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
-TFTP (Trivial File Transfer Protocol).
+TFTP(Trivial File Transfer Protocol).
 """
 
 import os,random
@@ -89,7 +89,7 @@ class TFTP_ERROR(Packet):
     fields_desc = [ ShortEnumField("errorcode", 0, TFTP_Error_Codes),
                     StrNullField("errormsg", "")]
     def answers(self, other):
-        return (isinstance(other, TFTP_DATA) or
+        return(isinstance(other, TFTP_DATA) or
                 isinstance(other, TFTP_RRQ) or
                 isinstance(other, TFTP_WRQ) or 
                 isinstance(other, TFTP_ACK))
@@ -126,9 +126,9 @@ class TFTP_read(Automaton):
 
 
     def master_filter(self, pkt):
-        return ( IP in pkt and pkt[IP].src == self.server and UDP in pkt
+        return( IP in pkt and pkt[IP].src == self.server and UDP in pkt
                  and pkt[UDP].dport == self.my_tid
-                 and (self.server_tid is None or pkt[UDP].sport == self.server_tid) )
+                 and(self.server_tid is None or pkt[UDP].sport == self.server_tid) )
         
     # BEGIN
     @ATMT.state(initial=1)
@@ -219,9 +219,9 @@ class TFTP_write(Automaton):
         self.origdata = data
 
     def master_filter(self, pkt):
-        return ( IP in pkt and pkt[IP].src == self.server and UDP in pkt
+        return( IP in pkt and pkt[IP].src == self.server and UDP in pkt
                  and pkt[UDP].dport == self.my_tid
-                 and (self.server_tid is None or pkt[UDP].sport == self.server_tid) )
+                 and(self.server_tid is None or pkt[UDP].sport == self.server_tid) )
         
 
     # BEGIN
@@ -297,7 +297,7 @@ class TFTP_WRQ_server(Automaton):
         self.sport = sport
 
     def master_filter(self, pkt):
-        return TFTP in pkt and (not self.ip or pkt[IP].dst == self.ip)
+        return TFTP in pkt and(not self.ip or pkt[IP].dst == self.ip)
 
     @ATMT.state(initial=1)
     def BEGIN(self):
@@ -384,7 +384,7 @@ class TFTP_RRQ_server(Automaton):
         bind_bottom_up(UDP, TFTP, dport=self.my_tid)
         
     def master_filter(self, pkt):
-        return TFTP in pkt and (not self.ip or pkt[IP].dst == self.ip)
+        return TFTP in pkt and(not self.ip or pkt[IP].dst == self.ip)
 
     @ATMT.state(initial=1)
     def WAIT_RRQ(self):

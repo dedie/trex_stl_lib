@@ -1,14 +1,14 @@
 """0MQ Message related classes."""
 
 #
-#    Copyright (c) 2013 Brian E. Granger & Min Ragan-Kelley
+#    Copyright(c) 2013 Brian E. Granger & Min Ragan-Kelley
 #
 #    This file is part of pyzmq.
 #
 #    pyzmq is free software; you can redistribute it and/or modify it under
 #    the terms of the Lesser GNU General Public License as published by
 #    the Free Software Foundation; either version 3 of the License, or
-#    (at your option) any later version.
+#   (at your option) any later version.
 #
 #    pyzmq is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -45,7 +45,7 @@ import time
 try:
     # below 3.3
     from threading import _Event as Event
-except (ImportError, AttributeError):
+except(ImportError, AttributeError):
     # python throws ImportError, cython throws AttributeError
     from threading import Event
 
@@ -69,8 +69,8 @@ cdef void free_python_msg(void *data, void *vhint) nogil:
     
     The hint is a `zhint` struct with two values:
     
-    ctx (void *): pointer to the Garbage Collector's context
-    id (size_t): the id to be used to construct a zmq_msg_t that should be sent on a PUSH socket,
+    ctx(void *): pointer to the Garbage Collector's context
+    id(size_t): the id to be used to construct a zmq_msg_t that should be sent on a PUSH socket,
        signaling the Garbage Collector to remove its reference to the object.
     
     - A PUSH socket is created in the context,
@@ -206,7 +206,7 @@ cdef class Frame:
     # buffer interface code adapted from petsc4py by Lisandro Dalcin, a BSD project
     
     def __getbuffer__(self, Py_buffer* buffer, int flags):
-        # new-style (memoryview) buffer interface
+        # new-style(memoryview) buffer interface
         buffer.buf = zmq_msg_data(&self.zmq_msg)
         buffer.len = zmq_msg_size(&self.zmq_msg)
         
@@ -227,7 +227,7 @@ cdef class Frame:
         return 1
     
     def __getreadbuffer__(self, Py_ssize_t idx, void **p):
-        # old-style (buffer) interface
+        # old-style(buffer) interface
         cdef char *data_c = NULL
         cdef Py_ssize_t data_len_c
         if idx != 0:
@@ -348,7 +348,7 @@ cdef class Frame:
         .. versionadded:: 13.0
         
         .. versionchanged:: 14.3
-            add support for zmq_msg_gets (requires libzmq-4.1)
+            add support for zmq_msg_gets(requires libzmq-4.1)
         """
         cdef int rc = 0
         cdef char *property_c = NULL

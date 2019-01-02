@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -31,7 +31,7 @@ ARPHDR_LOOPBACK = 772
 ARPHDR_TUN = 65534
 
 
-# From net/ipv6.h on Linux (+ Additions)
+# From net/ipv6.h on Linux(+ Additions)
 IPV6_ADDR_UNICAST     = 0x01
 IPV6_ADDR_MULTICAST   = 0x02
 IPV6_ADDR_CAST_MASK   = 0x0F
@@ -42,7 +42,7 @@ IPV6_ADDR_SITELOCAL   = 0x40     # deprecated since Sept. 2004 by RFC 3879
 IPV6_ADDR_SCOPE_MASK  = 0xF0
 #IPV6_ADDR_COMPATv4   = 0x80     # deprecated; i.e. ::/96
 #IPV6_ADDR_MAPPED     = 0x1000   # i.e.; ::ffff:0.0.0.0/96
-IPV6_ADDR_6TO4        = 0x0100   # Added to have more specific info (should be 0x0101 ?)
+IPV6_ADDR_6TO4        = 0x0100   # Added to have more specific info(should be 0x0101 ?)
 IPV6_ADDR_UNSPECIFIED = 0x10000
 
 
@@ -72,7 +72,7 @@ def load_protocols(filename):
                     continue
                 dct[lt[0]] = int(lt[1])
             except Exception as e:
-                log_loading.info("Couldn't parse file [%s]: line [%r] (%s)" % (filename,l,e))
+                log_loading.info("Couldn't parse file [%s]: line [%r](%s)" %(filename,l,e))
     except IOError:
         log_loading.info("Can't open %s file" % filename)
     return dct
@@ -95,7 +95,7 @@ def load_ethertypes(filename):
                     continue
                 dct[lt[0]] = int(lt[1], 16)
             except Exception as e:
-                log_loading.info("Couldn't parse file [%s]: line [%r] (%s)" % (filename,l,e))
+                log_loading.info("Couldn't parse file [%s]: line [%r](%s)" %(filename,l,e))
         f.close()
     except IOError as msg:
         pass
@@ -124,7 +124,7 @@ def load_services(filename):
                 elif lt[1].endswith("/udp"):
                     udct[lt[0]] = int(lt[1].split('/')[0])
             except Exception as e:
-                log_loading.warning("Couldn't file [%s]: line [%r] (%s)" % (filename,l,e))
+                log_loading.warning("Couldn't file [%s]: line [%r](%s)" %(filename,l,e))
         f.close()
     except IOError:
         log_loading.info("Can't open /etc/services file")
@@ -166,7 +166,7 @@ def load_manuf(filename):
                     lng = l[i+2:]
                 manufdb[oui] = shrt,lng
             except Exception as e:
-                log_loading.warning("Couldn't parse one line from [%s] [%r] (%s)" % (filename, l, e))
+                log_loading.warning("Couldn't parse one line from [%s] [%r](%s)" %(filename, l, e))
     except IOError:
         #log_loading.warning("Couldn't open [%s] file" % filename)
         pass

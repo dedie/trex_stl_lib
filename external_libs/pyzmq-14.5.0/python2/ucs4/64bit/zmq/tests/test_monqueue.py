@@ -1,4 +1,4 @@
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import time
@@ -11,9 +11,9 @@ from zmq.tests import BaseZMQTestCase, SkipTest, PYPY
 from zmq.utils.strtypes import str
 
 
-if PYPY or zmq.zmq_version_info() >= (4,1):
+if PYPY or zmq.zmq_version_info() >=(4,1):
     # cleanup of shared Context doesn't work on PyPy
-    # there also seems to be a bug in cleanup in libzmq-4.1 (zeromq/libzmq#1052)
+    # there also seems to be a bug in cleanup in libzmq-4.1(zeromq/libzmq#1052)
     devices.Device.context_factory = zmq.Context
 
 
@@ -189,10 +189,10 @@ class TestMonitoredQueue(BaseZMQTestCase):
         dev.bind_out('tcp://127.0.0.1:%i'%portb)
         dev.start()
         time.sleep(0.2)
-        if zmq.zmq_version_info() >= (3,1,0):
+        if zmq.zmq_version_info() >=(3,1,0):
             # flush erroneous poll state, due to LIBZMQ-280
             ping_msg = [ b'ping', b'pong' ]
-            for s in (a,b):
+            for s in(a,b):
                 s.send_multipart(ping_msg)
                 try:
                     s.recv(zmq.NOBLOCK)

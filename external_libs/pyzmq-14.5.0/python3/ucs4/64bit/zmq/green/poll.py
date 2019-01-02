@@ -43,7 +43,7 @@ class _Poller(_original_Poller):
             if flags & zmq.POLLERR:
                 xlist.append(fd)
 
-        return (rlist, wlist, xlist)
+        return(rlist, wlist, xlist)
 
     def poll(self, timeout=-1):
         """Overridden method to ensure that the green version of

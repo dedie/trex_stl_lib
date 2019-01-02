@@ -1,14 +1,14 @@
 """0MQ Socket class."""
 
 #
-#    Copyright (c) 2010-2011 Brian E. Granger & Min Ragan-Kelley
+#    Copyright(c) 2010-2011 Brian E. Granger & Min Ragan-Kelley
 #
 #    This file is part of pyzmq.
 #
 #    pyzmq is free software; you can redistribute it and/or modify it under
 #    the terms of the Lesser GNU General Public License as published by
 #    the Free Software Foundation; either version 3 of the License, or
-#    (at your option) any later version.
+#   (at your option) any later version.
 #
 #    pyzmq is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -97,7 +97,7 @@ cdef inline _check_closed(Socket s):
 
 cdef inline _check_closed_deep(Socket s):
     """thorough check of whether the socket has been closed,
-    even if by another entity (e.g. ctx.destroy).
+    even if by another entity(e.g. ctx.destroy).
     
     Only used by the `closed` property.
     
@@ -134,7 +134,7 @@ cdef inline object _recv_copy(void *handle, int flags=0):
     """Receive a message and return a copy"""
     cdef zmq_msg_t zmq_msg
     with nogil:
-        zmq_msg_init (&zmq_msg)
+        zmq_msg_init(&zmq_msg)
         rc = zmq_msg_recv(&zmq_msg, handle, flags)
     _check_rc(rc)
     msg_bytes = copy_zmq_msg_bytes(&zmq_msg)
@@ -169,7 +169,7 @@ cdef inline object _send_copy(void *handle, object msg, int flags=0):
 
     # Copy the msg before sending. This avoids any complications with
     # the GIL, etc.
-    # If zmq_msg_init_* fails we must not call zmq_msg_close (Bus Error)
+    # If zmq_msg_init_* fails we must not call zmq_msg_close(Bus Error)
     rc = zmq_msg_init_size(&data, msg_c_len)
 
     _check_rc(rc)
@@ -273,7 +273,7 @@ cdef class Socket:
                 zmq_setsockopt(self.handle, ZMQ_LINGER, &linger_c, sizeof(int))
             rc = zmq_close(self.handle)
             if rc != 0 and zmq_errno() != ENOTSOCK:
-                # ignore ENOTSOCK (closed by Context)
+                # ignore ENOTSOCK(closed by Context)
                 _check_rc(rc)
             self._closed = True
             # during gc, self.context might be NULL
@@ -376,7 +376,7 @@ cdef class Socket:
             rc = zmq_getsockopt(self.handle, option, <void *>identity_str_c, &sz)
             _check_rc(rc)
             # strip null-terminated strings *except* identity
-            if option != ZMQ_IDENTITY and sz > 0 and (<char *>identity_str_c)[sz-1] == b'\0':
+            if option != ZMQ_IDENTITY and sz > 0 and(<char *>identity_str_c)[sz-1] == b'\0':
                 sz -= 1
             result = PyBytes_FromStringAndSize(<char *>identity_str_c, sz)
         elif option in zmq.constants.int64_sockopts:
@@ -435,10 +435,10 @@ cdef class Socket:
                 if str is unicode:
                     addr = addr.decode('utf-8', 'replace')
                 path = addr.split('://', 1)[-1]
-                msg = ('ipc path "{0}" is longer than {1} '
-                                'characters (sizeof(sockaddr_un.sun_path)). '
+                msg =('ipc path "{0}" is longer than {1} '
+                                'characters(sizeof(sockaddr_un.sun_path)). '
                                 'zmq.IPC_PATH_MAX_LEN constant can be used '
-                                'to check addr length (if it is defined).'
+                                'to check addr length(if it is defined).'
                                 .format(path, IPC_PATH_MAX_LEN))
                 raise ZMQError(msg=msg)
         _check_rc(rc)
@@ -473,7 +473,7 @@ cdef class Socket:
     def unbind(self, addr):
         """s.unbind(addr)
         
-        Unbind from an address (undoes a call to bind).
+        Unbind from an address(undoes a call to bind).
         
         .. versionadded:: libzmq-3.2
         .. versionadded:: 13.0
@@ -504,7 +504,7 @@ cdef class Socket:
     def disconnect(self, addr):
         """s.disconnect(addr)
 
-        Disconnect from a remote 0MQ socket (undoes a call to connect).
+        Disconnect from a remote 0MQ socket(undoes a call to connect).
         
         .. versionadded:: libzmq-3.2
         .. versionadded:: 13.0
@@ -588,7 +588,7 @@ cdef class Socket:
             Should the message be sent in a copying or non-copying manner.
         track : bool
             Should the message be tracked for notification that ZMQ has
-            finished with it? (ignored if copy=True)
+            finished with it?(ignored if copy=True)
 
         Returns
         -------
@@ -646,7 +646,7 @@ cdef class Socket:
             message is returned.
         track : bool
             Should the message be tracked for notification that ZMQ has
-            finished with it? (ignored if copy=True)
+            finished with it?(ignored if copy=True)
 
         Returns
         -------

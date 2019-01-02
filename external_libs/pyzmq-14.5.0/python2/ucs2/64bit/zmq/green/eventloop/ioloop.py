@@ -20,7 +20,7 @@ class IOLoop(RealIOLoop):
         """
         # install this class as the active IOLoop implementation
         # when using tornado 3
-        if tornado_version >= (3,):
+        if tornado_version >=(3,):
             PollIOLoop.configure(IOLoop)
         return PollIOLoop.instance()
 

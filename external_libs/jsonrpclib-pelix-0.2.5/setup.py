@@ -12,7 +12,7 @@ Installation script
 
     Copyright 2015 isandlaTech
 
-    Licensed under the Apache License, Version 2.0 (the "License");
+    Licensed under the Apache License, Version 2.0(the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
@@ -26,7 +26,7 @@ Installation script
 """
 
 # Module version
-__version_info__ = (0, 2, 5)
+__version_info__ =(0, 2, 5)
 __version__ = ".".join(str(x) for x in __version_info__)
 
 # Documentation strings format
@@ -70,5 +70,5 @@ setup(
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4'],
-    tests_require=['unittest2'] if sys.version_info < (2, 7) else []
+    tests_require=['unittest2'] if sys.version_info <(2, 7) else []
 )

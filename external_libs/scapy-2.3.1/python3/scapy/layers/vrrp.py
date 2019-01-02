@@ -1,11 +1,11 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
-## Copyright (C) 6WIND <olivier.matz@6wind.com>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) 6WIND <olivier.matz@6wind.com>
 ## This program is published under a GPLv2 license
 
 """
-VRRP (Virtual Router Redundancy Protocol).
+VRRP(Virtual Router Redundancy Protocol).
 """
 
 from scapy.packet import *
@@ -14,7 +14,7 @@ from scapy.layers.inet import IP
 
 IPPROTO_VRRP=112
 
-# RFC 3768 - Virtual Router Redundancy Protocol (VRRP)
+# RFC 3768 - Virtual Router Redundancy Protocol(VRRP)
 class VRRP(Packet):
     fields_desc = [
         BitField("version" , 2, 4),

@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Arnaud Ebalard <arno@natisbad.org>
+## Copyright(C) Arnaud Ebalard <arno@natisbad.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -42,14 +42,14 @@ def warning(m):
 
 def randstring(l):
     """
-    Returns a random string of length l (l >= 0)
+    Returns a random string of length l(l >= 0)
     """
     tmp = [struct.pack("B", random.randrange(0, 256, 1)) for x in [""]*l]
     return "".join(tmp)
 
 def zerofree_randstring(l):
     """
-    Returns a random string of length l (l >= 0) without zero in it. 
+    Returns a random string of length l(l >= 0) without zero in it. 
     """
     tmp = [struct.pack("B", random.randrange(1, 256, 1)) for x in [""]*l]
     return "".join(tmp)
@@ -78,8 +78,8 @@ def pkcs_os2ip(x):
 # IP2OS function defined in RFC 3447 for octet string to integer conversion
 def pkcs_i2osp(x,xLen):
     """
-    Converts a long (the first parameter) to the associated byte string
-    representation of length l (second parameter). Basically, the length
+    Converts a long(the first parameter) to the associated byte string
+    representation of length l(second parameter). Basically, the length
     parameters allow the function to perform the associated padding.
 
     Input : x        nonnegative integer to be converted
@@ -97,7 +97,7 @@ def pkcs_i2osp(x,xLen):
 # - hash output length in byte
 # - associated hash function that take data to be hashed as parameter
 #   XXX I do not provide update() at the moment.
-# - DER encoding of the leading bits of digestInfo (the hash value
+# - DER encoding of the leading bits of digestInfo(the hash value
 #   will be concatenated to create the complete digestInfo).
 # 
 # Notes:
@@ -107,33 +107,33 @@ def pkcs_i2osp(x,xLen):
 # - 'tls' one is the concatenation of both md5 and sha1 hashes used
 #   by SSL/TLS when signing/verifying things
 _hashFuncParams = {
-    "md2"    : (16, 
+    "md2"    :(16, 
                 lambda x: MD2.new(x).digest(), 
                 '\x30\x20\x30\x0c\x06\x08\x2a\x86\x48\x86\xf7\x0d\x02\x02\x05\x00\x04\x10'),
-    "md4"    : (16, 
+    "md4"    :(16, 
                 lambda x: MD4.new(x).digest(), 
                 '\x30\x20\x30\x0c\x06\x08\x2a\x86\x48\x86\xf7\x0d\x02\x04\x05\x00\x04\x10'), # is that right ?
-    "md5"    : (16, 
+    "md5"    :(16, 
                 lambda x: MD5.new(x).digest(), 
                 '\x30\x20\x30\x0c\x06\x08\x2a\x86\x48\x86\xf7\x0d\x02\x05\x05\x00\x04\x10'),
-    "sha1"   : (20,
+    "sha1"   :(20,
                 lambda x: SHA.new(x).digest(), 
                 '\x30\x21\x30\x09\x06\x05\x2b\x0e\x03\x02\x1a\x05\x00\x04\x14'),
-    "tls"    : (36,
+    "tls"    :(36,
                 lambda x: MD5.new(x).digest() + SHA.new(x).digest(),
                 '') }
 
 if HAS_HASHLIB:
-    _hashFuncParams["sha224"] = (28, 
+    _hashFuncParams["sha224"] =(28, 
                 lambda x: hashlib.sha224(x).digest(),
                 '\x30\x2d\x30\x0d\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x04\x05\x00\x04\x1c')
-    _hashFuncParams["sha256"] = (32, 
+    _hashFuncParams["sha256"] =(32, 
                 lambda x: hashlib.sha256(x).digest(), 
                 '\x30\x31\x30\x0d\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x01\x05\x00\x04\x20')
-    _hashFuncParams["sha384"] = (48, 
+    _hashFuncParams["sha384"] =(48, 
                 lambda x: hashlib.sha384(x).digest(),
                '\x30\x41\x30\x0d\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x02\x05\x00\x04\x30')
-    _hashFuncParams["sha512"] = (64, 
+    _hashFuncParams["sha512"] =(64, 
                lambda x: hashlib.sha512(x).digest(),
                '\x30\x51\x30\x0d\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x03\x05\x00\x04\x40')
 else:
@@ -150,8 +150,8 @@ def pkcs_mgf1(mgfSeed, maskLen, h):
     Input:
        mgfSeed: seed from which mask is generated, an octet string
        maskLen: intended length in octets of the mask, at most 2^32 * hLen
-                hLen (see below)
-       h      : hash function name (in 'md2', 'md4', 'md5', 'sha1', 'tls',
+                hLen(see below)
+       h      : hash function name(in 'md2', 'md4', 'md5', 'sha1', 'tls',
                 'sha256', 'sha384'). hLen denotes the length in octets of
                 the hash function output.
 
@@ -161,7 +161,7 @@ def pkcs_mgf1(mgfSeed, maskLen, h):
 
     # steps are those of Appendix B.2.1
     if h not in _hashFuncParams:
-        warning("pkcs_mgf1: invalid hash (%s) provided")
+        warning("pkcs_mgf1: invalid hash(%s) provided")
         return None
     hLen = _hashFuncParams[h][0]
     hFunc = _hashFuncParams[h][1]
@@ -186,7 +186,7 @@ def pkcs_emsa_pss_encode(M, emBits, h, mgf, sLen):
        M     : message to be encoded, an octet string
        emBits: maximal bit length of the integer resulting of pkcs_os2ip(EM),
                where EM is the encoded message, output of the function.
-       h     : hash function name (in 'md2', 'md4', 'md5', 'sha1', 'tls',
+       h     : hash function name(in 'md2', 'md4', 'md5', 'sha1', 'tls',
                'sha256', 'sha384'). hLen denotes the length in octets of
                the hash function output. 
        mgf   : the mask generation function f : seed, maskLen -> mask
@@ -204,7 +204,7 @@ def pkcs_emsa_pss_encode(M, emBits, h, mgf, sLen):
     mHash = hFunc(M)
     emLen = int(math.ceil(emBits/8.))
     if emLen < hLen + sLen + 2:                              # 3)
-        warning("encoding error (emLen < hLen + sLen + 2)")
+        warning("encoding error(emLen < hLen + sLen + 2)")
         return None
     salt = randstring(sLen)                                  # 4)
     MPrime = '\x00'*8 + mHash + salt                         # 5)
@@ -213,7 +213,7 @@ def pkcs_emsa_pss_encode(M, emBits, h, mgf, sLen):
     DB = PS + '\x01' + salt                                  # 8)
     dbMask = mgf(H, emLen - hLen - 1)                        # 9)
     maskedDB = strxor(DB, dbMask)                            # 10)
-    l = (8*emLen - emBits)/8                                 # 11)
+    l =(8*emLen - emBits)/8                                 # 11)
     rem = 8*emLen - emBits - 8*l # additionnal bits
     andMask = l*'\x00'
     if rem:
@@ -233,7 +233,7 @@ def pkcs_emsa_pss_verify(M, EM, emBits, h, mgf, sLen):
        M     : message to be encoded, an octet string
        EM    : encoded message, an octet string of length emLen = ceil(emBits/8)
        emBits: maximal bit length of the integer resulting of pkcs_os2ip(EM)
-       h     : hash function name (in 'md2', 'md4', 'md5', 'sha1', 'tls',
+       h     : hash function name(in 'md2', 'md4', 'md5', 'sha1', 'tls',
                'sha256', 'sha384'). hLen denotes the length in octets of
                the hash function output.
        mgf   : the mask generation function f : seed, maskLen -> mask
@@ -255,7 +255,7 @@ def pkcs_emsa_pss_verify(M, EM, emBits, h, mgf, sLen):
     l = emLen - hLen - 1                                     # 5)
     maskedDB = EM[:l]
     H = EM[l:l+hLen]
-    l = (8*emLen - emBits)/8                                 # 6)
+    l =(8*emLen - emBits)/8                                 # 6)
     rem = 8*emLen - emBits - 8*l # additionnal bits
     andMask = l*'\xff'
     if rem:
@@ -267,7 +267,7 @@ def pkcs_emsa_pss_verify(M, EM, emBits, h, mgf, sLen):
         return False
     dbMask = mgf(H, emLen - hLen - 1)                        # 7)
     DB = strxor(maskedDB, dbMask)                            # 8)
-    l = (8*emLen - emBits)/8                                 # 9)
+    l =(8*emLen - emBits)/8                                 # 9)
     rem = 8*emLen - emBits - 8*l # additionnal bits
     andMask = l*'\x00'
     if rem:
@@ -294,7 +294,7 @@ def pkcs_emsa_pkcs1_v1_5_encode(M, emLen, h): # section 9.2 of RFC 3447
        emLen: intended length in octets of the encoded message, at least
               tLen + 11, where tLen is the octet length of the DER encoding
               T of a certain value computed during the encoding operation.
-       h    : hash function name (in 'md2', 'md4', 'md5', 'sha1', 'tls',
+       h    : hash function name(in 'md2', 'md4', 'md5', 'sha1', 'tls',
               'sha256', 'sha384'). hLen denotes the length in octets of
               the hash function output.
 
@@ -321,7 +321,7 @@ def pkcs_emsa_pkcs1_v1_5_encode(M, emLen, h): # section 9.2 of RFC 3447
 
 def create_ca_file(anchor_list, filename):
     """
-    Concatenate all the certificates (PEM format for the export) in
+    Concatenate all the certificates(PEM format for the export) in
     'anchor_list' and write the result to file 'filename'. On success
     'filename' is returned, None otherwise.
 
@@ -342,7 +342,7 @@ def create_ca_file(anchor_list, filename):
 
 def create_temporary_ca_file(anchor_list):
     """
-    Concatenate all the certificates (PEM format for the export) in
+    Concatenate all the certificates(PEM format for the export) in
     'anchor_list' and write the result to file to a temporary file
     using mkstemp() from tempfile module. On success 'filename' is
     returned, None otherwise.
@@ -463,7 +463,7 @@ class _EncryptAndVerify:
 
         Input:
            M: message to be encrypted, an octet string of length mLen, where
-              mLen <= k - 11 (k denotes the length in octets of the key modulus)
+              mLen <= k - 11(k denotes the length in octets of the key modulus)
 
         Output:
            ciphertext, an octet string of length k
@@ -476,7 +476,7 @@ class _EncryptAndVerify:
         k = self.modulusLen / 8
         if mLen > k - 11:
             warning("Key._rsaes_pkcs1_v1_5_encrypt(): message too "
-                    "long (%d > %d - 11)" % (mLen, k))
+                    "long(%d > %d - 11)" %(mLen, k))
             return None
 
         # 2) EME-PKCS1-v1_5 encoding
@@ -500,10 +500,10 @@ class _EncryptAndVerify:
 
         Input:
            M  : message to be encrypted, an octet string of length mLen
-                where mLen <= k - 2*hLen - 2 (k denotes the length in octets
+                where mLen <= k - 2*hLen - 2(k denotes the length in octets
                 of the RSA modulus and hLen the length in octets of the hash
                 function output)
-           h  : hash function name (in 'md2', 'md4', 'md5', 'sha1', 'tls',
+           h  : hash function name(in 'md2', 'md4', 'md5', 'sha1', 'tls',
                 'sha256', 'sha384'). hLen denotes the length in octets of
                 the hash function output. 'sha1' is used by default if not
                 provided.
@@ -567,7 +567,7 @@ class _EncryptAndVerify:
 
         - 'pkcs': the message 'm' is applied RSAES-PKCS1-V1_5-ENCRYPT encryption
                 scheme as described in section 7.2.1 of RFC 3447. In that
-                context, other parameters ('h', 'mgf', 'l') are not used.
+                context, other parameters('h', 'mgf', 'l') are not used.
 
         - 'oaep': the message 'm' is applied the RSAES-OAEP-ENCRYPT encryption
                 scheme, as described in PKCS#1 v2.1, i.e. RFC 3447 Sect
@@ -580,12 +580,12 @@ class _EncryptAndVerify:
 
                 o 'mgf' is the mask generation function. By default, mgf
                   is derived from the provided hash function using the
-                  generic MGF1 (see pkcs_mgf1() for details).
+                  generic MGF1(see pkcs_mgf1() for details).
 
                 o 'L' is the optional label to be associated with the
                   message. If not provided, the default value is used, i.e
                   the empty string. No check is done on the input limitation
-                  of the hash function regarding the size of 'L' (for
+                  of the hash function regarding the size of 'L'(for
                   instance, 2^61 - 1 for SHA-1). You have been warned.
         """
 
@@ -601,7 +601,7 @@ class _EncryptAndVerify:
             return self._rsaes_oaep_encrypt(m, h, mgf, L)
 
         else:
-            warning("Key.encrypt(): Unknown encryption type (%s) provided" % t)
+            warning("Key.encrypt(): Unknown encryption type(%s) provided" % t)
             return None
 
     ### Below are verification related methods
@@ -645,11 +645,11 @@ class _EncryptAndVerify:
             h = "sha1"
         if h not in _hashFuncParams:
             warning("Key._rsassa_pss_verify(): unknown hash function "
-                    "provided (%s)" % h)
+                    "provided(%s)" % h)
             return False
         if mgf is None: # use mgf1 with underlying hash function
             mgf = lambda x,y: pkcs_mgf1(x, y, h)
-        if sLen is None: # use Hash output length (A.2.3 of RFC 3447)
+        if sLen is None: # use Hash output length(A.2.3 of RFC 3447)
             hLen = _hashFuncParams[h][0]
             sLen = hLen
 
@@ -680,7 +680,7 @@ class _EncryptAndVerify:
            M: message whose signature is to be verified, an octet string
            S: signature to be verified, an octet string of length k, where
               k is the length in octets of the RSA modulus n
-           h: hash function name (in 'md2', 'md4', 'md5', 'sha1', 'tls',
+           h: hash function name(in 'md2', 'md4', 'md5', 'sha1', 'tls',
                 'sha256', 'sha384').
            
         Output:
@@ -690,7 +690,7 @@ class _EncryptAndVerify:
         # 1) Length checking
         k = self.modulusLen / 8
         if len(S) != k:
-            warning("invalid signature (len(S) != k)")
+            warning("invalid signature(len(S) != k)")
             return False
 
         # 2) RSA verification
@@ -739,10 +739,10 @@ class _EncryptAndVerify:
 
                 o 'mgf' is the mask generation function. By default, mgf
                    is derived from the provided hash function using the
-                   generic MGF1 (see pkcs_mgf1() for details).
+                   generic MGF1(see pkcs_mgf1() for details).
 
                 o 'sLen' is the length in octet of the salt. You can overload the
-                  default value (the octet length of the hash value for provided
+                  default value(the octet length of the hash value for provided
                   algorithm) by providing another one with that parameter.
         """
         if t is None: # RSAVP1
@@ -767,7 +767,7 @@ class _EncryptAndVerify:
             return self._rsassa_pss_verify(M, S, h, mgf, sLen)
 
         else:
-            warning("Key.verify(): Unknown signature type (%s) provided" % t)
+            warning("Key.verify(): Unknown signature type(%s) provided" % t)
             return None
     
 class _DecryptAndSignMethods(OSSLHelper):
@@ -871,9 +871,9 @@ class _DecryptAndSignMethods(OSSLHelper):
 
         Input:
            C  : ciphertext to be decrypted, an octet string of length k, where
-                k = 2*hLen + 2 (k denotes the length in octets of the RSA modulus
+                k = 2*hLen + 2(k denotes the length in octets of the RSA modulus
                 and hLen the length in octets of the hash function output)
-           h  : hash function name (in 'md2', 'md4', 'md5', 'sha1', 'tls',
+           h  : hash function name(in 'md2', 'md4', 'md5', 'sha1', 'tls',
                 'sha256', 'sha384'). 'sha1' is used if none is provided.
            mgf: the mask generation function f : seed, maskLen -> mask
            L  : optional label whose association with the message is to be
@@ -964,7 +964,7 @@ class _DecryptAndSignMethods(OSSLHelper):
 
         - 'pkcs': the ciphertext 'C' is applied RSAES-PKCS1-V1_5-DECRYPT
                 decryption scheme as described in section 7.2.2 of RFC 3447.
-                In that context, other parameters ('h', 'mgf', 'l') are not
+                In that context, other parameters('h', 'mgf', 'l') are not
                 used.
 
         - 'oaep': the ciphertext 'C' is applied the RSAES-OAEP-DECRYPT decryption
@@ -978,12 +978,12 @@ class _DecryptAndSignMethods(OSSLHelper):
 
                 o 'mgf' is the mask generation function. By default, mgf
                   is derived from the provided hash function using the
-                  generic MGF1 (see pkcs_mgf1() for details).
+                  generic MGF1(see pkcs_mgf1() for details).
 
                 o 'L' is the optional label to be associated with the
                   message. If not provided, the default value is used, i.e
                   the empty string. No check is done on the input limitation
-                  of the hash function regarding the size of 'L' (for
+                  of the hash function regarding the size of 'L'(for
                   instance, 2^61 - 1 for SHA-1). You have been warned.        
         """
         if t is None:
@@ -999,7 +999,7 @@ class _DecryptAndSignMethods(OSSLHelper):
             return self._rsaes_oaep_decrypt(C, h, mgf, L)
 
         else:
-            warning("Key.decrypt(): Unknown decryption type (%s) provided" % t)
+            warning("Key.decrypt(): Unknown decryption type(%s) provided" % t)
             return None
 
     ### Below are signature related methods. Verification ones are inherited from
@@ -1046,11 +1046,11 @@ class _DecryptAndSignMethods(OSSLHelper):
             h = "sha1"
         if h not in _hashFuncParams:
             warning("Key._rsassa_pss_sign(): unknown hash function "
-                    "provided (%s)" % h)
+                    "provided(%s)" % h)
             return None
         if mgf is None: # use mgf1 with underlying hash function
             mgf = lambda x,y: pkcs_mgf1(x, y, h)
-        if sLen is None: # use Hash output length (A.2.3 of RFC 3447)
+        if sLen is None: # use Hash output length(A.2.3 of RFC 3447)
             hLen = _hashFuncParams[h][0]
             sLen = hLen
 
@@ -1077,7 +1077,7 @@ class _DecryptAndSignMethods(OSSLHelper):
 
         Input:
            M: message to be signed, an octet string
-           h: hash function name (in 'md2', 'md4', 'md5', 'sha1', 'tls'
+           h: hash function name(in 'md2', 'md4', 'md5', 'sha1', 'tls'
                 'sha256', 'sha384').
            
         Output:
@@ -1126,10 +1126,10 @@ class _DecryptAndSignMethods(OSSLHelper):
 
                 o 'mgf' is the mask generation function. By default, mgf
                    is derived from the provided hash function using the
-                   generic MGF1 (see pkcs_mgf1() for details).
+                   generic MGF1(see pkcs_mgf1() for details).
 
                 o 'sLen' is the length in octet of the salt. You can overload the
-                  default value (the octet length of the hash value for provided
+                  default value(the octet length of the hash value for provided
                   algorithm) by providing another one with that parameter.
         """
 
@@ -1153,7 +1153,7 @@ class _DecryptAndSignMethods(OSSLHelper):
             return self._rsassa_pss_sign(M, h, mgf, sLen)
 
         else:
-            warning("Key.sign(): Unknown signature type (%s) provided" % t)
+            warning("Key.sign(): Unknown signature type(%s) provided" % t)
             return None
 
 
@@ -1166,7 +1166,7 @@ class PubKey(OSSLHelper, _EncryptAndVerify):
     # Below are the fields we recognize in the -text output of openssl
     # and from which we extract information. We expect them in that
     # order. Number of spaces does matter.
-    possible_fields = [ "Modulus (",
+    possible_fields = [ "Modulus(",
                         "Exponent:" ]
     possible_fields_count = len(possible_fields)
     
@@ -1188,7 +1188,7 @@ class PubKey(OSSLHelper, _EncryptAndVerify):
         self.keypath = None
         rawkey = None
 
-        if (not '\x00' in keypath) and os.path.isfile(keypath): # file
+        if(not '\x00' in keypath) and os.path.isfile(keypath): # file
             self.keypath = keypath
             key_size = os.path.getsize(keypath)
             if key_size > MAX_KEY_SIZE:
@@ -1215,7 +1215,7 @@ class PubKey(OSSLHelper, _EncryptAndVerify):
             l = tmp.split(key_footer, 1)
             if len(l) == 2:
                 tmp = l[0]
-                rawkey = "%s%s%s\n" % (key_header, tmp, key_footer)
+                rawkey = "%s%s%s\n" %(key_header, tmp, key_footer)
             else:
                 raise Exception(error_msg)
             r,w,e = openssl_parse_RSA("PEM")
@@ -1254,7 +1254,7 @@ class PubKey(OSSLHelper, _EncryptAndVerify):
                 except:
                     raise Exception(error_msg)
                 # TODO:
-                # Reconstruct a key (der and pem) and provide:
+                # Reconstruct a key(der and pem) and provide:
                 # self.format
                 # self.derkey
                 # self.pemkey
@@ -1271,7 +1271,7 @@ class PubKey(OSSLHelper, _EncryptAndVerify):
             raise Exception(error_msg)
         cur, tmp = l
         i = 0
-        k = self.possible_fields[i] # Modulus (
+        k = self.possible_fields[i] # Modulus(
         cur = cur[len(k):] + '\n'
         while k:
             l = tmp.split('\n', 1)
@@ -1296,7 +1296,7 @@ class PubKey(OSSLHelper, _EncryptAndVerify):
             cur += l + '\n'
 
         # modulus and modulus length
-        v = fields_dict["Modulus ("]
+        v = fields_dict["Modulus("]
         self.modulusLen = None
         if v:
             v, rem = v.split(' bit):', 1)
@@ -1324,7 +1324,7 @@ class Key(OSSLHelper, _DecryptAndSignMethods, _EncryptAndVerify):
     # Below are the fields we recognize in the -text output of openssl
     # and from which we extract information. We expect them in that
     # order. Number of spaces does matter.
-    possible_fields = [ "Private-Key: (",
+    possible_fields = [ "Private-Key:(",
                         "modulus:",
                         "publicExponent:",
                         "privateExponent:",
@@ -1345,7 +1345,7 @@ class Key(OSSLHelper, _DecryptAndSignMethods, _EncryptAndVerify):
         self.keypath = None
         rawkey = None
 
-        if (not '\x00' in keypath) and os.path.isfile(keypath):
+        if(not '\x00' in keypath) and os.path.isfile(keypath):
             self.keypath = keypath
             key_size = os.path.getsize(keypath)
             if key_size > MAX_KEY_SIZE:
@@ -1375,7 +1375,7 @@ class Key(OSSLHelper, _DecryptAndSignMethods, _EncryptAndVerify):
             l = tmp.split(key_footer, 1)
             if len(l) == 2:
                 tmp = l[0]
-                rawkey = "%s%s%s\n" % (key_header, tmp, key_footer)
+                rawkey = "%s%s%s\n" %(key_header, tmp, key_footer)
             else:
                 raise Exception(error_msg)
             r,w,e = popen3((fmtstr % "PEM").split(" "))
@@ -1389,7 +1389,7 @@ class Key(OSSLHelper, _DecryptAndSignMethods, _EncryptAndVerify):
                 self.format = "PEM"
                 self.pemkey = rawkey
                 self.textkey = textkey
-                cmd = (convertstr % ("PEM", "DER")).split(" ")
+                cmd =(convertstr %("PEM", "DER")).split(" ")
                 self.derkey = self._apply_ossl_cmd(cmd, rawkey)
             else:
                 raise Exception(error_msg)
@@ -1404,9 +1404,9 @@ class Key(OSSLHelper, _DecryptAndSignMethods, _EncryptAndVerify):
                 self.format = "DER"
                 self.derkey = rawkey
                 self.textkey = textkey
-                cmd = (convertstr % ("DER", "PEM")).split(" ")
+                cmd =(convertstr %("DER", "PEM")).split(" ")
                 self.pemkey = self._apply_ossl_cmd(cmd, rawkey)
-                cmd = (convertstr % ("DER", "DER")).split(" ")
+                cmd =(convertstr %("DER", "DER")).split(" ")
                 self.derkey = self._apply_ossl_cmd(cmd, rawkey)
             else:
                 raise Exception(error_msg)     
@@ -1431,7 +1431,7 @@ class Key(OSSLHelper, _DecryptAndSignMethods, _EncryptAndVerify):
             raise Exception(error_msg)
         cur, tmp = l
         i = 0
-        k = self.possible_fields[i] # Private-Key: (
+        k = self.possible_fields[i] # Private-Key:(
         cur = cur[len(k):] + '\n'
         while k:
             l = tmp.split('\n', 1)
@@ -1456,7 +1456,7 @@ class Key(OSSLHelper, _DecryptAndSignMethods, _EncryptAndVerify):
             cur += l + '\n'
 
         # modulus length
-        v = fields_dict["Private-Key: ("]
+        v = fields_dict["Private-Key:("]
         self.modulusLen = None
         if v:
             self.modulusLen = int(v.split(' bit', 1)[0])
@@ -1511,7 +1511,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
                         "            Not After :",
                         "        Subject:",
                         "            Public Key Algorithm:",
-                        "                Modulus (",
+                        "                Modulus(",
                         "                Exponent:",
                         "            X509v3 Subject Key Identifier:",
                         "            X509v3 Authority Key Identifier:",
@@ -1536,7 +1536,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
         self.certpath = None
         rawcert = None
 
-        if (not '\x00' in certpath) and os.path.isfile(certpath): # file
+        if(not '\x00' in certpath) and os.path.isfile(certpath): # file
             self.certpath = certpath
             cert_size = os.path.getsize(certpath)
             if cert_size > MAX_CERT_SIZE:
@@ -1566,7 +1566,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
             l = tmp.split(cert_footer, 1)
             if len(l) == 2:
                 tmp = l[0]
-                rawcert = "%s%s%s\n" % (cert_header, tmp, cert_footer)
+                rawcert = "%s%s%s\n" %(cert_header, tmp, cert_footer)
             else:
                 raise Exception(error_msg)
             r,w,e = popen3((fmtstr % "PEM").split(" "))
@@ -1580,7 +1580,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
                 self.format = "PEM"
                 self.pemcert = rawcert
                 self.textcert = textcert
-                cmd = (convertstr % ("PEM", "DER")).split(" ")
+                cmd =(convertstr %("PEM", "DER")).split(" ")
                 self.dercert = self._apply_ossl_cmd(cmd, rawcert)
             else:
                 raise Exception(error_msg)
@@ -1595,9 +1595,9 @@ class Cert(OSSLHelper, _EncryptAndVerify):
                 self.format = "DER"
                 self.dercert = rawcert
                 self.textcert = textcert
-                cmd = (convertstr % ("DER", "PEM")).split(" ")
+                cmd =(convertstr %("DER", "PEM")).split(" ")
                 self.pemcert = self._apply_ossl_cmd(cmd, rawcert)
-                cmd = (convertstr % ("DER", "DER")).split(" ")     
+                cmd =(convertstr %("DER", "DER")).split(" ")     
                 self.dercert = self._apply_ossl_cmd(cmd, rawcert)
             else:
                 raise Exception(error_msg)
@@ -1773,7 +1773,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
             raise Exception(error_msg)
         
         # Modulus
-        v = fields_dict["                Modulus ("]
+        v = fields_dict["                Modulus("]
         self.modulus = None
         if v:
             v,t = v.split(' bit):',1)
@@ -1802,7 +1802,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
         self.authorityKeyID_keyid   = None
         self.authorityKeyID_dirname = None
         self.authorityKeyID_serial  = None
-        if self.authorityKeyID: # (hex version already done using asn1parse)
+        if self.authorityKeyID: #(hex version already done using asn1parse)
             v = fields_dict["                keyid:"]
             if v:
                 v = v.split('\n',1)[0]
@@ -1855,7 +1855,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
                 else:
                     self.keyUsage.append(c) # Add it anyway
                     print("Found unknown X509v3 Key Usage: '%s'" % c)
-                    print("Report it to arno (at) natisbad.org for addition")
+                    print("Report it to arno(at) natisbad.org for addition")
 
         # X509v3 Extended Key Usage
         self.extKeyUsage = []
@@ -1885,7 +1885,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
                 else:
                     self.extKeyUsage.append(c) # Add it anyway
                     print("Found unknown X509v3 Extended Key Usage: '%s'" % c)
-                    print("Report it to arno (at) natisbad.org for addition")
+                    print("Report it to arno(at) natisbad.org for addition")
 
         # CRL Distribution points
         self.cRLDistributionPoints = []
@@ -1895,7 +1895,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
             v = v.split("URI:")[1:]
             self.CRLDistributionPoints = [x.strip() for x in v]
             
-        # Authority Information Access: list of tuples ("method", "location")
+        # Authority Information Access: list of tuples("method", "location")
         self.authorityInfoAccess = []
         v = fields_dict["            Authority Information Access:"]
         if v:
@@ -1928,13 +1928,13 @@ class Cert(OSSLHelper, _EncryptAndVerify):
 
         # Sanity check regarding modulus length and the
         # signature length
-        keyLen = (other.modulusLen + 7)/8
+        keyLen =(other.modulusLen + 7)/8
         if keyLen != self.sigLen:
             return False
 
         unenc = other.encrypt(self.sig) # public key encryption, i.e. decrypt
 
-        # XXX Check block type (00 or 01 and type of padding)
+        # XXX Check block type(00 or 01 and type of padding)
         unenc = unenc[1:]
         if not '\x00' in unenc:
             return False
@@ -1950,7 +1950,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
             return False
         hlen, hfunc, digestInfo =  _hashFuncParams[k]
         
-        if len(unenc) != (hlen+len(digestInfo)):
+        if len(unenc) !=(hlen+len(digestInfo)):
             return False
 
         if not unenc.startswith(digestInfo):
@@ -1968,7 +1968,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
         list does not provide all the required certs to go to the root
         the function returns a incomplete chain starting with the
         certificate. This fact can be tested by tchecking if the last
-        certificate of the returned chain is self signed (if c is the
+        certificate of the returned chain is self signed(if c is the
         result, c[-1].isSelfSigned())
         """
         d = {}
@@ -1998,7 +1998,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
         are:
         
          - '%b %d %H:%M:%S %Y %Z' e.g. 'Jan 30 07:38:59 2008 GMT'
-         - '%m/%d/%y' e.g. '01/30/08' (less precise)
+         - '%m/%d/%y' e.g. '01/30/08'(less precise)
 
         If the certificate is no more valid at the date considered, then,
         a negative value is returned representing the number of days
@@ -2021,7 +2021,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
 
         now = time.mktime(now)
         nft = time.mktime(self.notAfter)
-        diff = (nft - now)/(24.*3600)
+        diff =(nft - now)/(24.*3600)
         return diff
 
 
@@ -2047,7 +2047,7 @@ class Cert(OSSLHelper, _EncryptAndVerify):
 
     def export(self, filename, fmt="DER"):
         """
-        Export certificate in 'fmt' format (PEM, DER or TXT) to file 'filename'
+        Export certificate in 'fmt' format(PEM, DER or TXT) to file 'filename'
         """
         f = open(filename, "wb")
         f.write(self.output(fmt))
@@ -2068,11 +2068,11 @@ class Cert(OSSLHelper, _EncryptAndVerify):
         print("Serial: %s" % self.serial)
         print("Issuer: " + self.issuer)
         print("Subject: " + self.subject)
-        print("Validity: %s to %s" % (self.notBefore_str_simple,
+        print("Validity: %s to %s" %(self.notBefore_str_simple,
                                       self.notAfter_str_simple))
 
     def __repr__(self):
-        return "[X.509 Cert. Subject:%s, Issuer:%s]" % (self.subject, self.issuer)
+        return "[X.509 Cert. Subject:%s, Issuer:%s]" %(self.subject, self.issuer)
 
     def __str__(self):
         return self.dercert
@@ -2080,8 +2080,8 @@ class Cert(OSSLHelper, _EncryptAndVerify):
     def verifychain(self, anchors, untrusted=None):
         """
         Perform verification of certificate chains for that certificate. The
-        behavior of verifychain method is mapped (and also based) on openssl
-        verify userland tool (man 1 verify).
+        behavior of verifychain method is mapped(and also based) on openssl
+        verify userland tool(man 1 verify).
         A list of anchors is required. untrusted parameter can be provided 
         a list of untrusted certificates that can be used to reconstruct the
         chain.
@@ -2109,12 +2109,12 @@ class Cert(OSSLHelper, _EncryptAndVerify):
     def verifychain_from_cafile(self, cafile, untrusted_file=None):
         """
         Does the same job as .verifychain() but using the list of anchors
-        from the cafile. This is useful (because more efficient) if
+        from the cafile. This is useful(because more efficient) if
         you have a lot of certificates to verify do it that way: it
         avoids the creation of a cafile from anchors at each call.
 
         As for .verifychain(), a list of untrusted certificates can be
-        passed (as a file, this time)
+        passed(as a file, this time)
         """
         cmd = ["openssl", "verify", "-CAfile", cafile]
         if untrusted_file:
@@ -2131,10 +2131,10 @@ class Cert(OSSLHelper, _EncryptAndVerify):
         Does the same job as .verifychain_from_cafile() but using the list
         of anchors in capath directory. The directory should contain
         certificates files in PEM format with associated links as
-        created using c_rehash utility (man c_rehash).
+        created using c_rehash utility(man c_rehash).
 
         As for .verifychain_from_cafile(), a list of untrusted certificates
-        can be passed as a file (concatenation of the certificates in
+        can be passed as a file(concatenation of the certificates in
         PEM format)
         """
         cmd = ["openssl", "verify", "-CApath", capath]
@@ -2149,14 +2149,14 @@ class Cert(OSSLHelper, _EncryptAndVerify):
 
     def is_revoked(self, crl_list):
         """
-        Given a list of trusted CRL (their signature has already been
+        Given a list of trusted CRL(their signature has already been
         verified with trusted anchors), this function returns True if
         the certificate is marked as revoked by one of those CRL.
 
         Note that if the Certificate was on hold in a previous CRL and
         is now valid again in a new CRL and bot are in the list, it
         will be considered revoked: this is because _all_ CRLs are 
-        checked (not only the freshest) and revocation status is not
+        checked(not only the freshest) and revocation status is not
         handled.
 
         Also note that the check on the issuer is performed on the
@@ -2164,11 +2164,11 @@ class Cert(OSSLHelper, _EncryptAndVerify):
         Cert. Otherwise, the issuers are simply compared.
         """
         for c in crl_list:
-            if (self.authorityKeyID is not None and 
+            if(self.authorityKeyID is not None and 
                 c.authorityKeyID is not None and
                 self.authorityKeyID == c.authorityKeyID):
                 return self.serial in [x[0] for x in c.revoked_cert_serials]
-            elif (self.issuer == c.issuer):
+            elif(self.issuer == c.issuer):
                 return self.serial in [x[0] for x in c.revoked_cert_serials]
         return False
 
@@ -2184,9 +2184,9 @@ def print_chain(l):
     else:
         s += "%s [Self Signed]\n" % c.subject
     i = 1
-    while (llen != -1):
+    while(llen != -1):
         c = l[llen]
-        s += "%s\_ %s" % (" "*i, c.subject)
+        s += "%s\_ %s" %(" "*i, c.subject)
         if llen != 0:
             s += "\n"
         i += 2
@@ -2230,7 +2230,7 @@ class CRL(OSSLHelper):
         self.crlpath = None
         rawcrl = None
 
-        if (not '\x00' in crlpath) and os.path.isfile(crlpath):
+        if(not '\x00' in crlpath) and os.path.isfile(crlpath):
             self.crlpath = crlpath
             cert_size = os.path.getsize(crlpath)
             if cert_size > MAX_CRL_SIZE:
@@ -2260,7 +2260,7 @@ class CRL(OSSLHelper):
             l = tmp.split(crl_footer, 1)
             if len(l) == 2:
                 tmp = l[0]
-                rawcrl = "%s%s%s\n" % (crl_header, tmp, crl_footer)
+                rawcrl = "%s%s%s\n" %(crl_header, tmp, crl_footer)
             else:
                 raise Exception(error_msg)
             r,w,e = popen3((fmtstr % "PEM").split(" "))
@@ -2274,7 +2274,7 @@ class CRL(OSSLHelper):
                 self.format = "PEM"
                 self.pemcrl = rawcrl
                 self.textcrl = textcrl
-                cmd = (convertstr % ("PEM", "DER")).split(" ")
+                cmd =(convertstr %("PEM", "DER")).split(" ")
                 self.dercrl = self._apply_ossl_cmd(cmd, rawcrl)
             else:
                 raise Exception(error_msg)
@@ -2289,9 +2289,9 @@ class CRL(OSSLHelper):
                 self.format = "DER"
                 self.dercrl = rawcrl
                 self.textcrl = textcrl
-                cmd = (convertstr % ("DER", "PEM")).split(" ")
+                cmd =(convertstr %("DER", "PEM")).split(" ")
                 self.pemcrl = self._apply_ossl_cmd(cmd, rawcrl)
-                cmd = (convertstr % ("DER", "DER")).split(" ")
+                cmd =(convertstr %("DER", "DER")).split(" ")
                 self.dercrl = self._apply_ossl_cmd(cmd, rawcrl)
             else:
                 raise Exception(error_msg)
@@ -2407,7 +2407,7 @@ class CRL(OSSLHelper):
         self.authorityKeyID_keyid   = None
         self.authorityKeyID_dirname = None
         self.authorityKeyID_serial  = None
-        if self.authorityKeyID: # (hex version already done using asn1parse)
+        if self.authorityKeyID: #(hex version already done using asn1parse)
             v = fields_dict["                keyid:"]
             if v:
                 v = v.split('\n',1)[0]
@@ -2435,7 +2435,7 @@ class CRL(OSSLHelper):
         self.revoked_cert_serials = []
         v = fields_dict["Revoked Certificates:"]
         t = fields_dict["No Revoked Certificates."]
-        if (t is None and v is not None):
+        if(t is None and v is not None):
             v = v.split("Serial Number: ")[1:]
             for r in v:
                 s,d = r.split('\n', 1)
@@ -2469,7 +2469,7 @@ class CRL(OSSLHelper):
     def verify(self, anchors):
         """
         Return True if the CRL is signed by one of the provided
-        anchors. False on error (invalid signature, missing anchorand, ...)
+        anchors. False on error(invalid signature, missing anchorand, ...)
         """
         cafile = create_temporary_ca_file(anchors)
         if cafile is None:

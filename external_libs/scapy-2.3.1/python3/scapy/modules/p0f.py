@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -23,13 +23,13 @@ conf.p0fr_base ="/etc/p0f/p0fr.fp"
 ## p0f stuff ##
 ###############
 
-# File format (according to p0f.fp) :
+# File format(according to p0f.fp) :
 #
 # wwww:ttt:D:ss:OOO...:QQ:OS:Details
 #
 # wwww    - window size
 # ttt     - initial TTL
-# D       - don't fragment bit  (0=unset, 1=set) 
+# D       - don't fragment bit (0=unset, 1=set) 
 # ss      - overall SYN packet size
 # OOO     - option value and order specification
 # QQ      - quirks list
@@ -64,7 +64,7 @@ class p0fKnowledgeBase(KnowledgeBase):
                 #    self.ttl_range.sort()
                 self.base.append((l[0], li[0], li[1], li[2], l[4], l[5], l[6], l[7][:-1]))
         except:
-            warning("Can't parse p0f database (new p0f version ?)")
+            warning("Can't parse p0f database(new p0f version ?)")
             self.base = None
         f.close()
 
@@ -112,7 +112,7 @@ def packet2p0f(pkt):
     #ttl=t[t.index(pkt.ttl)+1]
     ttl = pkt.ttl
     
-    df = (pkt.flags & 2) / 2
+    df =(pkt.flags & 2) / 2
     ss = len(pkt)
     # from p0f/config.h : PACKET_BIG = 100
     if ss > 100:
@@ -132,7 +132,7 @@ def packet2p0f(pkt):
     qqT = False
     qqP = False
     #qqBroken = False
-    ilen = (pkt.payload.dataofs << 2) - 20 # from p0f.c
+    ilen =(pkt.payload.dataofs << 2) - 20 # from p0f.c
     for option in pkt.payload.options:
         ilen -= 1
         if option[0] == "MSS":
@@ -174,7 +174,7 @@ def packet2p0f(pkt):
     if mss != -1:
         if mss != 0 and win % mss == 0:
             win = "S" + str(win/mss)
-        elif win % (mss + 40) == 0:
+        elif win %(mss + 40) == 0:
             win = "T" + str(win/(mss+40))
     win = str(win)
     
@@ -186,8 +186,8 @@ def packet2p0f(pkt):
             #           RST+ACK packets"
             qq += "K"
     # The two next cases should also be only for p0f*r*, but although
-    # it's not documented (or I have not noticed), p0f seems to
-    # support the '0' and 'Q' quirks on any databases (or at the least
+    # it's not documented(or I have not noticed), p0f seems to
+    # support the '0' and 'Q' quirks on any databases(or at the least
     # "classical" p0f.fp).
     if pkt.payload.seq == pkt.payload.ack:
         # p0fr.fp: "A new quirk, 'Q', is used to denote SEQ number
@@ -229,17 +229,17 @@ def packet2p0f(pkt):
     if qq == "":
         qq = "."
 
-    return (db, (win, ttl, df, ss, ooo, qq))
+    return(db,(win, ttl, df, ss, ooo, qq))
 
 def p0f_correl(x,y):
     d = 0
     # wwww can be "*" or "%nn". "Tnn" and "Snn" should work fine with
     # the x[0] == y[0] test.
-    d += (x[0] == y[0] or y[0] == "*" or (y[0][0] == "%" and x[0].isdigit() and (int(x[0]) % int(y[0][1:])) == 0))
+    d +=(x[0] == y[0] or y[0] == "*" or(y[0][0] == "%" and x[0].isdigit() and(int(x[0]) % int(y[0][1:])) == 0))
     # ttl
-    d += (y[1] >= x[1] and y[1] - x[1] < 32)
+    d +=(y[1] >= x[1] and y[1] - x[1] < 32)
     for i in [2, 5]:
-        d += (x[i] == y[i] or y[i] == '*')
+        d +=(x[i] == y[i] or y[i] == '*')
     # '*' has a special meaning for ss
     d += x[3] == y[3]
     xopt = x[4].split(",")
@@ -247,10 +247,10 @@ def p0f_correl(x,y):
     if len(xopt) == len(yopt):
         same = True
         for i in range(len(xopt)):
-            if not (xopt[i] == yopt[i] or
-                    (len(yopt[i]) == 2 and len(xopt[i]) > 1 and
+            if not(xopt[i] == yopt[i] or
+                   (len(yopt[i]) == 2 and len(xopt[i]) > 1 and
                      yopt[i][1] == "*" and xopt[i][0] == yopt[i][0]) or
-                    (len(yopt[i]) > 2 and len(xopt[i]) > 1 and
+                   (len(yopt[i]) > 2 and len(xopt[i]) > 1 and
                      yopt[i][1] == "%" and xopt[i][0] == yopt[i][0] and
                      int(xopt[i][1:]) % int(yopt[i][2:]) == 0)):
                 same = False
@@ -289,7 +289,7 @@ def prnp0f(pkt):
     except:
         return
     if r == []:
-        r = ("UNKNOWN", "[" + ":".join([ str(i) for i in packet2p0f(pkt)[1]]) + ":?:?]", None)
+        r =("UNKNOWN", "[" + ":".join([ str(i) for i in packet2p0f(pkt)[1]]) + ":?:?]", None)
     else:
         r = r[0]
     uptime = None
@@ -301,11 +301,11 @@ def prnp0f(pkt):
         uptime = None
     res = pkt.sprintf("%IP.src%:%TCP.sport% - " + r[0] + " " + r[1])
     if uptime is not None:
-        res += pkt.sprintf(" (up: " + str(uptime//3600) + " hrs)\n  -> %IP.dst%:%TCP.dport% (%TCP.flags%)")
+        res += pkt.sprintf("(up: " + str(uptime//3600) + " hrs)\n  -> %IP.dst%:%TCP.dport%(%TCP.flags%)")
     else:
-        res += pkt.sprintf("\n  -> %IP.dst%:%TCP.dport% (%TCP.flags%)")
+        res += pkt.sprintf("\n  -> %IP.dst%:%TCP.dport%(%TCP.flags%)")
     if r[2] is not None:
-        res += " (distance " + str(r[2]) + ")"
+        res += "(distance " + str(r[2]) + ")"
     print(res)
 
 @conf.commands.register
@@ -331,11 +331,11 @@ def p0f_impersonate(pkt, osgenre=None, osdetails=None, signature=None,
     """Modifies pkt so that p0f will think it has been sent by a
 specific OS.  If osdetails is None, then we randomly pick up a
 personality matching osgenre. If osgenre and signature are also None,
-we use a local signature (using p0f_getlocalsigs). If signature is
-specified (as a tuple), we use the signature.
+we use a local signature(using p0f_getlocalsigs). If signature is
+specified(as a tuple), we use the signature.
 
 For now, only TCP Syn packets are supported.
-Some specifications of the p0f.fp file are not (yet) implemented."""
+Some specifications of the p0f.fp file are not(yet) implemented."""
     pkt = pkt.copy()
     #pkt = pkt.__class__(str(pkt))
     while pkt.haslayer(IP) and pkt.haslayer(TCP):
@@ -376,7 +376,7 @@ Some specifications of the p0f.fp file are not (yet) implemented."""
         raise Scapy_Exception("No match in the p0f database")
     pers = pb[random.randint(0, len(pb) - 1)]
     
-    # options (we start with options because of MSS)
+    # options(we start with options because of MSS)
     ## TODO: let the options already set if they are valid
     options = []
     if pers[4] != '.':
@@ -385,9 +385,9 @@ Some specifications of the p0f.fp file are not (yet) implemented."""
                 # MSS might have a maximum size because of window size
                 # specification
                 if pers[0][0] == 'S':
-                    maxmss = (2**16-1) / int(pers[0][1:])
+                    maxmss =(2**16-1) / int(pers[0][1:])
                 else:
-                    maxmss = (2**16-1)
+                    maxmss =(2**16-1)
                 # If we have to randomly pick up a value, we cannot use
                 # scapy RandXXX() functions, because the value has to be
                 # set in case we need it for the window size value. That's
@@ -409,18 +409,18 @@ Some specifications of the p0f.fp file are not (yet) implemented."""
                 else:
                     options.append(('WScale', int(opt[1:])))
             elif opt == 'T0':
-                options.append(('Timestamp', (0, 0)))
+                options.append(('Timestamp',(0, 0)))
             elif opt == 'T':
                 if 'T' in pers[5]:
-                    # FIXME: RandInt() here does not work (bug (?) in
+                    # FIXME: RandInt() here does not work(bug(?) in
                     # TCPOptionsField.m2i often raises "OverflowError:
                     # long int too large to convert to int" in:
                     #    oval = struct.pack(ofmt, *oval)"
                     # Actually, this is enough to often raise the error:
                     #    struct.pack('I', RandInt())
-                    options.append(('Timestamp', (uptime, random.randint(1,2**32-1))))
+                    options.append(('Timestamp',(uptime, random.randint(1,2**32-1))))
                 else:
-                    options.append(('Timestamp', (uptime, 0)))
+                    options.append(('Timestamp',(uptime, 0)))
             elif opt == 'S':
                 options.append(('SAckOK', ''))
             elif opt == 'N':
@@ -464,8 +464,8 @@ Some specifications of the p0f.fp file are not (yet) implemented."""
     # ttl
     pkt.ttl = pers[1]-extrahops
     # DF flag
-    pkt.flags |= (2 * pers[2])
-    ## FIXME: ss (packet size) not handled (how ? may be with D quirk
+    pkt.flags |=(2 * pers[2])
+    ## FIXME: ss(packet size) not handled(how ? may be with D quirk
     ## if present)
     # Quirks
     if pers[5] != '.':
@@ -485,7 +485,7 @@ Some specifications of the p0f.fp file are not (yet) implemented."""
             elif qq == 'Q': pkt.payload.seq = pkt.payload.ack
             #elif qq == '0': pkt.payload.seq = 0
         #if db == p0fr_kdb:
-        # '0' quirk is actually not only for p0fr.fp (see
+        # '0' quirk is actually not only for p0fr.fp(see
         # packet2p0f())
     if '0' in pers[5]:
         pkt.payload.seq = 0
@@ -498,13 +498,13 @@ Some specifications of the p0f.fp file are not (yet) implemented."""
 
 def p0f_getlocalsigs():
     """This function returns a dictionary of signatures indexed by p0f
-db (e.g., p0f_kdb, p0fa_kdb, ...) for the local TCP/IP stack.
+db(e.g., p0f_kdb, p0fa_kdb, ...) for the local TCP/IP stack.
 
 You need to have your firewall at least accepting the TCP packets
-from/to a high port (30000 <= x <= 40000) on your loopback interface.
+from/to a high port(30000 <= x <= 40000) on your loopback interface.
 
 Please note that the generated signatures come from the loopback
-interface and may (are likely to) be different than those generated on
+interface and may(are likely to) be different than those generated on
 "normal" interfaces."""
     pid = os.fork()
     port = random.randint(30000, 40000)

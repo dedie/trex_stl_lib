@@ -1,14 +1,14 @@
 """0MQ Context class declaration."""
 
 #
-#    Copyright (c) 2010-2011 Brian E. Granger & Min Ragan-Kelley
+#    Copyright(c) 2010-2011 Brian E. Granger & Min Ragan-Kelley
 #
 #    This file is part of pyzmq.
 #
 #    pyzmq is free software; you can redistribute it and/or modify it under
 #    the terms of the Lesser GNU General Public License as published by
 #    the Free Software Foundation; either version 3 of the License, or
-#    (at your option) any later version.
+#   (at your option) any later version.
 #
 #    pyzmq is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -31,7 +31,7 @@ cdef class Context:
     cdef void **_sockets        # A C-array containg socket handles
     cdef size_t _n_sockets      # the number of sockets
     cdef size_t _max_sockets    # the size of the _sockets array
-    cdef int _pid               # the pid of the process which created me (for fork safety)
+    cdef int _pid               # the pid of the process which created me(for fork safety)
     
     cdef public bint closed   # bool property for a closed context.
     cdef inline int _term(self)

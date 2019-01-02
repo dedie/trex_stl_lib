@@ -1,12 +1,12 @@
 # -*- coding: utf8 -*-
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import time
 import warnings
 
 import zmq
-from zmq.tests import (
+from zmq.tests import(
     BaseZMQTestCase, SkipTest, have_gevent, GreenTest, skip_pypy, skip_if
 )
 from zmq.utils.strtypes import bytes, str
@@ -108,7 +108,7 @@ class TestSocket(BaseZMQTestCase):
     def test_int_sockopts(self):
         "test integer sockopts"
         v = zmq.zmq_version_info()
-        if v < (3,0):
+        if v <(3,0):
             default_hwm = 0
         else:
             default_hwm = 1000
@@ -361,13 +361,13 @@ class TestSocket(BaseZMQTestCase):
         s = self.context.socket(zmq.PUB)
         self.sockets.append(s)
         try:
-            s.bind('ipc://{0}'.format('a' * (zmq.IPC_PATH_MAX_LEN + 1)))
+            s.bind('ipc://{0}'.format('a' *(zmq.IPC_PATH_MAX_LEN + 1)))
         except zmq.ZMQError as e:
             self.assertTrue(str(zmq.IPC_PATH_MAX_LEN) in e.strerror)
     
     def test_hwm(self):
         zmq3 = zmq.zmq_version_info()[0] >= 3
-        for stype in (zmq.PUB, zmq.ROUTER, zmq.SUB, zmq.REQ, zmq.DEALER):
+        for stype in(zmq.PUB, zmq.ROUTER, zmq.SUB, zmq.REQ, zmq.DEALER):
             s = self.context.socket(stype)
             s.hwm = 100
             self.assertEqual(s.hwm, 100)

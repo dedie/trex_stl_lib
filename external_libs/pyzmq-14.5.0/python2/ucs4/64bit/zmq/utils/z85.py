@@ -7,7 +7,7 @@ See ZMQ RFC 32 for details.
 
 """
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import sys
@@ -35,7 +35,7 @@ def encode(rawbytes):
         for offset in _85s:
             encoded.append(Z85CHARS[(v // offset) % 85])
     
-    # In Python 3, encoded is a list of integers (obviously?!)
+    # In Python 3, encoded is a list of integers(obviously?!)
     if PY3:
         return bytes(encoded)
     else:

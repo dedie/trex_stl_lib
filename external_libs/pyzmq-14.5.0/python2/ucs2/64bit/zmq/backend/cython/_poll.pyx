@@ -1,14 +1,14 @@
 """0MQ polling related functions and classes."""
 
 #
-#    Copyright (c) 2010-2011 Brian E. Granger & Min Ragan-Kelley
+#    Copyright(c) 2010-2011 Brian E. Granger & Min Ragan-Kelley
 #
 #    This file is part of pyzmq.
 #
 #    pyzmq is free software; you can redistribute it and/or modify it under
 #    the terms of the Lesser GNU General Public License as published by
 #    the Free Software Foundation; either version 3 of the License, or
-#    (at your option) any later version.
+#   (at your option) any later version.
 #
 #    pyzmq is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -41,7 +41,7 @@ from zmq.backend.cython.checkrc cimport _check_rc
 if sys.version_info[0] >= 3:
     int_t = int
 else:
-    int_t = (int,long)
+    int_t =(int,long)
 
 
 def zmq_poll(sockets, long timeout=-1):
@@ -51,11 +51,11 @@ def zmq_poll(sockets, long timeout=-1):
 
     Parameters
     ----------
-    sockets : list of tuples of (socket, flags)
+    sockets : list of tuples of(socket, flags)
         Each element of this list is a two-tuple containing a socket
         and a flags. The socket may be a 0MQ socket or any object with
-        a ``fileno()`` method. The flags can be zmq.POLLIN (for detecting
-        for incoming messages), zmq.POLLOUT (for detecting that send is OK)
+        a ``fileno()`` method. The flags can be zmq.POLLIN(for detecting
+        for incoming messages), zmq.POLLOUT(for detecting that send is OK)
         or zmq.POLLIN|zmq.POLLOUT for detecting both.
     timeout : int
         The number of milliseconds to poll for. Negative means no timeout.
@@ -74,13 +74,13 @@ def zmq_poll(sockets, long timeout=-1):
         
     if ZMQ_VERSION_MAJOR < 3:
         # timeout is us in 2.x, ms in 3.x
-        # expected input is ms (matches 3.x)
+        # expected input is ms(matches 3.x)
         timeout = 1000*timeout
     
     for i in range(nsockets):
         s, events = sockets[i]
         if isinstance(s, Socket):
-            pollitems[i].socket = (<Socket>s).handle
+            pollitems[i].socket =(<Socket>s).handle
             pollitems[i].events = events
             pollitems[i].revents = 0
         elif isinstance(s, int_t):

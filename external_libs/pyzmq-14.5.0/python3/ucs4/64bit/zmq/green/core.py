@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------
-#  Copyright (C) 2011-2012 Travis Cline
+#  Copyright(C) 2011-2012 Travis Cline
 #
 #  This file is part of pyzmq
 #  It is adapted from upstream project zeromq_gevent under the New BSD License
@@ -28,9 +28,9 @@ from gevent.event import AsyncResult
 from gevent.hub import get_hub
 
 if hasattr(zmq, 'RCVTIMEO'):
-    TIMEOS = (zmq.RCVTIMEO, zmq.SNDTIMEO)
+    TIMEOS =(zmq.RCVTIMEO, zmq.SNDTIMEO)
 else:
-    TIMEOS = ()
+    TIMEOS =()
 
 def _stop(evt):
     """simple wrapper for stopping an Event, allowing for method rename in gevent 1.0"""
@@ -49,10 +49,10 @@ class _Socket(_original_Socket):
         * recv
 
     To ensure that the ``zmq.NOBLOCK`` flag is set and that sending or receiving
-    is deferred to the hub if a ``zmq.EAGAIN`` (retry) error is raised.
+    is deferred to the hub if a ``zmq.EAGAIN``(retry) error is raised.
     
     The `__state_changed` method is triggered when the zmq.FD for the socket is
-    marked as readable and triggers the necessary read and write events (which
+    marked as readable and triggers the necessary read and write events(which
     are waited for in the recv and send methods).
 
     Some double underscore prefixes are used to minimize pollution of
@@ -140,7 +140,7 @@ class _Socket(_original_Socket):
                 raise
             toc = time.time()
             # gevent bug: get can raise timeout even on clean return
-            # don't display zmq bug warning for gevent bug (this is getting ridiculous)
+            # don't display zmq bug warning for gevent bug(this is getting ridiculous)
             if self._debug_gevent and timeout and toc-tic > dt and \
                     self.getsockopt(zmq.EVENTS) & zmq.POLLOUT:
                 print("BUG: gevent may have missed a libzmq send event on %i!" % self.FD, file=sys.stderr)
@@ -171,7 +171,7 @@ class _Socket(_original_Socket):
                 raise
             toc = time.time()
             # gevent bug: get can raise timeout even on clean return
-            # don't display zmq bug warning for gevent bug (this is getting ridiculous)
+            # don't display zmq bug warning for gevent bug(this is getting ridiculous)
             if self._debug_gevent and timeout and toc-tic > dt and \
                     self.getsockopt(zmq.EVENTS) & zmq.POLLIN:
                 print("BUG: gevent may have missed a libzmq recv event on %i!" % self.FD, file=sys.stderr)
@@ -183,7 +183,7 @@ class _Socket(_original_Socket):
     def send(self, data, flags=0, copy=True, track=False):
         """send, which will only block current greenlet
         
-        state_changed always fires exactly once (success or fail) at the
+        state_changed always fires exactly once(success or fail) at the
         end of this method.
         """
         
@@ -217,7 +217,7 @@ class _Socket(_original_Socket):
     def recv(self, flags=0, copy=True, track=False):
         """recv, which will only block current greenlet
         
-        state_changed always fires exactly once (success or fail) at the
+        state_changed always fires exactly once(success or fail) at the
         end of this method.
         """
         if flags & zmq.NOBLOCK:

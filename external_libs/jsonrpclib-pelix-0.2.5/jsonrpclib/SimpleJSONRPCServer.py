@@ -1,5 +1,13 @@
 #!/usr/bin/python
 # -- Content-Encoding: UTF-8 --
+import traceback
+import sys
+import socket
+import logging
+import jsonrpclib.threadpool
+import jsonrpclib.utils as utils
+import jsonrpclib.config
+from jsonrpclib import Fault
 """
 Defines a request dispatcher, a HTTP request handler, a HTTP server and a
 CGI request handler.
@@ -13,7 +21,7 @@ CGI request handler.
 
     Copyright 2015 isandlaTech
 
-    Licensed under the Apache License, Version 2.0 (the "License");
+    Licensed under the Apache License, Version 2.0(the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
@@ -35,16 +43,8 @@ __docformat__ = "restructuredtext en"
 
 # ------------------------------------------------------------------------------
 # Local modules
-from jsonrpclib import Fault
-import jsonrpclib.config
-import jsonrpclib.utils as utils
-import jsonrpclib.threadpool
 
 # Standard library
-import logging
-import socket
-import sys
-import traceback
 
 # Prepare the logger
 _logger = logging.getLogger(__name__)
@@ -54,7 +54,7 @@ try:
     # pylint: disable=F0401,E0611
     import xmlrpc.server as xmlrpcserver
     import socketserver
-except (ImportError, AttributeError):
+except(ImportError, AttributeError):
     # Python 2 or IronPython
     # pylint: disable=F0401,E0611
     import xmlrpc.server as xmlrpcserver
@@ -150,6 +150,7 @@ class SimpleJSONRPCDispatcher(xmlrpcserver.SimpleXMLRPCDispatcher, object):
     and then to dispatch them. This class doesn't need to be
     instanced directly when used by SimpleJSONRPCServer.
     """
+
     def __init__(self, encoding=None, config=jsonrpclib.config.DEFAULT):
         """
         Sets up the dispatcher with the given encoding.
@@ -170,12 +171,12 @@ class SimpleJSONRPCDispatcher(xmlrpcserver.SimpleXMLRPCDispatcher, object):
 
     def _unmarshaled_dispatch(self, request, dispatch_method=None):
         """
-        Loads the request dictionary (unmarshaled), calls the method(s)
-        accordingly and returns a JSON-RPC dictionary (not marshaled)
+        Loads the request dictionary(unmarshaled), calls the method(s)
+        accordingly and returns a JSON-RPC dictionary(not marshaled)
 
-        :param request: JSON-RPC request dictionary (or list of)
-        :param dispatch_method: Custom dispatch method (for method resolution)
-        :return: A JSON-RPC dictionary (or an array of) or None if the request
+        :param request: JSON-RPC request dictionary(or list of)
+        :param dispatch_method: Custom dispatch method(for method resolution)
+        :return: A JSON-RPC dictionary(or an array of) or None if the request
                  was a notification
         :raise NoMulticallResult: No result in batch
         """
@@ -231,20 +232,20 @@ class SimpleJSONRPCDispatcher(xmlrpcserver.SimpleXMLRPCDispatcher, object):
 
     def _marshaled_dispatch(self, data, dispatch_method=None, path=None):
         """
-        Parses the request data (marshaled), calls method(s) and returns a
-        JSON string (marshaled)
+        Parses the request data(marshaled), calls method(s) and returns a
+        JSON string(marshaled)
 
         :param data: A JSON request string
-        :param dispatch_method: Custom dispatch method (for method resolution)
+        :param dispatch_method: Custom dispatch method(for method resolution)
         :param path: Unused parameter, to keep compatibility with xmlrpclib
-        :return: A JSON-RPC response string (marshaled)
+        :return: A JSON-RPC response string(marshaled)
         """
         # Parse the request
         try:
             request = jsonrpclib.loads(data, self.json_config)
         except Exception as ex:
             # Parsing/loading error
-            fault = Fault(-32700, 'Request {0} invalid. ({1}:{2})'
+            fault = Fault(-32700, 'Request {0} invalid.({1}:{2})'
                           .format(data, type(ex).__name__, ex),
                           config=self.json_config)
             _logger.warning("Error parsing request: %s", fault)
@@ -257,10 +258,10 @@ class SimpleJSONRPCDispatcher(xmlrpcserver.SimpleXMLRPCDispatcher, object):
                 # Compute the string representation of the dictionary/list
                 return jsonrpclib.jdumps(response, self.encoding)
             else:
-                # No result (notification)
+                # No result(notification)
                 return ''
         except NoMulticallResult:
-            # Return an empty string (jsonrpclib internal behaviour)
+            # Return an empty string(jsonrpclib internal behaviour)
             return ''
 
     def _marshaled_single_dispatch(self, request, dispatch_method=None):
@@ -268,7 +269,7 @@ class SimpleJSONRPCDispatcher(xmlrpcserver.SimpleXMLRPCDispatcher, object):
         Dispatches a single method call
 
         :param request: A validated request dictionary
-        :param dispatch_method: Custom dispatch method (for method resolution)
+        :param dispatch_method: Custom dispatch method(for method resolution)
         :return: A JSON-RPC response dictionary, or None if it was a
                  notification request
         """
@@ -286,7 +287,7 @@ class SimpleJSONRPCDispatcher(xmlrpcserver.SimpleXMLRPCDispatcher, object):
             config = self.json_config
 
         # Test if this is a notification request
-        is_notification = 'id' not in request or request['id'] in (None, '')
+        is_notification = 'id' not in request or request['id'] in(None, '')
         if is_notification and self.__notification_pool is not None:
             # Use the thread pool for notifications
             if dispatch_method is not None:
@@ -375,7 +376,8 @@ class SimpleJSONRPCDispatcher(xmlrpcserver.SimpleXMLRPCDispatcher, object):
             except:
                 # Method exception
                 err_lines = traceback.format_exception(*sys.exc_info())
-                trace_string = '{0} | {1}'.format(err_lines[-2].splitlines()[0].strip(), err_lines[-1])
+                trace_string = '{0} | {1}'.format(
+                    err_lines[-2].splitlines()[0].strip(), err_lines[-1])
                 fault = Fault(-32603, 'Server error: {0}'.format(trace_string),
                               config=config)
                 _logger.exception("Server-side exception: %s", fault)
@@ -447,7 +449,8 @@ class SimpleJSONRPCRequestHandler(xmlrpcserver.SimpleXMLRPCRequestHandler):
             # Exception: send 500 Server Error
             self.send_response(500)
             err_lines = traceback.format_exception(*sys.exc_info())
-            trace_string = '{0} | {1}'.format(err_lines[0].splitlines()[-2].strip(), err_lines[-1])
+            trace_string = '{0} | {1}'.format(
+                err_lines[0].splitlines()[-2].strip(), err_lines[-1])
             fault = jsonrpclib.Fault(-32603, 'Server error: {0}'
                                      .format(trace_string), config=config)
             _logger.exception("Server-side error: %s", fault)
@@ -472,7 +475,7 @@ class SimpleJSONRPCRequestHandler(xmlrpcserver.SimpleXMLRPCRequestHandler):
 
 class SimpleJSONRPCServer(socketserver.TCPServer, SimpleJSONRPCDispatcher):
     """
-    JSON-RPC server (and dispatcher)
+    JSON-RPC server(and dispatcher)
     """
     # This simplifies server restart after error
     allow_reuse_address = True
@@ -507,6 +510,7 @@ class SimpleJSONRPCServer(socketserver.TCPServer, SimpleJSONRPCDispatcher):
             """
             Wraps the request handle to have access to the configuration
             """
+
             def __init__(self, *args, **kwargs):
                 """
                 Constructs the wrapper after having stored the configuration
@@ -531,6 +535,7 @@ class PooledJSONRPCServer(SimpleJSONRPCServer, socketserver.ThreadingMixIn):
     """
     JSON-RPC server based on a thread pool
     """
+
     def __init__(self, addr, requestHandler=SimpleJSONRPCRequestHandler,
                  logRequests=True, encoding=None, bind_and_activate=True,
                  address_family=socket.AF_INET,
@@ -581,8 +586,9 @@ class PooledJSONRPCServer(SimpleJSONRPCServer, socketserver.ThreadingMixIn):
 
 class CGIJSONRPCRequestHandler(SimpleJSONRPCDispatcher):
     """
-    JSON-RPC CGI handler (and dispatcher)
+    JSON-RPC CGI handler(and dispatcher)
     """
+
     def __init__(self, encoding=None, config=jsonrpclib.config.DEFAULT):
         """
         Sets up the dispatcher

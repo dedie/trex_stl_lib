@@ -19,7 +19,7 @@ from scapy.layers.inet import IP,UDP
 from scapy.sendrecv import sr
 
 # see http://www.iana.org/assignments/ikev2-parameters for details
-IKEv2AttributeTypes= { "Encryption":    (1, { "DES-IV64"  : 1,
+IKEv2AttributeTypes= { "Encryption":   (1, { "DES-IV64"  : 1,
                                                 "DES" : 2,
                                                 "3DES" : 3,
                                                 "RC5" : 4,
@@ -42,7 +42,7 @@ IKEv2AttributeTypes= { "Encryption":    (1, { "DES-IV64"  : 1,
                                                 "Camellia-CCM-12ICV" : 26,
                                                 "Camellia-CCM-16ICV" : 27,
                                         }, 0),
-                         "PRF":            (2, {"PRF_HMAC_MD5":1,
+                         "PRF":           (2, {"PRF_HMAC_MD5":1,
                                                 "PRF_HMAC_SHA1":2,
                                                 "PRF_HMAC_TIGER":3,
                                                 "PRF_AES128_XCBC":4,
@@ -51,7 +51,7 @@ IKEv2AttributeTypes= { "Encryption":    (1, { "DES-IV64"  : 1,
                                                 "PRF_HMAC_SHA2_512":7,
                                                 "PRF_AES128_CMAC":8,
                                        }, 0),
-                         "Integrity":    (3, { "HMAC-MD5-96": 1,
+                         "Integrity":   (3, { "HMAC-MD5-96": 1,
                                                 "HMAC-SHA1-96": 2,
                                                 "DES-MAC": 3,
                                                 "KPDK-MD5": 4,
@@ -66,7 +66,7 @@ IKEv2AttributeTypes= { "Encryption":    (1, { "DES-IV64"  : 1,
                                                 "SHA2-384-192": 13,
                                                 "SHA2-512-256": 14,
                                         }, 0),
-                         "GroupDesc":     (4, { "768MODPgr"  : 1,
+                         "GroupDesc":    (4, { "768MODPgr"  : 1,
                                                 "1024MODPgr" : 2, 
                                                 "1536MODPgr" : 5, 
                                                 "2048MODPgr" : 14, 
@@ -83,11 +83,11 @@ IKEv2AttributeTypes= { "Encryption":    (1, { "DES-IV64"  : 1,
                                                 "192randECPgr" : 25,
                                                 "224randECPgr" : 26,
                                         }, 0),
-                         "Extended Sequence Number":       (5, {"No ESN":     0,
+                         "Extended Sequence Number":      (5, {"No ESN":     0,
                                                  "ESN":   1,  }, 0),
                          }
 
-# the name 'IKEv2TransformTypes' is actually a misnomer (since the table 
+# the name 'IKEv2TransformTypes' is actually a misnomer(since the table 
 # holds info for all IKEv2 Attribute types, not just transforms, but we'll 
 # keep it for backwards compatibility... for now at least
 IKEv2TransformTypes = IKEv2AttributeTypes
@@ -98,7 +98,7 @@ for n in IKEv2TransformTypes:
     tmp = {}
     for e in val[1]:
         tmp[val[1][e]] = e
-    IKEv2TransformNum[val[0]] = (n,tmp, val[2])
+    IKEv2TransformNum[val[0]] =(n,tmp, val[2])
 
 IKEv2Transforms = {}
 for n in IKEv2TransformTypes:
@@ -166,7 +166,7 @@ class IKEv2(IKEv2_class): # rfc4306
        
 
 class IKEv2_Key_Length_Attribute(IntField):
-	# We only support the fixed-length Key Length attribute (the only one currently defined)
+	# We only support the fixed-length Key Length attribute(the only one currently defined)
 	name="key length"
 	def __init__(self, name):
 		IntField.__init__(self, name, "0x800E0000")

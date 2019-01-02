@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Module holding utility and convenience functions for zmq event monitoring."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import struct
@@ -50,8 +50,8 @@ def recv_monitor_message(socket, flags=0):
     Parameters
     ----------
     socket : zmq PAIR socket
-        The PAIR socket (created by other.get_monitor_socket()) on which to recv the message
-    flags : bitfield (int)
+        The PAIR socket(created by other.get_monitor_socket()) on which to recv the message
+    flags : bitfield(int)
         standard zmq recv flags
 
     Returns

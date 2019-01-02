@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -38,7 +38,7 @@ for _l in ['l2','inet','inet6']:
 #    try:
 #        _import_star(_l)
 #    except Exception as e:
-#        log.warning("can't import layer %s: %s" % (_l,e))
+#        log.warning("can't import layer %s: %s" %(_l,e))
 
 
 

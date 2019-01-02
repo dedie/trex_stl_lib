@@ -1,7 +1,7 @@
 # coding: utf-8
 """miscellaneous zmq_utils wrapping"""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 from ._cffi import ffi, C
@@ -10,7 +10,7 @@ from zmq.error import ZMQError, _check_rc, _check_version
 from zmq.utils.strtypes import str
 
 def has(capability):
-    """Check for zmq capability by name (e.g. 'ipc', 'curve')
+    """Check for zmq capability by name(e.g. 'ipc', 'curve')
     
     .. versionadded:: libzmq-4.1
     .. versionadded:: 14.1
@@ -23,11 +23,11 @@ def has(capability):
 def curve_keypair():
     """generate a Z85 keypair for use with zmq.CURVE security
     
-    Requires libzmq (≥ 4.0) to have been linked with libsodium.
+    Requires libzmq(≥ 4.0) to have been linked with libsodium.
     
     Returns
     -------
-    (public, secret) : two bytestrings
+   (public, secret) : two bytestrings
         The public and private keypair as 40 byte z85-encoded bytestrings.
     """
     _check_version((3,2), "monitor")

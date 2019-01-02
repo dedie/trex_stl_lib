@@ -1,13 +1,13 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 #############################################################################
 ##                                                                         ##
 ## hsrp.py --- HSRP  protocol support for Scapy                            ##
 ##                                                                         ##
-## Copyright (C) 2010  Mathieu RENARD mathieu.renard(at)gmail.com          ##
+## Copyright(C) 2010  Mathieu RENARD mathieu.renard(at)gmail.com          ##
 ##                                                                         ##
 ## This program is free software; you can redistribute it and/or modify it ##
 ## under the terms of the GNU General Public License version 2 as          ##
@@ -29,7 +29,7 @@
 ##   Cleanup code
 
 """
-HSRP (Hot Standby Router Protocol): proprietary redundancy protocol for Cisco routers.
+HSRP(Hot Standby Router Protocol): proprietary redundancy protocol for Cisco routers.
 """
 
 from scapy.fields import *

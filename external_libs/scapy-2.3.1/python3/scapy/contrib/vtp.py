@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# scapy.contrib.description = VLAN Trunking Protocol (VTP)
+# scapy.contrib.description = VLAN Trunking Protocol(VTP)
 # scapy.contrib.status = loads
 
 """
@@ -15,7 +15,7 @@
         This program is free software; you can redistribute it and/or
         modify it under the terms of the GNU General Public License
         as published by the Free Software Foundation; either version 2
-        of the License, or (at your option) any later version.
+        of the License, or(at your option) any later version.
 
         This program is distributed in the hope that it will be useful,
         but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -38,7 +38,7 @@
 
     :References:
 
-        - Understanding VLAN Trunk Protocol (VTP)
+        - Understanding VLAN Trunk Protocol(VTP)
         http://www.cisco.com/en/US/tech/tk389/tk689/technologies_tech_note09186a0080094c52.shtml
 """
 
@@ -87,14 +87,14 @@ class VTPVlanInfo(Packet):
                     ShortField("vlanid", 1),
                     ShortField("mtu", 1500),
                     XIntField("dot10index", None),
-                    StrLenField("vlanname", "default", length_from=lambda pkt:4 * ((pkt.vlannamelen + 3) / 4)),
+                    StrLenField("vlanname", "default", length_from=lambda pkt:4 *((pkt.vlannamelen + 3) / 4)),
                     ConditionalField(PacketListField("tlvlist", [], VTPVlanInfoTlv,
-                            length_from=lambda pkt:pkt.len - 12 - (4 * ((pkt.vlannamelen + 3) / 4))),
+                            length_from=lambda pkt:pkt.len - 12 -(4 *((pkt.vlannamelen + 3) / 4))),
                             lambda pkt:pkt.type not in [1, 2])
             ]
 
     def post_build(self, p, pay):
-        vlannamelen = 4 * ((len(self.vlanname) + 3) / 4)
+        vlannamelen = 4 *((len(self.vlanname) + 3) / 4)
 
         if self.len == None:
             l = vlannamelen + 12
@@ -124,7 +124,7 @@ class VTPTimeStampField(StrFixedLenField):
         StrFixedLenField.__init__(self, name, default, 12)
 
     def i2repr(self, pkt, x):
-        return "%s-%s-%s %s:%s:%s" % (x[:2], x[2:4], x[4:6], x[6:8], x[8:10], x[10:12])
+        return "%s-%s-%s %s:%s:%s" %(x[:2], x[2:4], x[4:6], x[6:8], x[8:10], x[10:12])
 
 class VTP(Packet):
     name = "VTP"

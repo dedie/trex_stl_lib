@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -29,7 +29,7 @@ def _read_config_file(cf):
     try:
         exec(compile(open(cf).read(), cf, 'exec'))
     except IOError as e:
-        log_loading.warning("Cannot read config file [%s] [%s]" % (cf,e))
+        log_loading.warning("Cannot read config file [%s] [%s]" %(cf,e))
     except Exception as e:
         log_loading.exception("Error during evaluation of config file [%s]" % cf)
         
@@ -118,7 +118,7 @@ def save_session(fname=None, session=None, pickleProto=-1):
 
     for k in list(to_be_saved.keys()):
         if type(to_be_saved[k]) in [type, type, types.ModuleType]:
-             log_interactive.error("[%s] (%s) can't be saved." % (k, type(to_be_saved[k])))
+             log_interactive.error("[%s](%s) can't be saved." %(k, type(to_be_saved[k])))
              del(to_be_saved[k])
 
     try:
@@ -168,7 +168,7 @@ def scapy_write_history_file(readline):
             readline.write_history_file(conf.histfile)
         except IOError as e:
             try:
-                warning("Could not write history to [%s]\n\t (%s)" % (conf.histfile,e))
+                warning("Could not write history to [%s]\n\t(%s)" %(conf.histfile,e))
                 tmp = utils.get_temp_file(keep=True)
                 readline.write_history_file(tmp)
                 warning("Wrote history to [%s]" % tmp)
@@ -184,7 +184,7 @@ def interact(mydict=None,argv=None,mybanner=None,loglevel=20):
     if loglevel is not None:
         conf.logLevel=loglevel
 
-    the_banner = "Welcome to Scapy (%s)"
+    the_banner = "Welcome to Scapy(%s)"
     if mybanner is not None:
         the_banner += "\n"
         the_banner += mybanner
@@ -231,7 +231,7 @@ def interact(mydict=None,argv=None,mybanner=None,loglevel=20):
                 n = len(attr)
                 for word in words:
                     if word[:n] == attr and word != "__builtins__":
-                        matches.append("%s.%s" % (expr, word))
+                        matches.append("%s.%s" %(expr, word))
                 return matches
     
         readline.set_completer(ScapyCompleter().complete)
@@ -340,11 +340,11 @@ def interact(mydict=None,argv=None,mybanner=None,loglevel=20):
             IPYTHON=False
         
     if IPYTHON:
-        banner = the_banner % (conf.version) + " using IPython %s" % IPython.__version__
+        banner = the_banner %(conf.version) + " using IPython %s" % IPython.__version__
 
         # Old way to embed IPython kept for backward compatibility
         try:
-          args = ['']  # IPython command line args (will be seen as sys.argv)
+          args = ['']  # IPython command line args(will be seen as sys.argv)
           ipshell = IPython.Shell.IPShellEmbed(args, banner = banner)
           ipshell(local_ns=session)
         except AttributeError as e:
@@ -354,7 +354,7 @@ def interact(mydict=None,argv=None,mybanner=None,loglevel=20):
         IPython.embed(user_ns=session, banner2=banner)
 
     else:
-        code.interact(banner = the_banner % (conf.version),
+        code.interact(banner = the_banner %(conf.version),
                       local=session, readfunc=conf.readfunc)
 
     if conf.session:

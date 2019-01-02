@@ -1,9 +1,9 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
-## Copyright (C) 2005  Guillaume Valadon <guedou@hongo.wide.ad.jp>
+## Copyright(C) 2005  Guillaume Valadon <guedou@hongo.wide.ad.jp>
 ##                     Arnaud Ebalard <arnaud.ebalard@eads.net>
 
 """
@@ -149,8 +149,8 @@ duidtypes = { 1: "Link-layer address plus time",
 # http://www.iana.org/assignments/arp-parameters on 31/10/06
 # We should add the length of every kind of address.
 duidhwtypes = {  0: "NET/ROM pseudo", # Not referenced by IANA
-                 1: "Ethernet (10Mb)",
-                 2: "Experimental Ethernet (3Mb)",
+                 1: "Ethernet(10Mb)",
+                 2: "Experimental Ethernet(3Mb)",
                  3: "Amateur Radio AX.25",
                  4: "Proteon ProNET Token Ring",
                  5: "Chaos",
@@ -160,16 +160,16 @@ duidhwtypes = {  0: "NET/ROM pseudo", # Not referenced by IANA
                  9: "Lanstar",
                 10: "Autonet Short Address",
                 11: "LocalTalk",
-                12: "LocalNet (IBM PCNet or SYTEK LocalNET)",
+                12: "LocalNet(IBM PCNet or SYTEK LocalNET)",
                 13: "Ultra link",
                 14: "SMDS",
                 15: "Frame Relay",
-                16: "Asynchronous Transmission Mode (ATM)",
+                16: "Asynchronous Transmission Mode(ATM)",
                 17: "HDLC",
                 18: "Fibre Channel",
-                19: "Asynchronous Transmission Mode (ATM)",
+                19: "Asynchronous Transmission Mode(ATM)",
                 20: "Serial Line",
-                21: "Asynchronous Transmission Mode (ATM)",
+                21: "Asynchronous Transmission Mode(ATM)",
                 22: "MIL-STD-188-220",
                 23: "Metricom",
                 24: "IEEE 1394.1995",
@@ -180,18 +180,18 @@ duidhwtypes = {  0: "NET/ROM pseudo", # Not referenced by IANA
                 29: "IP and ARP over ISO 7816-3",
                 30: "ARPSec",
                 31: "IPsec tunnel",
-                32: "InfiniBand (TM)",
-                33: "TIA-102 Project 25 Common Air Interface (CAI)" }
+                32: "InfiniBand(TM)",
+                33: "TIA-102 Project 25 Common Air Interface(CAI)" }
 
 class UTCTimeField(IntField):
-    epoch = (2000, 1, 1, 0, 0, 0, 5, 1, 0) # required Epoch
+    epoch =(2000, 1, 1, 0, 0, 0, 5, 1, 0) # required Epoch
     def i2repr(self, pkt, x):
         x = self.i2h(pkt, x)
         from time import gmtime, strftime, mktime
         delta = mktime(self.epoch) - mktime(gmtime(0))
         x = x + delta
         t = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime(x))
-        return "%s (%d)" % (t, x)
+        return "%s(%d)" %(t, x)
 
 class _LLAddrField(MACField):
     pass
@@ -207,7 +207,7 @@ class DUID_LLT(Packet):  # sect 9.2 RFC 3315
 
 # In fact, IANA enterprise-numbers file available at 
 # http//www.iana.org/asignments/enterprise-numbers)
-# is simply huge (more than 2Mo and 600Ko in bz2). I'll
+# is simply huge(more than 2Mo and 600Ko in bz2). I'll
 # add only most common vendors, and encountered values.
 # -- arno
 iana_enterprise_num = {    9: "ciscoSystems",
@@ -292,7 +292,7 @@ class DHCP6OptServerId(DHCP6OptClientId):     # RFC sect 22.3
 # Can only appear at that location.
 # TODO : last field IAaddr-options is not defined in the reference document
 class DHCP6OptIAAddress(_DHCP6OptGuessPayload):    # RFC sect 22.6
-    name = "DHCP6 IA Address Option (IA_TA or IA_NA suboption)"
+    name = "DHCP6 IA Address Option(IA_TA or IA_NA suboption)"
     fields_desc = [ ShortEnumField("optcode", 5, dhcp6opts), 
                     FieldLenField("optlen", None, length_of="iaaddropts",
                                   fmt="!H", adjust = lambda pkt,x: x+24),
@@ -413,8 +413,8 @@ class DHCP6OptPref(_DHCP6OptGuessPayload):       # RFC sect 22.8
 class _ElapsedTimeField(ShortField):
     def i2repr(self, pkt, x):
         if x == 0xffff:
-            return "infinity (0xffff)"
-        return "%.2f sec" % (self.i2h(pkt, x)/100.)
+            return "infinity(0xffff)"
+        return "%.2f sec" %(self.i2h(pkt, x)/100.)
 
 class DHCP6OptElapsedTime(_DHCP6OptGuessPayload):# RFC sect 22.9
     name = "DHCP6 Elapsed Time Option"
@@ -454,7 +454,7 @@ class DHCP6OptRelayMsg(_DHCP6OptGuessPayload):# RFC sect 22.10
 #      0                   1                   2                   3
 #      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 #     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-#     |     Type      |                 Value (128 bits)              |
+#     |     Type      |                 Value(128 bits)              |
 #     +-+-+-+-+-+-+-+-+                                               |
 #     .                                                               .
 #     .                                                               .
@@ -464,9 +464,9 @@ class DHCP6OptRelayMsg(_DHCP6OptGuessPayload):# RFC sect 22.10
 #
 #       Type    Type of data in Value field carried in this option:
 #
-#                  1   Reconfigure Key value (used in Reply message).
+#                  1   Reconfigure Key value(used in Reply message).
 #
-#                  2   HMAC-MD5 digest of the message (used in Reconfigure
+#                  2   HMAC-MD5 digest of the message(used in Reconfigure
 #                      message).
 #
 #       Value   Data as defined by field.
@@ -865,7 +865,7 @@ class DHCP6OptRelayAgentERO(_DHCP6OptGuessPayload):       # RFC4994
 #####################################################################
 
 # Some state parameters of the protocols that should probably be 
-# useful to have in the configuration (and keep up-to-date)
+# useful to have in the configuration(and keep up-to-date)
 DHCP6RelayAgentUnicastAddr=""
 DHCP6RelayHopCount=""
 DHCP6ServerUnicastAddr=""
@@ -883,10 +883,10 @@ DHCP6PrefVal="" # la valeur de preference a utiliser dans
 # les options preference
 
 # Emitted by :
-# - server : ADVERTISE, REPLY, RECONFIGURE, RELAY-REPL (vers relay)
+# - server : ADVERTISE, REPLY, RECONFIGURE, RELAY-REPL(vers relay)
 # - client : SOLICIT, REQUEST, CONFIRM, RENEW, REBIND, RELEASE, DECLINE,
 #            INFORMATION REQUEST
-# - relay  : RELAY-FORW (toward server)
+# - relay  : RELAY-FORW(toward server)
 
 class _DHCP6GuessPayload(Packet):
     def guess_payload_class(self, payload):
@@ -896,7 +896,7 @@ class _DHCP6GuessPayload(Packet):
         return conf.raw_layer
 
 #####################################################################
-## DHCPv6 messages sent between Clients and Servers (types 1 to 11)
+## DHCPv6 messages sent between Clients and Servers(types 1 to 11)
 # Comme specifie en section 15.1 de la RFC 3315, les valeurs de
 # transaction id sont selectionnees de maniere aleatoire par le client
 # a chaque emission et doivent matcher dans les reponses faites par
@@ -920,7 +920,7 @@ class DHCP6(_DHCP6OptGuessPayload):
 #   non-temporary addresses and uses IA_TA options to request the
 #   assignment of temporary addresses
 # - The client should include an Option Request option to indicate the
-#   options the client is interested in receiving (eventually
+#   options the client is interested in receiving(eventually
 #   including hints)
 # - The client includes a Reconfigure Accept option if is willing to
 #   accept Reconfigure messages from the server.
@@ -955,7 +955,7 @@ class DHCP6_Advertise(DHCP6):
     overload_fields = { UDP: {"sport": 547, "dport": 546} }
     
     def answers(self, other):
-        return (isinstance(other,DHCP6_Solicit) and 
+        return(isinstance(other,DHCP6_Solicit) and 
                 other.msgtype == 1 and
                 self.trid == other.trid)
 
@@ -965,10 +965,10 @@ class DHCP6_Advertise(DHCP6):
 # - includes a server identifier option
 # - the content of Server Identifier option must match server's DUID
 # - includes a client identifier option
-# - must include an ORO Option (even with hints) p40
+# - must include an ORO Option(even with hints) p40
 # - can includes a reconfigure Accept option indicating whether or
 #   not the client is willing to accept Reconfigure messages from
-#   the server (p40)
+#   the server(p40)
 # - When the server receives a Request message via unicast from a
 # client to which the server has not sent a unicast option, the server
 # discards the Request message and responds with a Reply message
@@ -1038,7 +1038,7 @@ class DHCP6_Rebind(DHCP6):
 # - When the client receives a NotOnLink status from the server in
 # response to a Confirm message, the client performs DHCP server
 # solicitation as described in section 17 and client-initiated
-# configuration as descrribed in section 18 (RFC 3315)
+# configuration as descrribed in section 18(RFC 3315)
 # - when the client receives a NotOnLink status from the server in
 # response to a Request, the client can either re-issue the Request
 # without specifying any addresses or restart the DHCP server
@@ -1054,9 +1054,9 @@ class DHCP6_Reply(DHCP6):
     
     def answers(self, other):
 
-        types = (DHCP6_InfoRequest, DHCP6_Confirm, DHCP6_Rebind, DHCP6_Decline, DHCP6_Request, DHCP6_Release, DHCP6_Renew)
+        types =(DHCP6_InfoRequest, DHCP6_Confirm, DHCP6_Rebind, DHCP6_Decline, DHCP6_Request, DHCP6_Release, DHCP6_Renew)
 
-        return (isinstance(other, types) and
+        return(isinstance(other, types) and
                 self.trid == other.trid)
 
 #####################################################################
@@ -1112,7 +1112,7 @@ class DHCP6_Reconf(DHCP6):
 # message at all. The client must include a client identifier option
 # if the message will be authenticated.
 # - client must include an ORO of option she's interested in receiving
-# (can include hints)
+#(can include hints)
 
 class DHCP6_InfoRequest(DHCP6):
     name = "DHCPv6 Information Request Message"    
@@ -1132,7 +1132,7 @@ class DHCP6_InfoRequest(DHCP6):
 # 32. 
 
 class DHCP6_RelayForward(_DHCP6GuessPayload,Packet):
-    name = "DHCPv6 Relay Forward Message (Relay Agent/Server Message)"
+    name = "DHCPv6 Relay Forward Message(Relay Agent/Server Message)"
     fields_desc = [ ByteEnumField("msgtype", 12, dhcp6types),
                     ByteField("hopcount", None),
                     IP6Field("linkaddr", "::"),
@@ -1159,12 +1159,12 @@ class DHCP6_RelayForward(_DHCP6GuessPayload,Packet):
 # presente en ip source du paquet recu
 
 class DHCP6_RelayReply(DHCP6_RelayForward):
-    name = "DHCPv6 Relay Reply Message (Relay Agent/Server Message)"
+    name = "DHCPv6 Relay Reply Message(Relay Agent/Server Message)"
     msgtype = 13
     def hashret(self): # We filter on peer address field.
         return inet_pton(socket.AF_INET6, self.peeraddr)
     def answers(self, other):
-        return (isinstance(other, DHCP6_RelayForward) and
+        return(isinstance(other, DHCP6_RelayForward) and
                 self.hopcount == other.hopcount and
                 self.linkaddr == other.linkaddr and
                 self.peeraddr == other.peeraddr )
@@ -1210,7 +1210,7 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
 
    debug : When set, additional debugging information is printed. 
 
-   duid   : some DUID class (DUID_LLT, DUID_LL or DUID_EN). If none
+   duid   : some DUID class(DUID_LLT, DUID_LL or DUID_EN). If none
             is provided a DUID_LLT is constructed based on the MAC 
             address of the sending interface and launch time of dhcp6d 
             answering machine. 
@@ -1223,10 +1223,10 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
              value makes clients stops waiting for further Advertise
              messages from other servers.
 
-   dns : list of recursive DNS servers addresses (as a string or list). 
+   dns : list of recursive DNS servers addresses(as a string or list). 
          By default, it is set empty and the associated DHCP6OptDNSServers
          option is inactive. See RFC 3646 for details.
-   domain : a list of DNS search domain (as a string or list). By default, 
+   domain : a list of DNS search domain(as a string or list). By default, 
          it is empty and the associated DHCP6OptDomains option is inactive.
          See RFC 3646 for details.
 
@@ -1293,16 +1293,16 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
         self.dhcpv6_options={}
 
         for o in [(dns, "dns", 23, lambda x: DHCP6OptDNSServers(dnsservers=x)), 
-                  (domain, "domain", 24, lambda x: DHCP6OptDNSDomains(dnsdomains=x)), 
-                  (sntpservers, "sntpservers", 31, lambda x: DHCP6OptSNTPServers(sntpservers=x)),
-                  (sipservers, "sipservers", 22, lambda x: DHCP6OptSIPServers(sipservers=x)),
-                  (sipdomains, "sipdomains", 21, lambda x: DHCP6OptSIPDomains(sipdomains=x)),
-                  (nisservers, "nisservers", 27, lambda x: DHCP6OptNISServers(nisservers=x)),
-                  (nisdomain, "nisdomain", 29, lambda x: DHCP6OptNISDomain(nisdomain=(x+[""])[0])),
-                  (nispservers, "nispservers", 28, lambda x: DHCP6OptNISPServers(nispservers=x)), 
-                  (nispdomain, "nispdomain", 30, lambda x: DHCP6OptNISPDomain(nispdomain=(x+[""])[0])),
-                  (bcmcsservers, "bcmcsservers", 33, lambda x: DHCP6OptBCMCSServers(bcmcsservers=x)),
-                  (bcmcsdomains, "bcmcsdomains", 34, lambda x: DHCP6OptBCMCSDomains(bcmcsdomains=x))]:
+                 (domain, "domain", 24, lambda x: DHCP6OptDNSDomains(dnsdomains=x)), 
+                 (sntpservers, "sntpservers", 31, lambda x: DHCP6OptSNTPServers(sntpservers=x)),
+                 (sipservers, "sipservers", 22, lambda x: DHCP6OptSIPServers(sipservers=x)),
+                 (sipdomains, "sipdomains", 21, lambda x: DHCP6OptSIPDomains(sipdomains=x)),
+                 (nisservers, "nisservers", 27, lambda x: DHCP6OptNISServers(nisservers=x)),
+                 (nisdomain, "nisdomain", 29, lambda x: DHCP6OptNISDomain(nisdomain=(x+[""])[0])),
+                 (nispservers, "nispservers", 28, lambda x: DHCP6OptNISPServers(nispservers=x)), 
+                 (nispdomain, "nispdomain", 30, lambda x: DHCP6OptNISPDomain(nispdomain=(x+[""])[0])),
+                 (bcmcsservers, "bcmcsservers", 33, lambda x: DHCP6OptBCMCSServers(bcmcsservers=x)),
+                 (bcmcsdomains, "bcmcsdomains", 34, lambda x: DHCP6OptBCMCSDomains(bcmcsdomains=x))]:
 
             opt = norm_list(o[0], o[1])
             if opt == -1: # Usage() was triggered
@@ -1317,7 +1317,7 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
             opts = list(self.dhcpv6_options.keys())
             opts.sort()
             for i in opts:
-                print("    %d: %s" % (i, repr(self.dhcpv6_options[i])))
+                print("    %d: %s" %(i, repr(self.dhcpv6_options[i])))
 
         # Preference value used in Advertise. 
         self.advpref = advpref
@@ -1338,7 +1338,7 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
         else:
             # Timeval
             from time import gmtime, strftime, mktime
-            epoch = (2000, 1, 1, 0, 0, 0, 5, 1, 0)
+            epoch =(2000, 1, 1, 0, 0, 0, 5, 1, 0)
             delta = mktime(epoch) - mktime(gmtime(0))
             timeval = time.time() - delta
 
@@ -1385,42 +1385,42 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
             return False
 
         # Message we considered client messages :
-        # Solicit (1), Request (3), Confirm (4), Renew (5), Rebind (6)
-        # Decline (9), Release (8), Information-request (11),
-        if not (p.msgtype in [1, 3, 4, 5, 6, 8, 9, 11]):
+        # Solicit(1), Request(3), Confirm(4), Renew(5), Rebind(6)
+        # Decline(9), Release(8), Information-request(11),
+        if not(p.msgtype in [1, 3, 4, 5, 6, 8, 9, 11]):
             return False
 
         # Message validation following section 15 of RFC 3315
 
-        if ((p.msgtype == 1) or # Solicit 
-            (p.msgtype == 6) or # Rebind
-            (p.msgtype == 4)):  # Confirm
-            if ((not DHCP6OptClientId in p) or
+        if((p.msgtype == 1) or # Solicit 
+           (p.msgtype == 6) or # Rebind
+           (p.msgtype == 4)):  # Confirm
+            if((not DHCP6OptClientId in p) or
                 DHCP6OptServerId in p):
                 return False
 
-            if (p.msgtype == 6 or # Rebind
+            if(p.msgtype == 6 or # Rebind
                 p.msgtype == 4):  # Confirm   
                 # XXX We do not reply to Confirm or Rebind as we 
                 # XXX do not support address assignment            
                 return False
 
-        elif (p.msgtype == 3 or # Request
+        elif(p.msgtype == 3 or # Request
               p.msgtype == 5 or # Renew
               p.msgtype == 8):  # Release
         
             # Both options must be present
-            if ((not DHCP6OptServerId in p) or
-                (not DHCP6OptClientId in p)):
+            if((not DHCP6OptServerId in p) or
+               (not DHCP6OptClientId in p)):
                 return False
             # provided server DUID must match ours
             duid = p[DHCP6OptServerId].duid
-            if (type(duid) != type(self.duid)):
+            if(type(duid) != type(self.duid)):
                 return False
             if str(duid) != str(self.duid):
                 return False
 
-            if (p.msgtype == 5 or # Renew
+            if(p.msgtype == 5 or # Renew
                 p.msgtype == 8):  # Release
                 # XXX We do not reply to Renew or Release as we 
                 # XXX do not support address assignment            
@@ -1438,7 +1438,7 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
             r = Color.red
 
             vendor  = in6_addrtovendor(src)
-            if (vendor and vendor != "UNKNOWN"):
+            if(vendor and vendor != "UNKNOWN"):
                 vendor = " [" + b + vendor + n + "]"
             else:
                 vendor = ""
@@ -1482,13 +1482,13 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
         elif p.msgtype == 11: # Information-Request
             if DHCP6OptServerId in p:
                 duid = p[DHCP6OptServerId].duid
-                if (type(duid) != type(self.duid)):
+                if(type(duid) != type(self.duid)):
                     return False
                 if str(duid) != str(self.duid):
                     return False
-            if ((DHCP6OptIA_NA in p) or 
-                (DHCP6OptIA_TA in p) or
-                (DHCP6OptIA_PD in p)):
+            if((DHCP6OptIA_NA in p) or 
+               (DHCP6OptIA_TA in p) or
+               (DHCP6OptIA_PD in p)):
                     return False
         else:
             return False
@@ -1513,14 +1513,14 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
         reqtype = g + norm(req.getlayer(UDP).payload.name) + n
         reqsrc  = req.getlayer(IPv6).src
         vendor  = in6_addrtovendor(reqsrc)
-        if (vendor and vendor != "UNKNOWN"):
+        if(vendor and vendor != "UNKNOWN"):
             vendor = " [" + b + vendor + n + "]"
         else:
             vendor = ""
         reqsrc  = bo + reqsrc + n
         reptype = g + norm(reply.getlayer(UDP).payload.name) + n
 
-        print("Sent %s answering to %s from %s%s" % (reptype, reqtype, reqsrc, vendor))
+        print("Sent %s answering to %s from %s%s" %(reptype, reqtype, reqsrc, vendor))
 
     def make_reply(self, req):
         req_mac_src = req.src
@@ -1535,7 +1535,7 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
         msgtype = p.msgtype
         trid = p.trid
 
-        if msgtype == 1: # SOLICIT (See Sect 17.1 and 17.2 of RFC 3315)
+        if msgtype == 1: # SOLICIT(See Sect 17.1 and 17.2 of RFC 3315)
             
             # XXX We don't support address or prefix assignment
             # XXX We also do not support relay function           --arno
@@ -1553,7 +1553,7 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
                 
             else: # No Rapid Commit in the packet. Reply with an Advertise                
                 
-                if (p.haslayer(DHCP6OptIA_NA) or
+                if(p.haslayer(DHCP6OptIA_NA) or
                     p.haslayer(DHCP6OptIA_TA)):
                     # XXX We don't assign addresses at the moment
                     msg = "Scapy6 dhcp6d does not support address assignment"
@@ -1590,7 +1590,7 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
 
             return resp
 
-        elif msgtype == 3: #REQUEST (INFO-REQUEST is further below)
+        elif msgtype == 3: #REQUEST(INFO-REQUEST is further below)
             client_duid = p[DHCP6OptClientId].duid
             resp  = IPv6(src=self.src_addr, dst=req_src)
             resp /= UDP(sport=547, dport=546)
@@ -1608,7 +1608,7 @@ dhcp6d( dns="2001:500::1035", domain="localdomain, local", duid=None)
             else: 
                 # advertise everything we have available.
                 # Should not happen has clients MUST include 
-                # and ORO in requests (sec 18.1.1)   -- arno
+                # and ORO in requests(sec 18.1.1)   -- arno
                 for o in list(self.dhcpv6_options.keys()):
                     resp /= self.dhcpv6_options[o]          
 

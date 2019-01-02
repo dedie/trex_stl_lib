@@ -20,7 +20,7 @@ Code adapted from StarCluster:
     http://github.com/jtriley/StarCluster/blob/master/starcluster/logger.py
 """
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -53,7 +53,7 @@ class PUBHandler(logging.Handler):
 
     Log messages handled by this handler are broadcast with ZMQ topics
     ``this.root_topic`` comes first, followed by the log level
-    (DEBUG,INFO,etc.), followed by any additional subtopics specified in the
+   (DEBUG,INFO,etc.), followed by any additional subtopics specified in the
     message by: log.debug("subtopic.subsub::the real message")
     """
     root_topic=""

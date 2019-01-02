@@ -1,10 +1,10 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
-PPP (Point to Point Protocol)
+PPP(Point to Point Protocol)
 
 [RFC 1661]
 """
@@ -51,18 +51,18 @@ _PPP_proto = { 0x0001: "Padding Protocol",
                0x002d: "Van Jacobson Compressed TCP/IP",
                0x002f: "Van Jacobson Uncompressed TCP/IP",
                0x0031: "Bridging PDU",
-               0x0033: "Stream Protocol (ST-II)",
+               0x0033: "Stream Protocol(ST-II)",
                0x0035: "Banyan Vines",
-               0x0037: "reserved (until 1993) [Typo in RFC1172]",
+               0x0037: "reserved(until 1993) [Typo in RFC1172]",
                0x0039: "AppleTalk EDDP",
                0x003b: "AppleTalk SmartBuffered",
                0x003d: "Multi-Link [RFC1717]",
                0x003f: "NETBIOS Framing",
                0x0041: "Cisco Systems",
                0x0043: "Ascom Timeplex",
-               0x0045: "Fujitsu Link Backup and Load Balancing (LBLB)",
+               0x0045: "Fujitsu Link Backup and Load Balancing(LBLB)",
                0x0047: "DCA Remote Lan",
-               0x0049: "Serial Data Transport Protocol (PPP-SDTP)",
+               0x0049: "Serial Data Transport Protocol(PPP-SDTP)",
                0x004b: "SNA over 802.2",
                0x004d: "SNA",
                0x004f: "IPv6 Header Compression",
@@ -71,7 +71,7 @@ _PPP_proto = { 0x0001: "Padding Protocol",
                0x0055: "Individual Link Encryption [Meyer]",
                0x0057: "Internet Protocol version 6 [Hinden]",
                0x0059: "PPP Muxing [RFC3153]",
-               0x005b: "Vendor-Specific Network Protocol (VSNP) [RFC3772]",
+               0x005b: "Vendor-Specific Network Protocol(VSNP) [RFC3772]",
                0x0061: "RTP IPHC Full Header [RFC3544]",
                0x0063: "RTP IPHC Compressed TCP [RFC3544]",
                0x0065: "RTP IPHC Compressed Non TCP [RFC3544]",
@@ -80,15 +80,15 @@ _PPP_proto = { 0x0001: "Padding Protocol",
                0x006f: "Stampede Bridging",
                0x0071: "Reserved [Fox]",
                0x0073: "MP+ Protocol [Smith]",
-               0x007d: "reserved (Control Escape) [RFC1661]",
-               0x007f: "reserved (compression inefficient [RFC1662]",
+               0x007d: "reserved(Control Escape) [RFC1661]",
+               0x007f: "reserved(compression inefficient [RFC1662]",
                0x0081: "Reserved Until 20-Oct-2000 [IANA]",
                0x0083: "Reserved Until 20-Oct-2000 [IANA]",
                0x00c1: "NTCITS IPI [Ungar]",
-               0x00cf: "reserved (PPP NLID)",
+               0x00cf: "reserved(PPP NLID)",
                0x00fb: "single link compression in multilink [RFC1962]",
                0x00fd: "compressed datagram [RFC1962]",
-               0x00ff: "reserved (compression inefficient)",
+               0x00ff: "reserved(compression inefficient)",
                0x0201: "802.1d Hello Packets",
                0x0203: "IBM Source Routing BPDU",
                0x0205: "DEC LANBridge100 Spanning Tree",
@@ -96,8 +96,8 @@ _PPP_proto = { 0x0001: "Padding Protocol",
                0x0209: "Netcs Twin Routing [Korfmacher]",
                0x020b: "STP - Scheduled Transfer Protocol [Segal]",
                0x020d: "EDP - Extreme Discovery Protocol [Grosser]",
-               0x0211: "Optical Supervisory Channel Protocol (OSCP)[Prasad]",
-               0x0213: "Optical Supervisory Channel Protocol (OSCP)[Prasad]",
+               0x0211: "Optical Supervisory Channel Protocol(OSCP)[Prasad]",
+               0x0213: "Optical Supervisory Channel Protocol(OSCP)[Prasad]",
                0x0231: "Luxcom",
                0x0233: "Sigma Network Systems",
                0x0235: "Apple Client Server Protocol [Ridenour]",
@@ -120,7 +120,7 @@ _PPP_proto = { 0x0001: "Padding Protocol",
                0x4023: "RefTek Protocol [Banfill]",
                0x4025: "Fibre Channel [Rajagopal]",
                0x4027: "EMIT Protocols [Eastham]",
-               0x405b: "Vendor-Specific Protocol (VSP) [RFC3772]",
+               0x405b: "Vendor-Specific Protocol(VSP) [RFC3772]",
                0x8021: "Internet Protocol Control Protocol",
                0x8023: "OSI Network Layer Control Protocol",
                0x8025: "Xerox NS IDP Control Protocol",
@@ -132,7 +132,7 @@ _PPP_proto = { 0x0001: "Padding Protocol",
                0x8031: "Bridging NCP",
                0x8033: "Stream Protocol Control Protocol",
                0x8035: "Banyan Vines Control Protocol",
-               0x8037: "reserved (until 1993)",
+               0x8037: "reserved(until 1993)",
                0x8039: "reserved",
                0x803b: "reserved",
                0x803d: "Multi-Link Control Protocol",
@@ -140,8 +140,8 @@ _PPP_proto = { 0x0001: "Padding Protocol",
                0x8041: "Cisco Systems Control Protocol",
                0x8043: "Ascom Timeplex",
                0x8045: "Fujitsu LBLB Control Protocol",
-               0x8047: "DCA Remote Lan Network Control Protocol (RLNCP)",
-               0x8049: "Serial Data Control Protocol (PPP-SDCP)",
+               0x8047: "DCA Remote Lan Network Control Protocol(RLNCP)",
+               0x8049: "Serial Data Control Protocol(PPP-SDCP)",
                0x804b: "SNA over 802.2 Control Protocol",
                0x804d: "SNA Control Protocol",
                0x804f: "IP6 Header Compression Control Protocol",
@@ -150,7 +150,7 @@ _PPP_proto = { 0x0001: "Padding Protocol",
                0x8055: "Individual Link Encryption Control Protocol [Meyer]",
                0x8057: "IPv6 Control Protovol [Hinden]",
                0x8059: "PPP Muxing Control Protocol [RFC3153]",
-               0x805b: "Vendor-Specific Network Control Protocol (VSNCP) [RFC3772]",
+               0x805b: "Vendor-Specific Network Control Protocol(VSNCP) [RFC3772]",
                0x806f: "Stampede Bridging Control Protocol",
                0x8073: "MP+ Control Protocol [Smith]",
                0x8071: "Reserved [Fox]",
@@ -175,15 +175,15 @@ _PPP_proto = { 0x0001: "Padding Protocol",
                0xc023: "Password Authentication Protocol",
                0xc025: "Link Quality Report",
                0xc027: "Shiva Password Authentication Protocol",
-               0xc029: "CallBack Control Protocol (CBCP)",
+               0xc029: "CallBack Control Protocol(CBCP)",
                0xc02b: "BACP Bandwidth Allocation Control Protocol [RFC2125]",
                0xc02d: "BAP [RFC2125]",
-               0xc05b: "Vendor-Specific Authentication Protocol (VSAP) [RFC3772]",
+               0xc05b: "Vendor-Specific Authentication Protocol(VSAP) [RFC3772]",
                0xc081: "Container Control Protocol [KEN]",
                0xc223: "Challenge Handshake Authentication Protocol",
                0xc225: "RSA Authentication Protocol [Narayana]",
                0xc227: "Extensible Authentication Protocol [RFC2284]",
-               0xc229: "Mitsubishi Security Info Exch Ptcl (SIEP) [Seno]",
+               0xc229: "Mitsubishi Security Info Exch Ptcl(SIEP) [Seno]",
                0xc26f: "Stampede Bridging Authorization Protocol",
                0xc281: "Proprietary Authentication Protocol [KEN]",
                0xc283: "Proprietary Authentication Protocol [Tackabury]",
@@ -219,10 +219,10 @@ _PPP_conftypes = { 1:"Configure-Request",
                    }
 
 
-### PPP IPCP stuff (RFC 1332)
+### PPP IPCP stuff(RFC 1332)
 
-# All IPCP options are defined below (names and associated classes) 
-_PPP_ipcpopttypes = {     1:"IP-Addresses (Deprecated)",
+# All IPCP options are defined below(names and associated classes) 
+_PPP_ipcpopttypes = {     1:"IP-Addresses(Deprecated)",
                           2:"IP-Compression-Protocol",
                           3:"IP-Address",
                           4:"Mobile-IPv4", # not implemented, present for completeness
@@ -248,7 +248,7 @@ class PPP_IPCP_Option(Packet):
     def dispatch_hook(cls, _pkt=None, *args, **kargs):
         if _pkt:
             #o = ord(_pkt[0])
-            o = (_pkt[0])
+            o =(_pkt[0])
             return cls.registered_options.get(o, cls)
         return cls
 
@@ -317,7 +317,7 @@ class PPP_ECP_Option(Packet):
     def dispatch_hook(cls, _pkt=None, *args, **kargs):
         if _pkt:
             #o = ord(_pkt[0])
-            o = (_pkt[0])
+            o =(_pkt[0])
             return cls.registered_options.get(o, cls)
         return cls
 

@@ -16,13 +16,13 @@
 #include "Python.h"
 #ifndef Py_PYTHON_H
     #error Python headers needed to compile C extensions, please install development version of Python.
-#elif PY_VERSION_HEX < 0x02060000 || (0x03000000 <= PY_VERSION_HEX && PY_VERSION_HEX < 0x03020000)
+#elif PY_VERSION_HEX < 0x02060000 ||(0x03000000 <= PY_VERSION_HEX && PY_VERSION_HEX < 0x03020000)
     #error Cython requires Python 2.6+ or Python 3.2+.
 #else
 #define CYTHON_ABI "0_21_2"
 #include <stddef.h>
 #ifndef offsetof
-#define offsetof(type, member) ( (size_t) & ((type*)0) -> member )
+#define offsetof(type, member)((size_t) &((type*)0) -> member )
 #endif
 #if !defined(WIN32) && !defined(MS_WINDOWS)
   #ifndef __stdcall
@@ -80,7 +80,7 @@
 #endif
 #if PY_VERSION_HEX > 0x03030000 && defined(PyUnicode_KIND)
   #define CYTHON_PEP393_ENABLED 1
-  #define __Pyx_PyUnicode_READY(op)       (likely(PyUnicode_IS_READY(op)) ? \
+  #define __Pyx_PyUnicode_READY(op)      (likely(PyUnicode_IS_READY(op)) ? \
                                               0 : _PyUnicode_Ready((PyObject *)(op)))
   #define __Pyx_PyUnicode_GET_LENGTH(u)   PyUnicode_GET_LENGTH(u)
   #define __Pyx_PyUnicode_READ_CHAR(u, i) PyUnicode_READ_CHAR(u, i)
@@ -89,12 +89,12 @@
   #define __Pyx_PyUnicode_READ(k, d, i)   PyUnicode_READ(k, d, i)
 #else
   #define CYTHON_PEP393_ENABLED 0
-  #define __Pyx_PyUnicode_READY(op)       (0)
+  #define __Pyx_PyUnicode_READY(op)      (0)
   #define __Pyx_PyUnicode_GET_LENGTH(u)   PyUnicode_GET_SIZE(u)
-  #define __Pyx_PyUnicode_READ_CHAR(u, i) ((Py_UCS4)(PyUnicode_AS_UNICODE(u)[i]))
-  #define __Pyx_PyUnicode_KIND(u)         (sizeof(Py_UNICODE))
-  #define __Pyx_PyUnicode_DATA(u)         ((void*)PyUnicode_AS_UNICODE(u))
-  #define __Pyx_PyUnicode_READ(k, d, i)   ((void)(k), (Py_UCS4)(((Py_UNICODE*)d)[i]))
+  #define __Pyx_PyUnicode_READ_CHAR(u, i)((Py_UCS4)(PyUnicode_AS_UNICODE(u)[i]))
+  #define __Pyx_PyUnicode_KIND(u)        (sizeof(Py_UNICODE))
+  #define __Pyx_PyUnicode_DATA(u)        ((void*)PyUnicode_AS_UNICODE(u))
+  #define __Pyx_PyUnicode_READ(k, d, i)  ((void)(k),(Py_UCS4)(((Py_UNICODE*)d)[i]))
 #endif
 #if CYTHON_COMPILING_IN_PYPY
   #define __Pyx_PyUnicode_Concat(a, b)      PyNumber_Add(a, b)
@@ -102,12 +102,12 @@
   #define __Pyx_PyFrozenSet_Size(s)         PyObject_Size(s)
 #else
   #define __Pyx_PyUnicode_Concat(a, b)      PyUnicode_Concat(a, b)
-  #define __Pyx_PyUnicode_ConcatSafe(a, b)  ((unlikely((a) == Py_None) || unlikely((b) == Py_None)) ? \
+  #define __Pyx_PyUnicode_ConcatSafe(a, b) ((unlikely((a) == Py_None) || unlikely((b) == Py_None)) ? \
       PyNumber_Add(a, b) : __Pyx_PyUnicode_Concat(a, b))
   #define __Pyx_PyFrozenSet_Size(s)         PySet_Size(s)
 #endif
-#define __Pyx_PyString_FormatSafe(a, b)   ((unlikely((a) == Py_None)) ? PyNumber_Remainder(a, b) : __Pyx_PyString_Format(a, b))
-#define __Pyx_PyUnicode_FormatSafe(a, b)  ((unlikely((a) == Py_None)) ? PyNumber_Remainder(a, b) : PyUnicode_Format(a, b))
+#define __Pyx_PyString_FormatSafe(a, b)  ((unlikely((a) == Py_None)) ? PyNumber_Remainder(a, b) : __Pyx_PyString_Format(a, b))
+#define __Pyx_PyUnicode_FormatSafe(a, b) ((unlikely((a) == Py_None)) ? PyNumber_Remainder(a, b) : PyUnicode_Format(a, b))
 #if PY_MAJOR_VERSION >= 3
   #define __Pyx_PyString_Format(a, b)  PyUnicode_Format(a, b)
 #else
@@ -124,13 +124,13 @@
   #define __Pyx_PyBaseString_Check(obj) PyUnicode_Check(obj)
   #define __Pyx_PyBaseString_CheckExact(obj) PyUnicode_CheckExact(obj)
 #else
-  #define __Pyx_PyBaseString_Check(obj) (PyString_Check(obj) || PyUnicode_Check(obj))
-  #define __Pyx_PyBaseString_CheckExact(obj) (PyString_CheckExact(obj) || PyUnicode_CheckExact(obj))
+  #define __Pyx_PyBaseString_Check(obj)(PyString_Check(obj) || PyUnicode_Check(obj))
+  #define __Pyx_PyBaseString_CheckExact(obj)(PyString_CheckExact(obj) || PyUnicode_CheckExact(obj))
 #endif
 #ifndef PySet_CheckExact
-  #define PySet_CheckExact(obj)        (Py_TYPE(obj) == &PySet_Type)
+  #define PySet_CheckExact(obj)       (Py_TYPE(obj) == &PySet_Type)
 #endif
-#define __Pyx_TypeCheck(obj, type) PyObject_TypeCheck(obj, (PyTypeObject *)type)
+#define __Pyx_TypeCheck(obj, type) PyObject_TypeCheck(obj,(PyTypeObject *)type)
 #if PY_MAJOR_VERSION >= 3
   #define PyIntObject                  PyLongObject
   #define PyInt_Type                   PyLong_Type
@@ -165,7 +165,7 @@
   #define __Pyx_PyInt_AsHash_t   PyInt_AsSsize_t
 #endif
 #if PY_MAJOR_VERSION >= 3
-  #define __Pyx_PyMethod_New(func, self, klass) ((self) ? PyMethod_New(func, self) : PyInstanceMethod_New(func))
+  #define __Pyx_PyMethod_New(func, self, klass)((self) ? PyMethod_New(func, self) : PyInstanceMethod_New(func))
 #else
   #define __Pyx_PyMethod_New(func, self, klass) PyMethod_New(func, self, klass)
 #endif
@@ -174,7 +174,7 @@
     #define CYTHON_INLINE __inline__
   #elif defined(_MSC_VER)
     #define CYTHON_INLINE __inline
-  #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+  #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
     #define CYTHON_INLINE inline
   #else
     #define CYTHON_INLINE
@@ -185,14 +185,14 @@
     #define CYTHON_RESTRICT __restrict__
   #elif defined(_MSC_VER) && _MSC_VER >= 1400
     #define CYTHON_RESTRICT __restrict
-  #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+  #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
     #define CYTHON_RESTRICT restrict
   #else
     #define CYTHON_RESTRICT
   #endif
 #endif
 #ifdef NAN
-#define __PYX_NAN() ((float) NAN)
+#define __PYX_NAN()((float) NAN)
 #else
 static CYTHON_INLINE float __PYX_NAN() {
   /* Initialize NaN. The sign is irrelevant, an exponent with all bits 1 and
@@ -246,13 +246,13 @@ void __Pyx_call_destructor(T* x) {
 
 #ifndef CYTHON_UNUSED
 # if defined(__GNUC__)
-#   if !(defined(__cplusplus)) || (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4))
-#     define CYTHON_UNUSED __attribute__ ((__unused__))
+#   if !(defined(__cplusplus)) ||(__GNUC__ > 3 ||(__GNUC__ == 3 && __GNUC_MINOR__ >= 4))
+#     define CYTHON_UNUSED __attribute__((__unused__))
 #   else
 #     define CYTHON_UNUSED
 #   endif
-# elif defined(__ICC) || (defined(__INTEL_COMPILER) && !defined(_MSC_VER))
-#   define CYTHON_UNUSED __attribute__ ((__unused__))
+# elif defined(__ICC) ||(defined(__INTEL_COMPILER) && !defined(_MSC_VER))
+#   define CYTHON_UNUSED __attribute__((__unused__))
 # else
 #   define CYTHON_UNUSED
 # endif
@@ -265,16 +265,16 @@ typedef struct {PyObject **p; char *s; const Py_ssize_t n; const char* encoding;
 #define __PYX_DEFAULT_STRING_ENCODING ""
 #define __Pyx_PyObject_FromString __Pyx_PyBytes_FromString
 #define __Pyx_PyObject_FromStringAndSize __Pyx_PyBytes_FromStringAndSize
-#define __Pyx_fits_Py_ssize_t(v, type, is_signed)  (    \
-    (sizeof(type) < sizeof(Py_ssize_t))  ||             \
-    (sizeof(type) > sizeof(Py_ssize_t) &&               \
-          likely(v < (type)PY_SSIZE_T_MAX ||            \
-                 v == (type)PY_SSIZE_T_MAX)  &&         \
-          (!is_signed || likely(v > (type)PY_SSIZE_T_MIN ||       \
-                                v == (type)PY_SSIZE_T_MIN)))  ||  \
-    (sizeof(type) == sizeof(Py_ssize_t) &&              \
-          (is_signed || likely(v < (type)PY_SSIZE_T_MAX ||        \
-                               v == (type)PY_SSIZE_T_MAX)))  )
+#define __Pyx_fits_Py_ssize_t(v, type, is_signed) (    \
+   (sizeof(type) < sizeof(Py_ssize_t))  ||             \
+   (sizeof(type) > sizeof(Py_ssize_t) &&               \
+          likely(v <(type)PY_SSIZE_T_MAX ||            \
+                 v ==(type)PY_SSIZE_T_MAX)  &&         \
+         (!is_signed || likely(v >(type)PY_SSIZE_T_MIN ||       \
+                                v ==(type)PY_SSIZE_T_MIN)))  ||  \
+   (sizeof(type) == sizeof(Py_ssize_t) &&              \
+         (is_signed || likely(v <(type)PY_SSIZE_T_MAX ||        \
+                               v ==(type)PY_SSIZE_T_MAX)))  )
 static CYTHON_INLINE char* __Pyx_PyObject_AsString(PyObject*);
 static CYTHON_INLINE char* __Pyx_PyObject_AsStringAndSize(PyObject*, Py_ssize_t* length);
 #define __Pyx_PyByteArray_FromString(s) PyByteArray_FromStringAndSize((const char*)s, strlen((const char*)s))
@@ -289,8 +289,8 @@ static CYTHON_INLINE PyObject* __Pyx_PyUnicode_FromString(const char*);
     #define __Pyx_PyStr_FromString        __Pyx_PyUnicode_FromString
     #define __Pyx_PyStr_FromStringAndSize __Pyx_PyUnicode_FromStringAndSize
 #endif
-#define __Pyx_PyObject_AsSString(s)    ((signed char*) __Pyx_PyObject_AsString(s))
-#define __Pyx_PyObject_AsUString(s)    ((unsigned char*) __Pyx_PyObject_AsString(s))
+#define __Pyx_PyObject_AsSString(s)   ((signed char*) __Pyx_PyObject_AsString(s))
+#define __Pyx_PyObject_AsUString(s)   ((unsigned char*) __Pyx_PyObject_AsString(s))
 #define __Pyx_PyObject_FromUString(s)  __Pyx_PyObject_FromString((const char*)s)
 #define __Pyx_PyBytes_FromUString(s)   __Pyx_PyBytes_FromString((const char*)s)
 #define __Pyx_PyByteArray_FromUString(s)   __Pyx_PyByteArray_FromString((const char*)s)
@@ -300,8 +300,8 @@ static CYTHON_INLINE PyObject* __Pyx_PyUnicode_FromString(const char*);
 static CYTHON_INLINE size_t __Pyx_Py_UNICODE_strlen(const Py_UNICODE *u)
 {
     const Py_UNICODE *u_end = u;
-    while (*u_end++) ;
-    return (size_t)(u_end - u - 1);
+    while(*u_end++) ;
+    return(size_t)(u_end - u - 1);
 }
 #else
 #define __Pyx_Py_UNICODE_strlen Py_UNICODE_strlen
@@ -309,18 +309,18 @@ static CYTHON_INLINE size_t __Pyx_Py_UNICODE_strlen(const Py_UNICODE *u)
 #define __Pyx_PyUnicode_FromUnicode(u)       PyUnicode_FromUnicode(u, __Pyx_Py_UNICODE_strlen(u))
 #define __Pyx_PyUnicode_FromUnicodeAndLength PyUnicode_FromUnicode
 #define __Pyx_PyUnicode_AsUnicode            PyUnicode_AsUnicode
-#define __Pyx_Owned_Py_None(b) (Py_INCREF(Py_None), Py_None)
-#define __Pyx_PyBool_FromLong(b) ((b) ? (Py_INCREF(Py_True), Py_True) : (Py_INCREF(Py_False), Py_False))
+#define __Pyx_Owned_Py_None(b)(Py_INCREF(Py_None), Py_None)
+#define __Pyx_PyBool_FromLong(b)((b) ?(Py_INCREF(Py_True), Py_True) :(Py_INCREF(Py_False), Py_False))
 static CYTHON_INLINE int __Pyx_PyObject_IsTrue(PyObject*);
 static CYTHON_INLINE PyObject* __Pyx_PyNumber_Int(PyObject* x);
 static CYTHON_INLINE Py_ssize_t __Pyx_PyIndex_AsSsize_t(PyObject*);
 static CYTHON_INLINE PyObject * __Pyx_PyInt_FromSize_t(size_t);
 #if CYTHON_COMPILING_IN_CPYTHON
-#define __pyx_PyFloat_AsDouble(x) (PyFloat_CheckExact(x) ? PyFloat_AS_DOUBLE(x) : PyFloat_AsDouble(x))
+#define __pyx_PyFloat_AsDouble(x)(PyFloat_CheckExact(x) ? PyFloat_AS_DOUBLE(x) : PyFloat_AsDouble(x))
 #else
 #define __pyx_PyFloat_AsDouble(x) PyFloat_AsDouble(x)
 #endif
-#define __pyx_PyFloat_AsFloat(x) ((float) __pyx_PyFloat_AsDouble(x))
+#define __pyx_PyFloat_AsFloat(x)((float) __pyx_PyFloat_AsDouble(x))
 #if PY_MAJOR_VERSION < 3 && __PYX_DEFAULT_STRING_ENCODING_IS_ASCII
 static int __Pyx_sys_getdefaultencoding_not_ascii;
 static int __Pyx_init_sys_getdefaultencoding_params(void) {
@@ -330,25 +330,25 @@ static int __Pyx_init_sys_getdefaultencoding_params(void) {
     PyObject* ascii_chars_b = NULL;
     const char* default_encoding_c;
     sys = PyImport_ImportModule("sys");
-    if (!sys) goto bad;
-    default_encoding = PyObject_CallMethod(sys, (char*) (const char*) "getdefaultencoding", NULL);
+    if(!sys) goto bad;
+    default_encoding = PyObject_CallMethod(sys,(char*)(const char*) "getdefaultencoding", NULL);
     Py_DECREF(sys);
-    if (!default_encoding) goto bad;
+    if(!default_encoding) goto bad;
     default_encoding_c = PyBytes_AsString(default_encoding);
-    if (!default_encoding_c) goto bad;
-    if (strcmp(default_encoding_c, "ascii") == 0) {
+    if(!default_encoding_c) goto bad;
+    if(strcmp(default_encoding_c, "ascii") == 0) {
         __Pyx_sys_getdefaultencoding_not_ascii = 0;
     } else {
         char ascii_chars[128];
         int c;
-        for (c = 0; c < 128; c++) {
+        for(c = 0; c < 128; c++) {
             ascii_chars[c] = c;
         }
         __Pyx_sys_getdefaultencoding_not_ascii = 1;
         ascii_chars_u = PyUnicode_DecodeASCII(ascii_chars, 128, NULL);
-        if (!ascii_chars_u) goto bad;
+        if(!ascii_chars_u) goto bad;
         ascii_chars_b = PyUnicode_AsEncodedString(ascii_chars_u, default_encoding_c, NULL);
-        if (!ascii_chars_b || !PyBytes_Check(ascii_chars_b) || memcmp(ascii_chars, PyBytes_AS_STRING(ascii_chars_b), 128) != 0) {
+        if(!ascii_chars_b || !PyBytes_Check(ascii_chars_b) || memcmp(ascii_chars, PyBytes_AS_STRING(ascii_chars_b), 128) != 0) {
             PyErr_Format(
                 PyExc_ValueError,
                 "This module compiled with c_string_encoding=ascii, but default encoding '%.200s' is not a superset of ascii.",
@@ -378,14 +378,14 @@ static int __Pyx_init_sys_getdefaultencoding_params(void) {
     PyObject* default_encoding = NULL;
     char* default_encoding_c;
     sys = PyImport_ImportModule("sys");
-    if (!sys) goto bad;
-    default_encoding = PyObject_CallMethod(sys, (char*) (const char*) "getdefaultencoding", NULL);
+    if(!sys) goto bad;
+    default_encoding = PyObject_CallMethod(sys,(char*)(const char*) "getdefaultencoding", NULL);
     Py_DECREF(sys);
-    if (!default_encoding) goto bad;
+    if(!default_encoding) goto bad;
     default_encoding_c = PyBytes_AsString(default_encoding);
-    if (!default_encoding_c) goto bad;
-    __PYX_DEFAULT_STRING_ENCODING = (char*) malloc(strlen(default_encoding_c));
-    if (!__PYX_DEFAULT_STRING_ENCODING) goto bad;
+    if(!default_encoding_c) goto bad;
+    __PYX_DEFAULT_STRING_ENCODING =(char*) malloc(strlen(default_encoding_c));
+    if(!__PYX_DEFAULT_STRING_ENCODING) goto bad;
     strcpy(__PYX_DEFAULT_STRING_ENCODING, default_encoding_c);
     Py_DECREF(default_encoding);
     return 0;
@@ -398,12 +398,12 @@ bad:
 
 
 /* Test for GCC > 2.95 */
-#if defined(__GNUC__)     && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))
+#if defined(__GNUC__)     &&(__GNUC__ > 2 ||(__GNUC__ == 2 &&(__GNUC_MINOR__ > 95)))
   #define likely(x)   __builtin_expect(!!(x), 1)
   #define unlikely(x) __builtin_expect(!!(x), 0)
 #else /* !__GNUC__ or GCC < 2.95 */
-  #define likely(x)   (x)
-  #define unlikely(x) (x)
+  #define likely(x)  (x)
+  #define unlikely(x)(x)
 #endif /* __GNUC__ */
 
 static PyObject *__pyx_m;
@@ -428,19 +428,19 @@ static const char *__pyx_f[] = {
 #endif
 #if CYTHON_REFNANNY
   typedef struct {
-    void (*INCREF)(void*, PyObject*, int);
-    void (*DECREF)(void*, PyObject*, int);
-    void (*GOTREF)(void*, PyObject*, int);
-    void (*GIVEREF)(void*, PyObject*, int);
-    void* (*SetupContext)(const char*, int, const char*);
-    void (*FinishContext)(void**);
+    void(*INCREF)(void*, PyObject*, int);
+    void(*DECREF)(void*, PyObject*, int);
+    void(*GOTREF)(void*, PyObject*, int);
+    void(*GIVEREF)(void*, PyObject*, int);
+    void*(*SetupContext)(const char*, int, const char*);
+    void(*FinishContext)(void**);
   } __Pyx_RefNannyAPIStruct;
   static __Pyx_RefNannyAPIStruct *__Pyx_RefNanny = NULL;
   static __Pyx_RefNannyAPIStruct *__Pyx_RefNannyImportAPI(const char *modname);
   #define __Pyx_RefNannyDeclarations void *__pyx_refnanny = NULL;
 #ifdef WITH_THREAD
   #define __Pyx_RefNannySetupContext(name, acquire_gil) \
-          if (acquire_gil) { \
+          if(acquire_gil) { \
               PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure(); \
               __pyx_refnanny = __Pyx_RefNanny->SetupContext((name), __LINE__, __FILE__); \
               PyGILState_Release(__pyx_gilstate_save); \
@@ -453,10 +453,10 @@ static const char *__pyx_f[] = {
 #endif
   #define __Pyx_RefNannyFinishContext() \
           __Pyx_RefNanny->FinishContext(&__pyx_refnanny)
-  #define __Pyx_INCREF(r)  __Pyx_RefNanny->INCREF(__pyx_refnanny, (PyObject *)(r), __LINE__)
-  #define __Pyx_DECREF(r)  __Pyx_RefNanny->DECREF(__pyx_refnanny, (PyObject *)(r), __LINE__)
-  #define __Pyx_GOTREF(r)  __Pyx_RefNanny->GOTREF(__pyx_refnanny, (PyObject *)(r), __LINE__)
-  #define __Pyx_GIVEREF(r) __Pyx_RefNanny->GIVEREF(__pyx_refnanny, (PyObject *)(r), __LINE__)
+  #define __Pyx_INCREF(r)  __Pyx_RefNanny->INCREF(__pyx_refnanny,(PyObject *)(r), __LINE__)
+  #define __Pyx_DECREF(r)  __Pyx_RefNanny->DECREF(__pyx_refnanny,(PyObject *)(r), __LINE__)
+  #define __Pyx_GOTREF(r)  __Pyx_RefNanny->GOTREF(__pyx_refnanny,(PyObject *)(r), __LINE__)
+  #define __Pyx_GIVEREF(r) __Pyx_RefNanny->GIVEREF(__pyx_refnanny,(PyObject *)(r), __LINE__)
   #define __Pyx_XINCREF(r)  do { if((r) != NULL) {__Pyx_INCREF(r); }} while(0)
   #define __Pyx_XDECREF(r)  do { if((r) != NULL) {__Pyx_DECREF(r); }} while(0)
   #define __Pyx_XGOTREF(r)  do { if((r) != NULL) {__Pyx_GOTREF(r); }} while(0)
@@ -475,23 +475,23 @@ static const char *__pyx_f[] = {
   #define __Pyx_XGIVEREF(r)
 #endif
 #define __Pyx_XDECREF_SET(r, v) do {                            \
-        PyObject *tmp = (PyObject *) r;                         \
+        PyObject *tmp =(PyObject *) r;                         \
         r = v; __Pyx_XDECREF(tmp);                              \
-    } while (0)
+    } while(0)
 #define __Pyx_DECREF_SET(r, v) do {                             \
-        PyObject *tmp = (PyObject *) r;                         \
+        PyObject *tmp =(PyObject *) r;                         \
         r = v; __Pyx_DECREF(tmp);                               \
-    } while (0)
-#define __Pyx_CLEAR(r)    do { PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);} while(0)
-#define __Pyx_XCLEAR(r)   do { if((r) != NULL) {PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);}} while(0)
+    } while(0)
+#define __Pyx_CLEAR(r)    do { PyObject* tmp =((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);} while(0)
+#define __Pyx_XCLEAR(r)   do { if((r) != NULL) {PyObject* tmp =((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);}} while(0)
 
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject* attr_name) {
     PyTypeObject* tp = Py_TYPE(obj);
-    if (likely(tp->tp_getattro))
+    if(likely(tp->tp_getattro))
         return tp->tp_getattro(obj, attr_name);
 #if PY_MAJOR_VERSION < 3
-    if (likely(tp->tp_getattr))
+    if(likely(tp->tp_getattr))
         return tp->tp_getattr(obj, PyString_AS_STRING(attr_name));
 #endif
     return PyObject_GetAttr(obj, attr_name);
@@ -1051,7 +1051,7 @@ static int __Pyx_InitCachedConstants(void) {
 }
 
 static int __Pyx_InitGlobals(void) {
-  if (__Pyx_InitStrings(__pyx_string_tab) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  if(__Pyx_InitStrings(__pyx_string_tab) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -1073,25 +1073,25 @@ PyMODINIT_FUNC PyInit_constants(void)
   __Pyx_RefNannyDeclarations
   #if CYTHON_REFNANNY
   __Pyx_RefNanny = __Pyx_RefNannyImportAPI("refnanny");
-  if (!__Pyx_RefNanny) {
+  if(!__Pyx_RefNanny) {
       PyErr_Clear();
       __Pyx_RefNanny = __Pyx_RefNannyImportAPI("Cython.Runtime.refnanny");
-      if (!__Pyx_RefNanny)
+      if(!__Pyx_RefNanny)
           Py_FatalError("failed to import 'refnanny' module");
   }
   #endif
   __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_constants(void)", 0);
-  if ( __Pyx_check_binary_version() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if( __Pyx_check_binary_version() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_empty_tuple = PyTuple_New(0); if(unlikely(!__pyx_empty_tuple)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if(unlikely(!__pyx_empty_bytes)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #ifdef __Pyx_CyFunction_USED
-  if (__Pyx_CyFunction_init() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(__Pyx_CyFunction_init() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #endif
   #ifdef __Pyx_FusedFunction_USED
-  if (__pyx_FusedFunction_init() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(__pyx_FusedFunction_init() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #endif
   #ifdef __Pyx_Generator_USED
-  if (__pyx_Generator_init() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(__pyx_Generator_init() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #endif
   /*--- Library function declarations ---*/
   /*--- Threads initialization code ---*/
@@ -1106,34 +1106,34 @@ PyMODINIT_FUNC PyInit_constants(void)
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
-  if (unlikely(!__pyx_m)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_d = PyModule_GetDict(__pyx_m); if (unlikely(!__pyx_d)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(unlikely(!__pyx_m)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_d = PyModule_GetDict(__pyx_m); if(unlikely(!__pyx_d)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   Py_INCREF(__pyx_d);
-  __pyx_b = PyImport_AddModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_b)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_b = PyImport_AddModule(__Pyx_BUILTIN_MODULE_NAME); if(unlikely(!__pyx_b)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #if CYTHON_COMPILING_IN_PYPY
   Py_INCREF(__pyx_b);
   #endif
-  if (PyObject_SetAttrString(__pyx_m, "__builtins__", __pyx_b) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  if(PyObject_SetAttrString(__pyx_m, "__builtins__", __pyx_b) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   /*--- Initialize various global constants etc. ---*/
-  if (unlikely(__Pyx_InitGlobals() < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
-  if (__Pyx_init_sys_getdefaultencoding_params() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(unlikely(__Pyx_InitGlobals() < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  #if PY_MAJOR_VERSION < 3 &&(__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
+  if(__Pyx_init_sys_getdefaultencoding_params() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #endif
-  if (__pyx_module_is_main_zmq__backend__cython__constants) {
-    if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  if(__pyx_module_is_main_zmq__backend__cython__constants) {
+    if(PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   }
   #if PY_MAJOR_VERSION >= 3
   {
-    PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    if (!PyDict_GetItemString(modules, "zmq.backend.cython.constants")) {
-      if (unlikely(PyDict_SetItemString(modules, "zmq.backend.cython.constants", __pyx_m) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    PyObject *modules = PyImport_GetModuleDict(); if(unlikely(!modules)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if(!PyDict_GetItemString(modules, "zmq.backend.cython.constants")) {
+      if(unlikely(PyDict_SetItemString(modules, "zmq.backend.cython.constants", __pyx_m) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
   }
   #endif
   /*--- Builtin init code ---*/
-  if (unlikely(__Pyx_InitCachedBuiltins() < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(unlikely(__Pyx_InitCachedBuiltins() < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   /*--- Constants init code ---*/
-  if (unlikely(__Pyx_InitCachedConstants() < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(unlikely(__Pyx_InitCachedConstants() < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   /*--- Global init code ---*/
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
@@ -1150,9 +1150,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * VERSION_MAJOR = ZMQ_VERSION_MAJOR
  * VERSION_MINOR = ZMQ_VERSION_MINOR
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_VERSION); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 5; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_VERSION); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 5; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_VERSION, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 5; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_VERSION, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 5; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":6
@@ -1162,9 +1162,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * VERSION_MINOR = ZMQ_VERSION_MINOR
  * VERSION_PATCH = ZMQ_VERSION_PATCH
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_VERSION_MAJOR); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 6; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_VERSION_MAJOR); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 6; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_VERSION_MAJOR, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 6; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_VERSION_MAJOR, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 6; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":7
@@ -1174,9 +1174,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * VERSION_PATCH = ZMQ_VERSION_PATCH
  * NOBLOCK = ZMQ_NOBLOCK
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_VERSION_MINOR); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 7; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_VERSION_MINOR); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 7; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_VERSION_MINOR, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 7; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_VERSION_MINOR, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 7; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":8
@@ -1186,9 +1186,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * NOBLOCK = ZMQ_NOBLOCK
  * DONTWAIT = ZMQ_DONTWAIT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_VERSION_PATCH); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_VERSION_PATCH); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_VERSION_PATCH, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_VERSION_PATCH, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":9
@@ -1198,9 +1198,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * DONTWAIT = ZMQ_DONTWAIT
  * POLLIN = ZMQ_POLLIN
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_NOBLOCK); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_NOBLOCK); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_NOBLOCK, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_NOBLOCK, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":10
@@ -1210,9 +1210,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * POLLIN = ZMQ_POLLIN
  * POLLOUT = ZMQ_POLLOUT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_DONTWAIT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_DONTWAIT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DONTWAIT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_DONTWAIT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":11
@@ -1222,9 +1222,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * POLLOUT = ZMQ_POLLOUT
  * POLLERR = ZMQ_POLLERR
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_POLLIN); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 11; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_POLLIN); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 11; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_POLLIN, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 11; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_POLLIN, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 11; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":12
@@ -1234,9 +1234,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * POLLERR = ZMQ_POLLERR
  * SNDMORE = ZMQ_SNDMORE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_POLLOUT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 12; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_POLLOUT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 12; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_POLLOUT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 12; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_POLLOUT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 12; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":13
@@ -1246,9 +1246,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * SNDMORE = ZMQ_SNDMORE
  * STREAMER = ZMQ_STREAMER
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_POLLERR); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 13; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_POLLERR); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 13; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_POLLERR, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 13; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_POLLERR, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 13; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":14
@@ -1258,9 +1258,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * STREAMER = ZMQ_STREAMER
  * FORWARDER = ZMQ_FORWARDER
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SNDMORE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SNDMORE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SNDMORE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_SNDMORE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":15
@@ -1270,9 +1270,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * FORWARDER = ZMQ_FORWARDER
  * QUEUE = ZMQ_QUEUE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_STREAMER); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_STREAMER); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_STREAMER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_STREAMER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":16
@@ -1282,9 +1282,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * QUEUE = ZMQ_QUEUE
  * IO_THREADS_DFLT = ZMQ_IO_THREADS_DFLT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_FORWARDER); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 16; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_FORWARDER); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 16; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_FORWARDER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 16; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_FORWARDER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 16; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":17
@@ -1294,9 +1294,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * IO_THREADS_DFLT = ZMQ_IO_THREADS_DFLT
  * MAX_SOCKETS_DFLT = ZMQ_MAX_SOCKETS_DFLT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_QUEUE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 17; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_QUEUE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 17; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_QUEUE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 17; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_QUEUE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 17; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":18
@@ -1306,9 +1306,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * MAX_SOCKETS_DFLT = ZMQ_MAX_SOCKETS_DFLT
  * POLLITEMS_DFLT = ZMQ_POLLITEMS_DFLT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IO_THREADS_DFLT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IO_THREADS_DFLT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IO_THREADS_DFLT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_IO_THREADS_DFLT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":19
@@ -1318,9 +1318,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * POLLITEMS_DFLT = ZMQ_POLLITEMS_DFLT
  * THREAD_PRIORITY_DFLT = ZMQ_THREAD_PRIORITY_DFLT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MAX_SOCKETS_DFLT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MAX_SOCKETS_DFLT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MAX_SOCKETS_DFLT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_MAX_SOCKETS_DFLT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":20
@@ -1330,9 +1330,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * THREAD_PRIORITY_DFLT = ZMQ_THREAD_PRIORITY_DFLT
  * THREAD_SCHED_POLICY_DFLT = ZMQ_THREAD_SCHED_POLICY_DFLT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_POLLITEMS_DFLT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_POLLITEMS_DFLT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_POLLITEMS_DFLT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_POLLITEMS_DFLT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":21
@@ -1342,9 +1342,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * THREAD_SCHED_POLICY_DFLT = ZMQ_THREAD_SCHED_POLICY_DFLT
  * PAIR = ZMQ_PAIR
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_THREAD_PRIORITY_DFLT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_THREAD_PRIORITY_DFLT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_THREAD_PRIORITY_DFLT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_THREAD_PRIORITY_DFLT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":22
@@ -1354,9 +1354,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * PAIR = ZMQ_PAIR
  * PUB = ZMQ_PUB
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_THREAD_SCHED_POLICY_DFLT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_THREAD_SCHED_POLICY_DFLT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_THREAD_SCHED_POLICY_DFLT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_THREAD_SCHED_POLICY_DFLT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":23
@@ -1366,9 +1366,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * PUB = ZMQ_PUB
  * SUB = ZMQ_SUB
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PAIR); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PAIR); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_PAIR, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_PAIR, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":24
@@ -1378,9 +1378,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * SUB = ZMQ_SUB
  * REQ = ZMQ_REQ
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PUB); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PUB); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_PUB, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_PUB, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":25
@@ -1390,9 +1390,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * REQ = ZMQ_REQ
  * REP = ZMQ_REP
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SUB); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 25; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SUB); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 25; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SUB, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 25; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_SUB, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 25; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":26
@@ -1402,9 +1402,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * REP = ZMQ_REP
  * DEALER = ZMQ_DEALER
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_REQ); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 26; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_REQ); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 26; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_REQ, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 26; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_REQ, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 26; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":27
@@ -1414,9 +1414,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * DEALER = ZMQ_DEALER
  * ROUTER = ZMQ_ROUTER
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_REP); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_REP); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_REP, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_REP, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":28
@@ -1426,9 +1426,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ROUTER = ZMQ_ROUTER
  * XREQ = ZMQ_XREQ
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_DEALER); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_DEALER); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DEALER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_DEALER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":29
@@ -1438,9 +1438,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * XREQ = ZMQ_XREQ
  * XREP = ZMQ_XREP
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_ROUTER); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_ROUTER); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ROUTER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ROUTER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":30
@@ -1450,9 +1450,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * XREP = ZMQ_XREP
  * PULL = ZMQ_PULL
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_XREQ); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 30; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_XREQ); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 30; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_XREQ, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 30; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_XREQ, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 30; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":31
@@ -1462,9 +1462,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * PULL = ZMQ_PULL
  * PUSH = ZMQ_PUSH
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_XREP); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 31; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_XREP); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 31; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_XREP, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 31; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_XREP, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 31; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":32
@@ -1474,9 +1474,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * PUSH = ZMQ_PUSH
  * XPUB = ZMQ_XPUB
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 32; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PULL); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 32; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_PULL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 32; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_PULL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 32; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":33
@@ -1486,9 +1486,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * XPUB = ZMQ_XPUB
  * XSUB = ZMQ_XSUB
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PUSH); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PUSH); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_PUSH, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_PUSH, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":34
@@ -1498,9 +1498,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * XSUB = ZMQ_XSUB
  * UPSTREAM = ZMQ_UPSTREAM
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_XPUB); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 34; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_XPUB); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 34; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_XPUB, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 34; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_XPUB, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 34; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":35
@@ -1510,9 +1510,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * UPSTREAM = ZMQ_UPSTREAM
  * DOWNSTREAM = ZMQ_DOWNSTREAM
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_XSUB); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 35; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_XSUB); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 35; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_XSUB, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 35; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_XSUB, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 35; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":36
@@ -1522,9 +1522,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * DOWNSTREAM = ZMQ_DOWNSTREAM
  * STREAM = ZMQ_STREAM
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_UPSTREAM); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 36; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_UPSTREAM); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 36; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_UPSTREAM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 36; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_UPSTREAM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 36; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":37
@@ -1534,9 +1534,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * STREAM = ZMQ_STREAM
  * EVENT_CONNECTED = ZMQ_EVENT_CONNECTED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_DOWNSTREAM); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 37; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_DOWNSTREAM); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 37; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DOWNSTREAM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 37; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_DOWNSTREAM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 37; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":38
@@ -1546,9 +1546,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENT_CONNECTED = ZMQ_EVENT_CONNECTED
  * EVENT_CONNECT_DELAYED = ZMQ_EVENT_CONNECT_DELAYED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_STREAM); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 38; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_STREAM); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 38; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_STREAM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 38; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_STREAM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 38; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":39
@@ -1558,9 +1558,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENT_CONNECT_DELAYED = ZMQ_EVENT_CONNECT_DELAYED
  * EVENT_CONNECT_RETRIED = ZMQ_EVENT_CONNECT_RETRIED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_CONNECTED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_CONNECTED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_CONNECTED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_CONNECTED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":40
@@ -1570,9 +1570,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENT_CONNECT_RETRIED = ZMQ_EVENT_CONNECT_RETRIED
  * EVENT_LISTENING = ZMQ_EVENT_LISTENING
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_CONNECT_DELAYED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_CONNECT_DELAYED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_CONNECT_DELAYED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_CONNECT_DELAYED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":41
@@ -1582,9 +1582,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENT_LISTENING = ZMQ_EVENT_LISTENING
  * EVENT_BIND_FAILED = ZMQ_EVENT_BIND_FAILED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_CONNECT_RETRIED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 41; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_CONNECT_RETRIED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 41; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_CONNECT_RETRIED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 41; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_CONNECT_RETRIED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 41; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":42
@@ -1594,9 +1594,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENT_BIND_FAILED = ZMQ_EVENT_BIND_FAILED
  * EVENT_ACCEPTED = ZMQ_EVENT_ACCEPTED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_LISTENING); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 42; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_LISTENING); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 42; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_LISTENING, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 42; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_LISTENING, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 42; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":43
@@ -1606,9 +1606,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENT_ACCEPTED = ZMQ_EVENT_ACCEPTED
  * EVENT_ACCEPT_FAILED = ZMQ_EVENT_ACCEPT_FAILED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_BIND_FAILED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 43; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_BIND_FAILED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 43; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_BIND_FAILED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 43; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_BIND_FAILED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 43; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":44
@@ -1618,9 +1618,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENT_ACCEPT_FAILED = ZMQ_EVENT_ACCEPT_FAILED
  * EVENT_CLOSED = ZMQ_EVENT_CLOSED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_ACCEPTED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_ACCEPTED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_ACCEPTED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_ACCEPTED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":45
@@ -1630,9 +1630,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENT_CLOSED = ZMQ_EVENT_CLOSED
  * EVENT_CLOSE_FAILED = ZMQ_EVENT_CLOSE_FAILED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_ACCEPT_FAILED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_ACCEPT_FAILED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_ACCEPT_FAILED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_ACCEPT_FAILED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":46
@@ -1642,9 +1642,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENT_CLOSE_FAILED = ZMQ_EVENT_CLOSE_FAILED
  * EVENT_DISCONNECTED = ZMQ_EVENT_DISCONNECTED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_CLOSED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 46; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_CLOSED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 46; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_CLOSED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 46; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_CLOSED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 46; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":47
@@ -1654,9 +1654,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENT_DISCONNECTED = ZMQ_EVENT_DISCONNECTED
  * EVENT_ALL = ZMQ_EVENT_ALL
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_CLOSE_FAILED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 47; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_CLOSE_FAILED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 47; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_CLOSE_FAILED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 47; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_CLOSE_FAILED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 47; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":48
@@ -1666,9 +1666,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENT_ALL = ZMQ_EVENT_ALL
  * EVENT_MONITOR_STOPPED = ZMQ_EVENT_MONITOR_STOPPED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_DISCONNECTED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 48; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_DISCONNECTED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 48; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_DISCONNECTED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 48; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_DISCONNECTED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 48; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":49
@@ -1678,9 +1678,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENT_MONITOR_STOPPED = ZMQ_EVENT_MONITOR_STOPPED
  * globals()['NULL'] = ZMQ_NULL
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_ALL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_ALL); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_ALL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_ALL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":50
@@ -1690,9 +1690,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * globals()['NULL'] = ZMQ_NULL
  * PLAIN = ZMQ_PLAIN
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_MONITOR_STOPPED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENT_MONITOR_STOPPED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_MONITOR_STOPPED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENT_MONITOR_STOPPED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":51
@@ -1702,11 +1702,11 @@ PyMODINIT_FUNC PyInit_constants(void)
  * PLAIN = ZMQ_PLAIN
  * CURVE = ZMQ_CURVE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 51; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_NULL); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 51; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_Globals(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 51; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_Globals(); if(unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 51; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (unlikely(PyObject_SetItem(__pyx_t_2, __pyx_n_s_NULL, __pyx_t_1) < 0)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 51; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(unlikely(PyObject_SetItem(__pyx_t_2, __pyx_n_s_NULL, __pyx_t_1) < 0)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 51; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -1717,9 +1717,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * CURVE = ZMQ_CURVE
  * GSSAPI = ZMQ_GSSAPI
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PLAIN); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PLAIN); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_PLAIN, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_PLAIN, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":53
@@ -1729,9 +1729,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * GSSAPI = ZMQ_GSSAPI
  * EAGAIN = ZMQ_EAGAIN
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CURVE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CURVE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_CURVE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_CURVE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":54
@@ -1741,9 +1741,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EAGAIN = ZMQ_EAGAIN
  * EINVAL = ZMQ_EINVAL
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_GSSAPI); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_GSSAPI); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_GSSAPI, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_GSSAPI, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":55
@@ -1753,9 +1753,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EINVAL = ZMQ_EINVAL
  * EFAULT = ZMQ_EFAULT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(EAGAIN); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(EAGAIN); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EAGAIN, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EAGAIN, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":56
@@ -1765,9 +1765,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EFAULT = ZMQ_EFAULT
  * ENOMEM = ZMQ_ENOMEM
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(EINVAL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(EINVAL); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EINVAL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EINVAL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":57
@@ -1777,9 +1777,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ENOMEM = ZMQ_ENOMEM
  * ENODEV = ZMQ_ENODEV
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(EFAULT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(EFAULT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EFAULT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EFAULT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":58
@@ -1789,9 +1789,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ENODEV = ZMQ_ENODEV
  * EMSGSIZE = ZMQ_EMSGSIZE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ENOMEM); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ENOMEM); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ENOMEM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ENOMEM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":59
@@ -1801,9 +1801,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EMSGSIZE = ZMQ_EMSGSIZE
  * EAFNOSUPPORT = ZMQ_EAFNOSUPPORT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ENODEV); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 59; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ENODEV); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 59; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ENODEV, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 59; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ENODEV, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 59; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":60
@@ -1813,9 +1813,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EAFNOSUPPORT = ZMQ_EAFNOSUPPORT
  * ENETUNREACH = ZMQ_ENETUNREACH
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(EMSGSIZE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(EMSGSIZE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EMSGSIZE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EMSGSIZE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":61
@@ -1825,9 +1825,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ENETUNREACH = ZMQ_ENETUNREACH
  * ECONNABORTED = ZMQ_ECONNABORTED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(EAFNOSUPPORT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(EAFNOSUPPORT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EAFNOSUPPORT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EAFNOSUPPORT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":62
@@ -1837,9 +1837,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ECONNABORTED = ZMQ_ECONNABORTED
  * ECONNRESET = ZMQ_ECONNRESET
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ENETUNREACH); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ENETUNREACH); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ENETUNREACH, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ENETUNREACH, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":63
@@ -1849,9 +1849,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ECONNRESET = ZMQ_ECONNRESET
  * ENOTCONN = ZMQ_ENOTCONN
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ECONNABORTED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ECONNABORTED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ECONNABORTED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ECONNABORTED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":64
@@ -1861,9 +1861,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ENOTCONN = ZMQ_ENOTCONN
  * ETIMEDOUT = ZMQ_ETIMEDOUT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ECONNRESET); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ECONNRESET); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ECONNRESET, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ECONNRESET, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":65
@@ -1873,9 +1873,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ETIMEDOUT = ZMQ_ETIMEDOUT
  * EHOSTUNREACH = ZMQ_EHOSTUNREACH
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ENOTCONN); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ENOTCONN); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ENOTCONN, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ENOTCONN, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":66
@@ -1885,9 +1885,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EHOSTUNREACH = ZMQ_EHOSTUNREACH
  * ENETRESET = ZMQ_ENETRESET
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ETIMEDOUT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ETIMEDOUT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ETIMEDOUT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ETIMEDOUT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":67
@@ -1897,9 +1897,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ENETRESET = ZMQ_ENETRESET
  * HAUSNUMERO = ZMQ_HAUSNUMERO
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(EHOSTUNREACH); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(EHOSTUNREACH); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EHOSTUNREACH, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EHOSTUNREACH, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":68
@@ -1909,9 +1909,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * HAUSNUMERO = ZMQ_HAUSNUMERO
  * ENOTSUP = ZMQ_ENOTSUP
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ENETRESET); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ENETRESET); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ENETRESET, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ENETRESET, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":69
@@ -1921,9 +1921,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ENOTSUP = ZMQ_ENOTSUP
  * EPROTONOSUPPORT = ZMQ_EPROTONOSUPPORT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_HAUSNUMERO); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_HAUSNUMERO); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_HAUSNUMERO, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_HAUSNUMERO, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":70
@@ -1933,9 +1933,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EPROTONOSUPPORT = ZMQ_EPROTONOSUPPORT
  * ENOBUFS = ZMQ_ENOBUFS
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ENOTSUP); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ENOTSUP); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ENOTSUP, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ENOTSUP, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":71
@@ -1945,9 +1945,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ENOBUFS = ZMQ_ENOBUFS
  * ENETDOWN = ZMQ_ENETDOWN
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(EPROTONOSUPPORT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(EPROTONOSUPPORT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EPROTONOSUPPORT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EPROTONOSUPPORT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":72
@@ -1957,9 +1957,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ENETDOWN = ZMQ_ENETDOWN
  * EADDRINUSE = ZMQ_EADDRINUSE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ENOBUFS); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ENOBUFS); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ENOBUFS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ENOBUFS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":73
@@ -1969,9 +1969,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EADDRINUSE = ZMQ_EADDRINUSE
  * EADDRNOTAVAIL = ZMQ_EADDRNOTAVAIL
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ENETDOWN); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ENETDOWN); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ENETDOWN, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ENETDOWN, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":74
@@ -1981,9 +1981,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EADDRNOTAVAIL = ZMQ_EADDRNOTAVAIL
  * ECONNREFUSED = ZMQ_ECONNREFUSED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(EADDRINUSE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 74; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(EADDRINUSE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 74; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EADDRINUSE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 74; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EADDRINUSE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 74; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":75
@@ -1993,9 +1993,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ECONNREFUSED = ZMQ_ECONNREFUSED
  * EINPROGRESS = ZMQ_EINPROGRESS
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(EADDRNOTAVAIL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 75; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(EADDRNOTAVAIL); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 75; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EADDRNOTAVAIL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 75; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EADDRNOTAVAIL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 75; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":76
@@ -2005,9 +2005,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EINPROGRESS = ZMQ_EINPROGRESS
  * ENOTSOCK = ZMQ_ENOTSOCK
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ECONNREFUSED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 76; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ECONNREFUSED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 76; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ECONNREFUSED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 76; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ECONNREFUSED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 76; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":77
@@ -2017,9 +2017,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ENOTSOCK = ZMQ_ENOTSOCK
  * EFSM = ZMQ_EFSM
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(EINPROGRESS); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 77; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(EINPROGRESS); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 77; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EINPROGRESS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 77; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EINPROGRESS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 77; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":78
@@ -2029,9 +2029,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EFSM = ZMQ_EFSM
  * ENOCOMPATPROTO = ZMQ_ENOCOMPATPROTO
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ENOTSOCK); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ENOTSOCK); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ENOTSOCK, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ENOTSOCK, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":79
@@ -2041,9 +2041,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ENOCOMPATPROTO = ZMQ_ENOCOMPATPROTO
  * ETERM = ZMQ_ETERM
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(EFSM); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(EFSM); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EFSM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EFSM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":80
@@ -2053,9 +2053,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ETERM = ZMQ_ETERM
  * EMTHREAD = ZMQ_EMTHREAD
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ENOCOMPATPROTO); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ENOCOMPATPROTO); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ENOCOMPATPROTO, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ENOCOMPATPROTO, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":81
@@ -2065,9 +2065,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EMTHREAD = ZMQ_EMTHREAD
  * IO_THREADS = ZMQ_IO_THREADS
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ETERM); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ETERM); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ETERM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ETERM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":82
@@ -2077,9 +2077,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * IO_THREADS = ZMQ_IO_THREADS
  * MAX_SOCKETS = ZMQ_MAX_SOCKETS
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(EMTHREAD); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(EMTHREAD); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EMTHREAD, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EMTHREAD, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":83
@@ -2089,9 +2089,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * MAX_SOCKETS = ZMQ_MAX_SOCKETS
  * SOCKET_LIMIT = ZMQ_SOCKET_LIMIT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IO_THREADS); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IO_THREADS); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IO_THREADS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_IO_THREADS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":84
@@ -2101,9 +2101,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * SOCKET_LIMIT = ZMQ_SOCKET_LIMIT
  * THREAD_PRIORITY = ZMQ_THREAD_PRIORITY
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MAX_SOCKETS); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MAX_SOCKETS); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MAX_SOCKETS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_MAX_SOCKETS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":85
@@ -2113,9 +2113,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * THREAD_PRIORITY = ZMQ_THREAD_PRIORITY
  * THREAD_SCHED_POLICY = ZMQ_THREAD_SCHED_POLICY
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SOCKET_LIMIT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SOCKET_LIMIT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SOCKET_LIMIT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_SOCKET_LIMIT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":86
@@ -2125,9 +2125,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * THREAD_SCHED_POLICY = ZMQ_THREAD_SCHED_POLICY
  * IDENTITY = ZMQ_IDENTITY
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_THREAD_PRIORITY); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_THREAD_PRIORITY); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_THREAD_PRIORITY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_THREAD_PRIORITY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":87
@@ -2137,9 +2137,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * IDENTITY = ZMQ_IDENTITY
  * SUBSCRIBE = ZMQ_SUBSCRIBE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_THREAD_SCHED_POLICY); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_THREAD_SCHED_POLICY); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_THREAD_SCHED_POLICY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_THREAD_SCHED_POLICY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":88
@@ -2149,9 +2149,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * SUBSCRIBE = ZMQ_SUBSCRIBE
  * UNSUBSCRIBE = ZMQ_UNSUBSCRIBE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IDENTITY); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IDENTITY); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IDENTITY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_IDENTITY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":89
@@ -2161,9 +2161,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * UNSUBSCRIBE = ZMQ_UNSUBSCRIBE
  * LAST_ENDPOINT = ZMQ_LAST_ENDPOINT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SUBSCRIBE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 89; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SUBSCRIBE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 89; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SUBSCRIBE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 89; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_SUBSCRIBE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 89; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":90
@@ -2173,9 +2173,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * LAST_ENDPOINT = ZMQ_LAST_ENDPOINT
  * TCP_ACCEPT_FILTER = ZMQ_TCP_ACCEPT_FILTER
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_UNSUBSCRIBE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_UNSUBSCRIBE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_UNSUBSCRIBE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_UNSUBSCRIBE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":91
@@ -2185,9 +2185,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * TCP_ACCEPT_FILTER = ZMQ_TCP_ACCEPT_FILTER
  * PLAIN_USERNAME = ZMQ_PLAIN_USERNAME
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_LAST_ENDPOINT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_LAST_ENDPOINT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_LAST_ENDPOINT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_LAST_ENDPOINT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":92
@@ -2197,9 +2197,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * PLAIN_USERNAME = ZMQ_PLAIN_USERNAME
  * PLAIN_PASSWORD = ZMQ_PLAIN_PASSWORD
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TCP_ACCEPT_FILTER); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 92; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TCP_ACCEPT_FILTER); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 92; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_TCP_ACCEPT_FILTER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 92; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_TCP_ACCEPT_FILTER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 92; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":93
@@ -2209,9 +2209,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * PLAIN_PASSWORD = ZMQ_PLAIN_PASSWORD
  * CURVE_PUBLICKEY = ZMQ_CURVE_PUBLICKEY
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PLAIN_USERNAME); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 93; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PLAIN_USERNAME); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 93; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_PLAIN_USERNAME, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 93; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_PLAIN_USERNAME, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 93; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":94
@@ -2221,9 +2221,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * CURVE_PUBLICKEY = ZMQ_CURVE_PUBLICKEY
  * CURVE_SECRETKEY = ZMQ_CURVE_SECRETKEY
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PLAIN_PASSWORD); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 94; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PLAIN_PASSWORD); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 94; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_PLAIN_PASSWORD, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 94; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_PLAIN_PASSWORD, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 94; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":95
@@ -2233,9 +2233,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * CURVE_SECRETKEY = ZMQ_CURVE_SECRETKEY
  * CURVE_SERVERKEY = ZMQ_CURVE_SERVERKEY
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CURVE_PUBLICKEY); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 95; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CURVE_PUBLICKEY); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 95; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_CURVE_PUBLICKEY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 95; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_CURVE_PUBLICKEY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 95; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":96
@@ -2245,9 +2245,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * CURVE_SERVERKEY = ZMQ_CURVE_SERVERKEY
  * ZAP_DOMAIN = ZMQ_ZAP_DOMAIN
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CURVE_SECRETKEY); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CURVE_SECRETKEY); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_CURVE_SECRETKEY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_CURVE_SECRETKEY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":97
@@ -2257,9 +2257,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ZAP_DOMAIN = ZMQ_ZAP_DOMAIN
  * CONNECT_RID = ZMQ_CONNECT_RID
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CURVE_SERVERKEY); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CURVE_SERVERKEY); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_CURVE_SERVERKEY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_CURVE_SERVERKEY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":98
@@ -2269,9 +2269,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * CONNECT_RID = ZMQ_CONNECT_RID
  * GSSAPI_PRINCIPAL = ZMQ_GSSAPI_PRINCIPAL
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_ZAP_DOMAIN); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_ZAP_DOMAIN); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ZAP_DOMAIN, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ZAP_DOMAIN, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":99
@@ -2281,9 +2281,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * GSSAPI_PRINCIPAL = ZMQ_GSSAPI_PRINCIPAL
  * GSSAPI_SERVICE_PRINCIPAL = ZMQ_GSSAPI_SERVICE_PRINCIPAL
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CONNECT_RID); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 99; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CONNECT_RID); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 99; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_CONNECT_RID, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 99; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_CONNECT_RID, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 99; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":100
@@ -2293,9 +2293,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * GSSAPI_SERVICE_PRINCIPAL = ZMQ_GSSAPI_SERVICE_PRINCIPAL
  * SOCKS_PROXY = ZMQ_SOCKS_PROXY
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_GSSAPI_PRINCIPAL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_GSSAPI_PRINCIPAL); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_GSSAPI_PRINCIPAL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_GSSAPI_PRINCIPAL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":101
@@ -2305,9 +2305,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * SOCKS_PROXY = ZMQ_SOCKS_PROXY
  * FD = ZMQ_FD
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_GSSAPI_SERVICE_PRINCIPAL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_GSSAPI_SERVICE_PRINCIPAL); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_GSSAPI_SERVICE_PRINCIPAL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_GSSAPI_SERVICE_PRINCIPAL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":102
@@ -2317,9 +2317,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * FD = ZMQ_FD
  * IDENTITY_FD = ZMQ_IDENTITY_FD
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SOCKS_PROXY); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SOCKS_PROXY); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SOCKS_PROXY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_SOCKS_PROXY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":103
@@ -2329,9 +2329,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * IDENTITY_FD = ZMQ_IDENTITY_FD
  * RECONNECT_IVL_MAX = ZMQ_RECONNECT_IVL_MAX
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_FD); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_FD); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_FD, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_FD, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":104
@@ -2341,9 +2341,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * RECONNECT_IVL_MAX = ZMQ_RECONNECT_IVL_MAX
  * SNDTIMEO = ZMQ_SNDTIMEO
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IDENTITY_FD); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IDENTITY_FD); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IDENTITY_FD, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_IDENTITY_FD, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":105
@@ -2353,9 +2353,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * SNDTIMEO = ZMQ_SNDTIMEO
  * RCVTIMEO = ZMQ_RCVTIMEO
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RECONNECT_IVL_MAX); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RECONNECT_IVL_MAX); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RECONNECT_IVL_MAX, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_RECONNECT_IVL_MAX, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":106
@@ -2365,9 +2365,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * RCVTIMEO = ZMQ_RCVTIMEO
  * SNDHWM = ZMQ_SNDHWM
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SNDTIMEO); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SNDTIMEO); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SNDTIMEO, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_SNDTIMEO, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":107
@@ -2377,9 +2377,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * SNDHWM = ZMQ_SNDHWM
  * RCVHWM = ZMQ_RCVHWM
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RCVTIMEO); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RCVTIMEO); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RCVTIMEO, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_RCVTIMEO, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":108
@@ -2389,9 +2389,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * RCVHWM = ZMQ_RCVHWM
  * MULTICAST_HOPS = ZMQ_MULTICAST_HOPS
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SNDHWM); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 108; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SNDHWM); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 108; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SNDHWM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 108; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_SNDHWM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 108; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":109
@@ -2401,9 +2401,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * MULTICAST_HOPS = ZMQ_MULTICAST_HOPS
  * IPV4ONLY = ZMQ_IPV4ONLY
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RCVHWM); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 109; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RCVHWM); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 109; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RCVHWM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 109; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_RCVHWM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 109; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":110
@@ -2413,9 +2413,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * IPV4ONLY = ZMQ_IPV4ONLY
  * ROUTER_BEHAVIOR = ZMQ_ROUTER_BEHAVIOR
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MULTICAST_HOPS); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MULTICAST_HOPS); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MULTICAST_HOPS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_MULTICAST_HOPS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":111
@@ -2425,9 +2425,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ROUTER_BEHAVIOR = ZMQ_ROUTER_BEHAVIOR
  * TCP_KEEPALIVE = ZMQ_TCP_KEEPALIVE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IPV4ONLY); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 111; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IPV4ONLY); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 111; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IPV4ONLY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 111; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_IPV4ONLY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 111; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":112
@@ -2437,9 +2437,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * TCP_KEEPALIVE = ZMQ_TCP_KEEPALIVE
  * TCP_KEEPALIVE_CNT = ZMQ_TCP_KEEPALIVE_CNT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_ROUTER_BEHAVIOR); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 112; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_ROUTER_BEHAVIOR); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 112; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ROUTER_BEHAVIOR, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 112; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ROUTER_BEHAVIOR, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 112; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":113
@@ -2449,9 +2449,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * TCP_KEEPALIVE_CNT = ZMQ_TCP_KEEPALIVE_CNT
  * TCP_KEEPALIVE_IDLE = ZMQ_TCP_KEEPALIVE_IDLE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TCP_KEEPALIVE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TCP_KEEPALIVE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_TCP_KEEPALIVE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_TCP_KEEPALIVE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":114
@@ -2461,9 +2461,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * TCP_KEEPALIVE_IDLE = ZMQ_TCP_KEEPALIVE_IDLE
  * TCP_KEEPALIVE_INTVL = ZMQ_TCP_KEEPALIVE_INTVL
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TCP_KEEPALIVE_CNT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TCP_KEEPALIVE_CNT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_TCP_KEEPALIVE_CNT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_TCP_KEEPALIVE_CNT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":115
@@ -2473,9 +2473,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * TCP_KEEPALIVE_INTVL = ZMQ_TCP_KEEPALIVE_INTVL
  * DELAY_ATTACH_ON_CONNECT = ZMQ_DELAY_ATTACH_ON_CONNECT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TCP_KEEPALIVE_IDLE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TCP_KEEPALIVE_IDLE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_TCP_KEEPALIVE_IDLE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_TCP_KEEPALIVE_IDLE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":116
@@ -2485,9 +2485,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * DELAY_ATTACH_ON_CONNECT = ZMQ_DELAY_ATTACH_ON_CONNECT
  * XPUB_VERBOSE = ZMQ_XPUB_VERBOSE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TCP_KEEPALIVE_INTVL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 116; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TCP_KEEPALIVE_INTVL); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 116; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_TCP_KEEPALIVE_INTVL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 116; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_TCP_KEEPALIVE_INTVL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 116; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":117
@@ -2497,9 +2497,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * XPUB_VERBOSE = ZMQ_XPUB_VERBOSE
  * EVENTS = ZMQ_EVENTS
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_DELAY_ATTACH_ON_CONNECT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 117; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_DELAY_ATTACH_ON_CONNECT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 117; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DELAY_ATTACH_ON_CONNECT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 117; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_DELAY_ATTACH_ON_CONNECT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 117; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":118
@@ -2509,9 +2509,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * EVENTS = ZMQ_EVENTS
  * TYPE = ZMQ_TYPE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_XPUB_VERBOSE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 118; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_XPUB_VERBOSE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 118; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_XPUB_VERBOSE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 118; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_XPUB_VERBOSE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 118; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":119
@@ -2521,9 +2521,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * TYPE = ZMQ_TYPE
  * LINGER = ZMQ_LINGER
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENTS); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_EVENTS); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EVENTS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_EVENTS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":120
@@ -2533,9 +2533,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * LINGER = ZMQ_LINGER
  * RECONNECT_IVL = ZMQ_RECONNECT_IVL
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TYPE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TYPE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_TYPE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_TYPE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":121
@@ -2545,9 +2545,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * RECONNECT_IVL = ZMQ_RECONNECT_IVL
  * BACKLOG = ZMQ_BACKLOG
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_LINGER); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_LINGER); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_LINGER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_LINGER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":122
@@ -2557,9 +2557,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * BACKLOG = ZMQ_BACKLOG
  * ROUTER_MANDATORY = ZMQ_ROUTER_MANDATORY
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RECONNECT_IVL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RECONNECT_IVL); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RECONNECT_IVL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_RECONNECT_IVL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":123
@@ -2569,9 +2569,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ROUTER_MANDATORY = ZMQ_ROUTER_MANDATORY
  * FAIL_UNROUTABLE = ZMQ_FAIL_UNROUTABLE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_BACKLOG); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_BACKLOG); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_BACKLOG, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_BACKLOG, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":124
@@ -2581,9 +2581,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * FAIL_UNROUTABLE = ZMQ_FAIL_UNROUTABLE
  * ROUTER_RAW = ZMQ_ROUTER_RAW
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_ROUTER_MANDATORY); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_ROUTER_MANDATORY); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ROUTER_MANDATORY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ROUTER_MANDATORY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":125
@@ -2593,9 +2593,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ROUTER_RAW = ZMQ_ROUTER_RAW
  * IMMEDIATE = ZMQ_IMMEDIATE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_FAIL_UNROUTABLE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 125; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_FAIL_UNROUTABLE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 125; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_FAIL_UNROUTABLE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 125; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_FAIL_UNROUTABLE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 125; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":126
@@ -2605,9 +2605,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * IMMEDIATE = ZMQ_IMMEDIATE
  * IPV6 = ZMQ_IPV6
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_ROUTER_RAW); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_ROUTER_RAW); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ROUTER_RAW, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ROUTER_RAW, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":127
@@ -2617,9 +2617,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * IPV6 = ZMQ_IPV6
  * MECHANISM = ZMQ_MECHANISM
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IMMEDIATE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 127; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IMMEDIATE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 127; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IMMEDIATE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 127; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_IMMEDIATE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 127; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":128
@@ -2629,9 +2629,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * MECHANISM = ZMQ_MECHANISM
  * PLAIN_SERVER = ZMQ_PLAIN_SERVER
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IPV6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IPV6); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IPV6, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_IPV6, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":129
@@ -2641,9 +2641,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * PLAIN_SERVER = ZMQ_PLAIN_SERVER
  * CURVE_SERVER = ZMQ_CURVE_SERVER
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MECHANISM); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MECHANISM); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MECHANISM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_MECHANISM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":130
@@ -2653,9 +2653,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * CURVE_SERVER = ZMQ_CURVE_SERVER
  * PROBE_ROUTER = ZMQ_PROBE_ROUTER
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PLAIN_SERVER); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PLAIN_SERVER); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_PLAIN_SERVER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_PLAIN_SERVER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":131
@@ -2665,9 +2665,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * PROBE_ROUTER = ZMQ_PROBE_ROUTER
  * REQ_RELAXED = ZMQ_REQ_RELAXED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CURVE_SERVER); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CURVE_SERVER); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_CURVE_SERVER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_CURVE_SERVER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":132
@@ -2677,9 +2677,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * REQ_RELAXED = ZMQ_REQ_RELAXED
  * REQ_CORRELATE = ZMQ_REQ_CORRELATE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PROBE_ROUTER); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_PROBE_ROUTER); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_PROBE_ROUTER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_PROBE_ROUTER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":133
@@ -2689,9 +2689,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * REQ_CORRELATE = ZMQ_REQ_CORRELATE
  * CONFLATE = ZMQ_CONFLATE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_REQ_RELAXED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_REQ_RELAXED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_REQ_RELAXED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_REQ_RELAXED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":134
@@ -2701,9 +2701,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * CONFLATE = ZMQ_CONFLATE
  * ROUTER_HANDOVER = ZMQ_ROUTER_HANDOVER
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_REQ_CORRELATE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_REQ_CORRELATE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_REQ_CORRELATE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_REQ_CORRELATE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":135
@@ -2713,9 +2713,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * ROUTER_HANDOVER = ZMQ_ROUTER_HANDOVER
  * TOS = ZMQ_TOS
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CONFLATE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_CONFLATE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_CONFLATE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_CONFLATE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 135; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":136
@@ -2725,9 +2725,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * TOS = ZMQ_TOS
  * IPC_FILTER_PID = ZMQ_IPC_FILTER_PID
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_ROUTER_HANDOVER); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_ROUTER_HANDOVER); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ROUTER_HANDOVER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_ROUTER_HANDOVER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":137
@@ -2737,9 +2737,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * IPC_FILTER_PID = ZMQ_IPC_FILTER_PID
  * IPC_FILTER_UID = ZMQ_IPC_FILTER_UID
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TOS); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_TOS); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_TOS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_TOS, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":138
@@ -2749,9 +2749,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * IPC_FILTER_UID = ZMQ_IPC_FILTER_UID
  * IPC_FILTER_GID = ZMQ_IPC_FILTER_GID
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IPC_FILTER_PID); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IPC_FILTER_PID); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IPC_FILTER_PID, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_IPC_FILTER_PID, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":139
@@ -2761,9 +2761,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * IPC_FILTER_GID = ZMQ_IPC_FILTER_GID
  * GSSAPI_SERVER = ZMQ_GSSAPI_SERVER
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IPC_FILTER_UID); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IPC_FILTER_UID); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IPC_FILTER_UID, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_IPC_FILTER_UID, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":140
@@ -2773,9 +2773,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * GSSAPI_SERVER = ZMQ_GSSAPI_SERVER
  * GSSAPI_PLAINTEXT = ZMQ_GSSAPI_PLAINTEXT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IPC_FILTER_GID); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_IPC_FILTER_GID); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IPC_FILTER_GID, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_IPC_FILTER_GID, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":141
@@ -2785,9 +2785,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * GSSAPI_PLAINTEXT = ZMQ_GSSAPI_PLAINTEXT
  * HANDSHAKE_IVL = ZMQ_HANDSHAKE_IVL
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_GSSAPI_SERVER); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_GSSAPI_SERVER); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_GSSAPI_SERVER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_GSSAPI_SERVER, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":142
@@ -2797,9 +2797,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * HANDSHAKE_IVL = ZMQ_HANDSHAKE_IVL
  * XPUB_NODROP = ZMQ_XPUB_NODROP
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_GSSAPI_PLAINTEXT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_GSSAPI_PLAINTEXT); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_GSSAPI_PLAINTEXT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_GSSAPI_PLAINTEXT, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":143
@@ -2809,9 +2809,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * XPUB_NODROP = ZMQ_XPUB_NODROP
  * AFFINITY = ZMQ_AFFINITY
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_HANDSHAKE_IVL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_HANDSHAKE_IVL); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_HANDSHAKE_IVL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_HANDSHAKE_IVL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":144
@@ -2821,9 +2821,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * AFFINITY = ZMQ_AFFINITY
  * MAXMSGSIZE = ZMQ_MAXMSGSIZE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_XPUB_NODROP); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_XPUB_NODROP); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_XPUB_NODROP, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_XPUB_NODROP, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":145
@@ -2833,9 +2833,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * MAXMSGSIZE = ZMQ_MAXMSGSIZE
  * HWM = ZMQ_HWM
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_AFFINITY); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_AFFINITY); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_AFFINITY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_AFFINITY, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":146
@@ -2845,9 +2845,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * HWM = ZMQ_HWM
  * SWAP = ZMQ_SWAP
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MAXMSGSIZE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MAXMSGSIZE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MAXMSGSIZE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_MAXMSGSIZE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":147
@@ -2857,9 +2857,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * SWAP = ZMQ_SWAP
  * MCAST_LOOP = ZMQ_MCAST_LOOP
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_HWM); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_HWM); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_HWM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_HWM, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":148
@@ -2869,9 +2869,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * MCAST_LOOP = ZMQ_MCAST_LOOP
  * RECOVERY_IVL_MSEC = ZMQ_RECOVERY_IVL_MSEC
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SWAP); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SWAP); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SWAP, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_SWAP, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":149
@@ -2881,9 +2881,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * RECOVERY_IVL_MSEC = ZMQ_RECOVERY_IVL_MSEC
  * RATE = ZMQ_RATE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MCAST_LOOP); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MCAST_LOOP); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MCAST_LOOP, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_MCAST_LOOP, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":150
@@ -2893,9 +2893,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * RATE = ZMQ_RATE
  * RECOVERY_IVL = ZMQ_RECOVERY_IVL
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RECOVERY_IVL_MSEC); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RECOVERY_IVL_MSEC); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RECOVERY_IVL_MSEC, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_RECOVERY_IVL_MSEC, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":151
@@ -2905,9 +2905,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * RECOVERY_IVL = ZMQ_RECOVERY_IVL
  * SNDBUF = ZMQ_SNDBUF
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RATE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RATE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RATE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_RATE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":152
@@ -2917,9 +2917,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * SNDBUF = ZMQ_SNDBUF
  * RCVBUF = ZMQ_RCVBUF
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RECOVERY_IVL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RECOVERY_IVL); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RECOVERY_IVL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_RECOVERY_IVL, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":153
@@ -2929,9 +2929,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * RCVBUF = ZMQ_RCVBUF
  * RCVMORE = ZMQ_RCVMORE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SNDBUF); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SNDBUF); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SNDBUF, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_SNDBUF, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":154
@@ -2941,9 +2941,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * RCVMORE = ZMQ_RCVMORE
  * MORE = ZMQ_MORE
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RCVBUF); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RCVBUF); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RCVBUF, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_RCVBUF, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":155
@@ -2953,9 +2953,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * MORE = ZMQ_MORE
  * SRCFD = ZMQ_SRCFD
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RCVMORE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_RCVMORE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RCVMORE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_RCVMORE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":156
@@ -2965,9 +2965,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * SRCFD = ZMQ_SRCFD
  * SHARED = ZMQ_SHARED
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MORE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_MORE); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MORE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_MORE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":157
@@ -2977,9 +2977,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * SHARED = ZMQ_SHARED
  * 
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SRCFD); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 157; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SRCFD); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 157; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SRCFD, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 157; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_SRCFD, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 157; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":158
@@ -2989,9 +2989,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * 
  * #-----------------------------------------------------------------------------
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SHARED); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(ZMQ_SHARED); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SHARED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_SHARED, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pxi":163
@@ -3001,7 +3001,7 @@ PyMODINIT_FUNC PyInit_constants(void)
  *   "VERSION",
  *   "VERSION_MAJOR",
  */
-  __pyx_t_1 = PyList_New(154); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(154); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_VERSION);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_VERSION);
@@ -3465,7 +3465,7 @@ PyMODINIT_FUNC PyInit_constants(void)
   __Pyx_INCREF(__pyx_n_s_SHARED);
   PyList_SET_ITEM(__pyx_t_1, 153, __pyx_n_s_SHARED);
   __Pyx_GIVEREF(__pyx_n_s_SHARED);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_all, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_all, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "zmq/backend/cython/constants.pyx":1
@@ -3473,9 +3473,9 @@ PyMODINIT_FUNC PyInit_constants(void)
  * 
  * #
  */
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyDict_New(); if(unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if(PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /*--- Wrapped vars code ---*/
@@ -3484,12 +3484,12 @@ PyMODINIT_FUNC PyInit_constants(void)
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
-  if (__pyx_m) {
-    if (__pyx_d) {
+  if(__pyx_m) {
+    if(__pyx_d) {
       __Pyx_AddTraceback("init zmq.backend.cython.constants", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
-  } else if (!PyErr_Occurred()) {
+  } else if(!PyErr_Occurred()) {
     PyErr_SetString(PyExc_ImportError, "init zmq.backend.cython.constants");
   }
   __pyx_L0:;
@@ -3507,23 +3507,23 @@ static __Pyx_RefNannyAPIStruct *__Pyx_RefNannyImportAPI(const char *modname) {
     PyObject *m = NULL, *p = NULL;
     void *r = NULL;
     m = PyImport_ImportModule((char *)modname);
-    if (!m) goto end;
-    p = PyObject_GetAttrString(m, (char *)"RefNannyAPI");
-    if (!p) goto end;
+    if(!m) goto end;
+    p = PyObject_GetAttrString(m,(char *)"RefNannyAPI");
+    if(!p) goto end;
     r = PyLong_AsVoidPtr(p);
 end:
     Py_XDECREF(p);
     Py_XDECREF(m);
-    return (__Pyx_RefNannyAPIStruct *)r;
+    return(__Pyx_RefNannyAPIStruct *)r;
 }
 #endif
 
 static CYTHON_INLINE PyObject *__Pyx_GetAttr(PyObject *o, PyObject *n) {
 #if CYTHON_COMPILING_IN_CPYTHON
 #if PY_MAJOR_VERSION >= 3
-    if (likely(PyUnicode_Check(n)))
+    if(likely(PyUnicode_Check(n)))
 #else
-    if (likely(PyString_Check(n)))
+    if(likely(PyString_Check(n)))
 #endif
         return __Pyx_PyObject_GetAttrStr(o, n);
 #endif
@@ -3536,25 +3536,25 @@ static PyObject* __Pyx_Globals(void) {
     PyObject *globals = __pyx_d;
     Py_INCREF(globals);
     names = PyObject_Dir(__pyx_m);
-    if (!names)
+    if(!names)
         goto bad;
-    for (i = PyList_GET_SIZE(names)-1; i >= 0; i--) {
+    for(i = PyList_GET_SIZE(names)-1; i >= 0; i--) {
 #if CYTHON_COMPILING_IN_PYPY
         PyObject* name = PySequence_GetItem(names, i);
-        if (!name)
+        if(!name)
             goto bad;
 #else
         PyObject* name = PyList_GET_ITEM(names, i);
 #endif
-        if (!PyDict_Contains(globals, name)) {
+        if(!PyDict_Contains(globals, name)) {
             PyObject* value = __Pyx_GetAttr(__pyx_m, name);
-            if (!value) {
+            if(!value) {
 #if CYTHON_COMPILING_IN_PYPY
                 Py_DECREF(name);
 #endif
                 goto bad;
             }
-            if (PyDict_SetItem(globals, name, value) < 0) {
+            if(PyDict_SetItem(globals, name, value) < 0) {
 #if CYTHON_COMPILING_IN_PYPY
                 Py_DECREF(name);
 #endif
@@ -3576,20 +3576,20 @@ bad:
 
 static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
     int start = 0, mid = 0, end = count - 1;
-    if (end >= 0 && code_line > entries[end].code_line) {
+    if(end >= 0 && code_line > entries[end].code_line) {
         return count;
     }
-    while (start < end) {
-        mid = (start + end) / 2;
-        if (code_line < entries[mid].code_line) {
+    while(start < end) {
+        mid =(start + end) / 2;
+        if(code_line < entries[mid].code_line) {
             end = mid;
-        } else if (code_line > entries[mid].code_line) {
+        } else if(code_line > entries[mid].code_line) {
              start = mid + 1;
         } else {
             return mid;
         }
     }
-    if (code_line <= entries[mid].code_line) {
+    if(code_line <= entries[mid].code_line) {
         return mid;
     } else {
         return mid + 1;
@@ -3598,11 +3598,11 @@ static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int co
 static PyCodeObject *__pyx_find_code_object(int code_line) {
     PyCodeObject* code_object;
     int pos;
-    if (unlikely(!code_line) || unlikely(!__pyx_code_cache.entries)) {
+    if(unlikely(!code_line) || unlikely(!__pyx_code_cache.entries)) {
         return NULL;
     }
     pos = __pyx_bisect_code_objects(__pyx_code_cache.entries, __pyx_code_cache.count, code_line);
-    if (unlikely(pos >= __pyx_code_cache.count) || unlikely(__pyx_code_cache.entries[pos].code_line != code_line)) {
+    if(unlikely(pos >= __pyx_code_cache.count) || unlikely(__pyx_code_cache.entries[pos].code_line != code_line)) {
         return NULL;
     }
     code_object = __pyx_code_cache.entries[pos].code_object;
@@ -3612,12 +3612,12 @@ static PyCodeObject *__pyx_find_code_object(int code_line) {
 static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object) {
     int pos, i;
     __Pyx_CodeObjectCacheEntry* entries = __pyx_code_cache.entries;
-    if (unlikely(!code_line)) {
+    if(unlikely(!code_line)) {
         return;
     }
-    if (unlikely(!entries)) {
-        entries = (__Pyx_CodeObjectCacheEntry*)PyMem_Malloc(64*sizeof(__Pyx_CodeObjectCacheEntry));
-        if (likely(entries)) {
+    if(unlikely(!entries)) {
+        entries =(__Pyx_CodeObjectCacheEntry*)PyMem_Malloc(64*sizeof(__Pyx_CodeObjectCacheEntry));
+        if(likely(entries)) {
             __pyx_code_cache.entries = entries;
             __pyx_code_cache.max_count = 64;
             __pyx_code_cache.count = 1;
@@ -3628,23 +3628,23 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object) {
         return;
     }
     pos = __pyx_bisect_code_objects(__pyx_code_cache.entries, __pyx_code_cache.count, code_line);
-    if ((pos < __pyx_code_cache.count) && unlikely(__pyx_code_cache.entries[pos].code_line == code_line)) {
+    if((pos < __pyx_code_cache.count) && unlikely(__pyx_code_cache.entries[pos].code_line == code_line)) {
         PyCodeObject* tmp = entries[pos].code_object;
         entries[pos].code_object = code_object;
         Py_DECREF(tmp);
         return;
     }
-    if (__pyx_code_cache.count == __pyx_code_cache.max_count) {
+    if(__pyx_code_cache.count == __pyx_code_cache.max_count) {
         int new_max = __pyx_code_cache.max_count + 64;
-        entries = (__Pyx_CodeObjectCacheEntry*)PyMem_Realloc(
-            __pyx_code_cache.entries, (size_t)new_max*sizeof(__Pyx_CodeObjectCacheEntry));
-        if (unlikely(!entries)) {
+        entries =(__Pyx_CodeObjectCacheEntry*)PyMem_Realloc(
+            __pyx_code_cache.entries,(size_t)new_max*sizeof(__Pyx_CodeObjectCacheEntry));
+        if(unlikely(!entries)) {
             return;
         }
         __pyx_code_cache.entries = entries;
         __pyx_code_cache.max_count = new_max;
     }
-    for (i=__pyx_code_cache.count; i>pos; i--) {
+    for(i=__pyx_code_cache.count; i>pos; i--) {
         entries[i] = entries[i-1];
     }
     entries[pos].code_line = code_line;
@@ -3667,12 +3667,12 @@ static PyCodeObject* __Pyx_CreateCodeObjectForTraceback(
     #else
     py_srcfile = PyUnicode_FromString(filename);
     #endif
-    if (!py_srcfile) goto bad;
-    if (c_line) {
+    if(!py_srcfile) goto bad;
+    if(c_line) {
         #if PY_MAJOR_VERSION < 3
-        py_funcname = PyString_FromFormat( "%s (%s:%d)", funcname, __pyx_cfilenm, c_line);
+        py_funcname = PyString_FromFormat( "%s(%s:%d)", funcname, __pyx_cfilenm, c_line);
         #else
-        py_funcname = PyUnicode_FromFormat( "%s (%s:%d)", funcname, __pyx_cfilenm, c_line);
+        py_funcname = PyUnicode_FromFormat( "%s(%s:%d)", funcname, __pyx_cfilenm, c_line);
         #endif
     }
     else {
@@ -3682,7 +3682,7 @@ static PyCodeObject* __Pyx_CreateCodeObjectForTraceback(
         py_funcname = PyUnicode_FromString(funcname);
         #endif
     }
-    if (!py_funcname) goto bad;
+    if(!py_funcname) goto bad;
     py_code = __Pyx_PyCode_New(
         0,
         0,
@@ -3713,10 +3713,10 @@ static void __Pyx_AddTraceback(const char *funcname, int c_line,
     PyCodeObject *py_code = 0;
     PyFrameObject *py_frame = 0;
     py_code = __pyx_find_code_object(c_line ? c_line : py_line);
-    if (!py_code) {
+    if(!py_code) {
         py_code = __Pyx_CreateCodeObjectForTraceback(
             funcname, c_line, py_line, filename);
-        if (!py_code) goto bad;
+        if(!py_code) goto bad;
         __pyx_insert_code_object(c_line ? c_line : py_line, py_code);
     }
     py_frame = PyFrame_New(
@@ -3725,7 +3725,7 @@ static void __Pyx_AddTraceback(const char *funcname, int c_line,
         __pyx_d,      /*PyObject *globals,*/
         0                    /*PyObject *locals*/
     );
-    if (!py_frame) goto bad;
+    if(!py_frame) goto bad;
     py_frame->f_lineno = py_line;
     PyTraceBack_Here(py_frame);
 bad:
@@ -3734,52 +3734,52 @@ bad:
 }
 
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
-    const int neg_one = (int) -1, const_zero = 0;
+    const int neg_one =(int) -1, const_zero = 0;
     const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
+    if(is_unsigned) {
+        if(sizeof(int) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
+        } else if(sizeof(int) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long long)) {
+        } else if(sizeof(int) <= sizeof(unsigned long long)) {
             return PyLong_FromUnsignedLongLong((unsigned long long) value);
         }
     } else {
-        if (sizeof(int) <= sizeof(long)) {
+        if(sizeof(int) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(long long)) {
+        } else if(sizeof(int) <= sizeof(long long)) {
             return PyLong_FromLongLong((long long) value);
         }
     }
     {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
+        int one = 1; int little =(int)*(unsigned char *)&one;
+        unsigned char *bytes =(unsigned char *)&value;
         return _PyLong_FromByteArray(bytes, sizeof(int),
                                      little, !is_unsigned);
     }
 }
 
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-    const long neg_one = (long) -1, const_zero = 0;
+    const long neg_one =(long) -1, const_zero = 0;
     const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
+    if(is_unsigned) {
+        if(sizeof(long) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
+        } else if(sizeof(long) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long long)) {
+        } else if(sizeof(long) <= sizeof(unsigned long long)) {
             return PyLong_FromUnsignedLongLong((unsigned long long) value);
         }
     } else {
-        if (sizeof(long) <= sizeof(long)) {
+        if(sizeof(long) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(long long)) {
+        } else if(sizeof(long) <= sizeof(long long)) {
             return PyLong_FromLongLong((long long) value);
         }
     }
     {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
+        int one = 1; int little =(int)*(unsigned char *)&one;
+        unsigned char *bytes =(unsigned char *)&value;
         return _PyLong_FromByteArray(bytes, sizeof(long),
                                      little, !is_unsigned);
     }
@@ -3788,16 +3788,16 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
 #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)       \
     {                                                                     \
         func_type value = func_value;                                     \
-        if (sizeof(target_type) < sizeof(func_type)) {                    \
-            if (unlikely(value != (func_type) (target_type) value)) {     \
+        if(sizeof(target_type) < sizeof(func_type)) {                    \
+            if(unlikely(value !=(func_type)(target_type) value)) {     \
                 func_type zero = 0;                                       \
-                if (is_unsigned && unlikely(value < zero))                \
+                if(is_unsigned && unlikely(value < zero))                \
                     goto raise_neg_overflow;                              \
                 else                                                      \
                     goto raise_overflow;                                  \
             }                                                             \
         }                                                                 \
-        return (target_type) value;                                       \
+        return(target_type) value;                                       \
     }
 
 #if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
@@ -3807,52 +3807,52 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
 #endif
 
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
-    const long neg_one = (long) -1, const_zero = 0;
+    const long neg_one =(long) -1, const_zero = 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(long) < sizeof(long)) {
+    if(likely(PyInt_Check(x))) {
+        if(sizeof(long) < sizeof(long)) {
             __PYX_VERIFY_RETURN_INT(long, long, PyInt_AS_LONG(x))
         } else {
             long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
+            if(is_unsigned && unlikely(val < 0)) {
                 goto raise_neg_overflow;
             }
-            return (long) val;
+            return(long) val;
         }
     } else
 #endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
+    if(likely(PyLong_Check(x))) {
+        if(is_unsigned) {
 #if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
  #if CYTHON_USE_PYLONG_INTERNALS
-            switch (Py_SIZE(x)) {
+            switch(Py_SIZE(x)) {
                 case  0: return 0;
-                case  1: __PYX_VERIFY_RETURN_INT(long, digit, ((PyLongObject*)x)->ob_digit[0]);
+                case  1: __PYX_VERIFY_RETURN_INT(long, digit,((PyLongObject*)x)->ob_digit[0]);
             }
  #endif
 #endif
-            if (unlikely(Py_SIZE(x) < 0)) {
+            if(unlikely(Py_SIZE(x) < 0)) {
                 goto raise_neg_overflow;
             }
-            if (sizeof(long) <= sizeof(unsigned long)) {
+            if(sizeof(long) <= sizeof(unsigned long)) {
                 __PYX_VERIFY_RETURN_INT(long, unsigned long, PyLong_AsUnsignedLong(x))
-            } else if (sizeof(long) <= sizeof(unsigned long long)) {
+            } else if(sizeof(long) <= sizeof(unsigned long long)) {
                 __PYX_VERIFY_RETURN_INT(long, unsigned long long, PyLong_AsUnsignedLongLong(x))
             }
         } else {
 #if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
  #if CYTHON_USE_PYLONG_INTERNALS
-            switch (Py_SIZE(x)) {
+            switch(Py_SIZE(x)) {
                 case  0: return 0;
                 case  1: __PYX_VERIFY_RETURN_INT(long,  digit, +(((PyLongObject*)x)->ob_digit[0]));
-                case -1: __PYX_VERIFY_RETURN_INT(long, sdigit, -(sdigit) ((PyLongObject*)x)->ob_digit[0]);
+                case -1: __PYX_VERIFY_RETURN_INT(long, sdigit, -(sdigit)((PyLongObject*)x)->ob_digit[0]);
             }
  #endif
 #endif
-            if (sizeof(long) <= sizeof(long)) {
+            if(sizeof(long) <= sizeof(long)) {
                 __PYX_VERIFY_RETURN_INT(long, long, PyLong_AsLong(x))
-            } else if (sizeof(long) <= sizeof(long long)) {
+            } else if(sizeof(long) <= sizeof(long long)) {
                 __PYX_VERIFY_RETURN_INT(long, long long, PyLong_AsLongLong(x))
             }
         }
@@ -3864,29 +3864,29 @@ static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
             long val;
             PyObject *v = __Pyx_PyNumber_Int(x);
  #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
+            if(likely(v) && !PyLong_Check(v)) {
                 PyObject *tmp = v;
                 v = PyNumber_Long(tmp);
                 Py_DECREF(tmp);
             }
  #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
+            if(likely(v)) {
+                int one = 1; int is_little =(int)*(unsigned char *)&one;
+                unsigned char *bytes =(unsigned char *)&val;
                 int ret = _PyLong_AsByteArray((PyLongObject *)v,
                                               bytes, sizeof(val),
                                               is_little, !is_unsigned);
                 Py_DECREF(v);
-                if (likely(!ret))
+                if(likely(!ret))
                     return val;
             }
 #endif
-            return (long) -1;
+            return(long) -1;
         }
     } else {
         long val;
         PyObject *tmp = __Pyx_PyNumber_Int(x);
-        if (!tmp) return (long) -1;
+        if(!tmp) return(long) -1;
         val = __Pyx_PyInt_As_long(tmp);
         Py_DECREF(tmp);
         return val;
@@ -3894,60 +3894,60 @@ static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
 raise_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "value too large to convert to long");
-    return (long) -1;
+    return(long) -1;
 raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to long");
-    return (long) -1;
+    return(long) -1;
 }
 
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
-    const int neg_one = (int) -1, const_zero = 0;
+    const int neg_one =(int) -1, const_zero = 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(int) < sizeof(long)) {
+    if(likely(PyInt_Check(x))) {
+        if(sizeof(int) < sizeof(long)) {
             __PYX_VERIFY_RETURN_INT(int, long, PyInt_AS_LONG(x))
         } else {
             long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
+            if(is_unsigned && unlikely(val < 0)) {
                 goto raise_neg_overflow;
             }
-            return (int) val;
+            return(int) val;
         }
     } else
 #endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
+    if(likely(PyLong_Check(x))) {
+        if(is_unsigned) {
 #if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
  #if CYTHON_USE_PYLONG_INTERNALS
-            switch (Py_SIZE(x)) {
+            switch(Py_SIZE(x)) {
                 case  0: return 0;
-                case  1: __PYX_VERIFY_RETURN_INT(int, digit, ((PyLongObject*)x)->ob_digit[0]);
+                case  1: __PYX_VERIFY_RETURN_INT(int, digit,((PyLongObject*)x)->ob_digit[0]);
             }
  #endif
 #endif
-            if (unlikely(Py_SIZE(x) < 0)) {
+            if(unlikely(Py_SIZE(x) < 0)) {
                 goto raise_neg_overflow;
             }
-            if (sizeof(int) <= sizeof(unsigned long)) {
+            if(sizeof(int) <= sizeof(unsigned long)) {
                 __PYX_VERIFY_RETURN_INT(int, unsigned long, PyLong_AsUnsignedLong(x))
-            } else if (sizeof(int) <= sizeof(unsigned long long)) {
+            } else if(sizeof(int) <= sizeof(unsigned long long)) {
                 __PYX_VERIFY_RETURN_INT(int, unsigned long long, PyLong_AsUnsignedLongLong(x))
             }
         } else {
 #if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
  #if CYTHON_USE_PYLONG_INTERNALS
-            switch (Py_SIZE(x)) {
+            switch(Py_SIZE(x)) {
                 case  0: return 0;
                 case  1: __PYX_VERIFY_RETURN_INT(int,  digit, +(((PyLongObject*)x)->ob_digit[0]));
-                case -1: __PYX_VERIFY_RETURN_INT(int, sdigit, -(sdigit) ((PyLongObject*)x)->ob_digit[0]);
+                case -1: __PYX_VERIFY_RETURN_INT(int, sdigit, -(sdigit)((PyLongObject*)x)->ob_digit[0]);
             }
  #endif
 #endif
-            if (sizeof(int) <= sizeof(long)) {
+            if(sizeof(int) <= sizeof(long)) {
                 __PYX_VERIFY_RETURN_INT(int, long, PyLong_AsLong(x))
-            } else if (sizeof(int) <= sizeof(long long)) {
+            } else if(sizeof(int) <= sizeof(long long)) {
                 __PYX_VERIFY_RETURN_INT(int, long long, PyLong_AsLongLong(x))
             }
         }
@@ -3959,29 +3959,29 @@ static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
             int val;
             PyObject *v = __Pyx_PyNumber_Int(x);
  #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
+            if(likely(v) && !PyLong_Check(v)) {
                 PyObject *tmp = v;
                 v = PyNumber_Long(tmp);
                 Py_DECREF(tmp);
             }
  #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
+            if(likely(v)) {
+                int one = 1; int is_little =(int)*(unsigned char *)&one;
+                unsigned char *bytes =(unsigned char *)&val;
                 int ret = _PyLong_AsByteArray((PyLongObject *)v,
                                               bytes, sizeof(val),
                                               is_little, !is_unsigned);
                 Py_DECREF(v);
-                if (likely(!ret))
+                if(likely(!ret))
                     return val;
             }
 #endif
-            return (int) -1;
+            return(int) -1;
         }
     } else {
         int val;
         PyObject *tmp = __Pyx_PyNumber_Int(x);
-        if (!tmp) return (int) -1;
+        if(!tmp) return(int) -1;
         val = __Pyx_PyInt_As_int(tmp);
         Py_DECREF(tmp);
         return val;
@@ -3989,18 +3989,18 @@ static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
 raise_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "value too large to convert to int");
-    return (int) -1;
+    return(int) -1;
 raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to int");
-    return (int) -1;
+    return(int) -1;
 }
 
 static int __Pyx_check_binary_version(void) {
     char ctversion[4], rtversion[4];
     PyOS_snprintf(ctversion, 4, "%d.%d", PY_MAJOR_VERSION, PY_MINOR_VERSION);
     PyOS_snprintf(rtversion, 4, "%s", Py_GetVersion());
-    if (ctversion[0] != rtversion[0] || ctversion[2] != rtversion[2]) {
+    if(ctversion[0] != rtversion[0] || ctversion[2] != rtversion[2]) {
         char message[200];
         PyOS_snprintf(message, sizeof(message),
                       "compiletime version %s of module '%.100s' "
@@ -4012,20 +4012,20 @@ static int __Pyx_check_binary_version(void) {
 }
 
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
-    while (t->p) {
+    while(t->p) {
         #if PY_MAJOR_VERSION < 3
-        if (t->is_unicode) {
+        if(t->is_unicode) {
             *t->p = PyUnicode_DecodeUTF8(t->s, t->n - 1, NULL);
-        } else if (t->intern) {
+        } else if(t->intern) {
             *t->p = PyString_InternFromString(t->s);
         } else {
             *t->p = PyString_FromStringAndSize(t->s, t->n - 1);
         }
         #else
-        if (t->is_unicode | t->is_str) {
-            if (t->intern) {
+        if(t->is_unicode | t->is_str) {
+            if(t->intern) {
                 *t->p = PyUnicode_InternFromString(t->s);
-            } else if (t->encoding) {
+            } else if(t->encoding) {
                 *t->p = PyUnicode_Decode(t->s, t->n - 1, t->encoding, NULL);
             } else {
                 *t->p = PyUnicode_FromStringAndSize(t->s, t->n - 1);
@@ -4034,7 +4034,7 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
             *t->p = PyBytes_FromStringAndSize(t->s, t->n - 1);
         }
         #endif
-        if (!*t->p)
+        if(!*t->p)
             return -1;
         ++t;
     }
@@ -4042,7 +4042,7 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
 }
 
 static CYTHON_INLINE PyObject* __Pyx_PyUnicode_FromString(const char* c_str) {
-    return __Pyx_PyUnicode_FromStringAndSize(c_str, (Py_ssize_t)strlen(c_str));
+    return __Pyx_PyUnicode_FromStringAndSize(c_str,(Py_ssize_t)strlen(c_str));
 }
 static CYTHON_INLINE char* __Pyx_PyObject_AsString(PyObject* o) {
     Py_ssize_t ignore;
@@ -4050,7 +4050,7 @@ static CYTHON_INLINE char* __Pyx_PyObject_AsString(PyObject* o) {
 }
 static CYTHON_INLINE char* __Pyx_PyObject_AsStringAndSize(PyObject* o, Py_ssize_t *length) {
 #if __PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT
-    if (
+    if(
 #if PY_MAJOR_VERSION < 3 && __PYX_DEFAULT_STRING_ENCODING_IS_ASCII
             __Pyx_sys_getdefaultencoding_not_ascii &&
 #endif
@@ -4058,14 +4058,14 @@ static CYTHON_INLINE char* __Pyx_PyObject_AsStringAndSize(PyObject* o, Py_ssize_
 #if PY_VERSION_HEX < 0x03030000
         char* defenc_c;
         PyObject* defenc = _PyUnicode_AsDefaultEncodedString(o, NULL);
-        if (!defenc) return NULL;
+        if(!defenc) return NULL;
         defenc_c = PyBytes_AS_STRING(defenc);
 #if __PYX_DEFAULT_STRING_ENCODING_IS_ASCII
         {
             char* end = defenc_c + PyBytes_GET_SIZE(defenc);
             char* c;
-            for (c = defenc_c; c < end; c++) {
-                if ((unsigned char) (*c) >= 128) {
+            for(c = defenc_c; c < end; c++) {
+                if((unsigned char)(*c) >= 128) {
                     PyUnicode_AsASCIIString(o);
                     return NULL;
                 }
@@ -4075,9 +4075,9 @@ static CYTHON_INLINE char* __Pyx_PyObject_AsStringAndSize(PyObject* o, Py_ssize_
         *length = PyBytes_GET_SIZE(defenc);
         return defenc_c;
 #else
-        if (__Pyx_PyUnicode_READY(o) == -1) return NULL;
+        if(__Pyx_PyUnicode_READY(o) == -1) return NULL;
 #if __PYX_DEFAULT_STRING_ENCODING_IS_ASCII
-        if (PyUnicode_IS_ASCII(o)) {
+        if(PyUnicode_IS_ASCII(o)) {
             *length = PyUnicode_GET_LENGTH(o);
             return PyUnicode_AsUTF8(o);
         } else {
@@ -4091,7 +4091,7 @@ static CYTHON_INLINE char* __Pyx_PyObject_AsStringAndSize(PyObject* o, Py_ssize_
     } else
 #endif
 #if !CYTHON_COMPILING_IN_PYPY
-    if (PyByteArray_Check(o)) {
+    if(PyByteArray_Check(o)) {
         *length = PyByteArray_GET_SIZE(o);
         return PyByteArray_AS_STRING(o);
     } else
@@ -4099,7 +4099,7 @@ static CYTHON_INLINE char* __Pyx_PyObject_AsStringAndSize(PyObject* o, Py_ssize_
     {
         char* result;
         int r = PyBytes_AsStringAndSize(o, &result, length);
-        if (unlikely(r < 0)) {
+        if(unlikely(r < 0)) {
             return NULL;
         } else {
             return result;
@@ -4108,7 +4108,7 @@ static CYTHON_INLINE char* __Pyx_PyObject_AsStringAndSize(PyObject* o, Py_ssize_
 }
 static CYTHON_INLINE int __Pyx_PyObject_IsTrue(PyObject* x) {
    int is_true = x == Py_True;
-   if (is_true | (x == Py_False) | (x == Py_None)) return is_true;
+   if(is_true |(x == Py_False) |(x == Py_None)) return is_true;
    else return PyObject_IsTrue(x);
 }
 static CYTHON_INLINE PyObject* __Pyx_PyNumber_Int(PyObject* x) {
@@ -4116,41 +4116,41 @@ static CYTHON_INLINE PyObject* __Pyx_PyNumber_Int(PyObject* x) {
   const char *name = NULL;
   PyObject *res = NULL;
 #if PY_MAJOR_VERSION < 3
-  if (PyInt_Check(x) || PyLong_Check(x))
+  if(PyInt_Check(x) || PyLong_Check(x))
 #else
-  if (PyLong_Check(x))
+  if(PyLong_Check(x))
 #endif
     return Py_INCREF(x), x;
   m = Py_TYPE(x)->tp_as_number;
 #if PY_MAJOR_VERSION < 3
-  if (m && m->nb_int) {
+  if(m && m->nb_int) {
     name = "int";
     res = PyNumber_Int(x);
   }
-  else if (m && m->nb_long) {
+  else if(m && m->nb_long) {
     name = "long";
     res = PyNumber_Long(x);
   }
 #else
-  if (m && m->nb_int) {
+  if(m && m->nb_int) {
     name = "int";
     res = PyNumber_Long(x);
   }
 #endif
-  if (res) {
+  if(res) {
 #if PY_MAJOR_VERSION < 3
-    if (!PyInt_Check(res) && !PyLong_Check(res)) {
+    if(!PyInt_Check(res) && !PyLong_Check(res)) {
 #else
-    if (!PyLong_Check(res)) {
+    if(!PyLong_Check(res)) {
 #endif
       PyErr_Format(PyExc_TypeError,
-                   "__%.4s__ returned non-%.4s (type %.200s)",
+                   "__%.4s__ returned non-%.4s(type %.200s)",
                    name, name, Py_TYPE(res)->tp_name);
       Py_DECREF(res);
       return NULL;
     }
   }
-  else if (!PyErr_Occurred()) {
+  else if(!PyErr_Occurred()) {
     PyErr_SetString(PyExc_TypeError,
                     "an integer is required");
   }
@@ -4160,23 +4160,23 @@ static CYTHON_INLINE Py_ssize_t __Pyx_PyIndex_AsSsize_t(PyObject* b) {
   Py_ssize_t ival;
   PyObject *x;
 #if PY_MAJOR_VERSION < 3
-  if (likely(PyInt_CheckExact(b)))
+  if(likely(PyInt_CheckExact(b)))
       return PyInt_AS_LONG(b);
 #endif
-  if (likely(PyLong_CheckExact(b))) {
+  if(likely(PyLong_CheckExact(b))) {
     #if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
      #if CYTHON_USE_PYLONG_INTERNALS
-       switch (Py_SIZE(b)) {
+       switch(Py_SIZE(b)) {
        case -1: return -(sdigit)((PyLongObject*)b)->ob_digit[0];
        case  0: return 0;
-       case  1: return ((PyLongObject*)b)->ob_digit[0];
+       case  1: return((PyLongObject*)b)->ob_digit[0];
        }
      #endif
     #endif
     return PyLong_AsSsize_t(b);
   }
   x = PyNumber_Index(b);
-  if (!x) return -1;
+  if(!x) return -1;
   ival = PyInt_AsSsize_t(x);
   Py_DECREF(x);
   return ival;

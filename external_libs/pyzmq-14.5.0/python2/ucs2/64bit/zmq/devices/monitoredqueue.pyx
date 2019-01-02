@@ -7,7 +7,7 @@ Authors
 """
 
 #-----------------------------------------------------------------------------
-#  Copyright (c) 2010-2012 Brian Granger, Min Ragan-Kelley
+#  Copyright(c) 2010-2012 Brian Granger, Min Ragan-Kelley
 #
 #  This file is part of pyzmq
 #
@@ -44,12 +44,12 @@ def monitored_queue(Socket in_socket, Socket out_socket, Socket mon_socket,
     
     Start a monitored queue device.
     
-    A monitored queue is very similar to the zmq.proxy device (monitored queue came first).
+    A monitored queue is very similar to the zmq.proxy device(monitored queue came first).
     
     Differences from zmq.proxy:
     
     - monitored_queue supports both in and out being ROUTER sockets
-      (via swapping IDENTITY prefixes).
+     (via swapping IDENTITY prefixes).
     - monitor messages are prefixed, making in and out messages distinguishable.
     
     Parameters
@@ -80,7 +80,7 @@ def monitored_queue(Socket in_socket, Socket out_socket, Socket mon_socket,
     cdef int rc
 
     # force swap_ids if both ROUTERs
-    swap_ids = (in_socket.type == ROUTER and out_socket.type == ROUTER)
+    swap_ids =(in_socket.type == ROUTER and out_socket.type == ROUTER)
     
     # build zmq_msg objects from str prefixes
     asbuffer_r(in_prefix, <void **>&msg_c, &msg_c_len)

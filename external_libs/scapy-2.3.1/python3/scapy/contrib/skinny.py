@@ -1,14 +1,14 @@
 #! /usr/bin/env python
 
-# scapy.contrib.description = Skinny Call Control Protocol (SCCP)
+# scapy.contrib.description = Skinny Call Control Protocol(SCCP)
 # scapy.contrib.status = loads
 
 
 #############################################################################
 ##                                                                         ##
-## scapy-skinny.py --- Skinny Call Control Protocol (SCCP) extension       ##
+## scapy-skinny.py --- Skinny Call Control Protocol(SCCP) extension       ##
 ##                                                                         ##
-## Copyright (C) 2006    Nicolas Bareil      <nicolas.bareil@ eads.net>    ##
+## Copyright(C) 2006    Nicolas Bareil      <nicolas.bareil@ eads.net>    ##
 ##                       EADS/CRC security team                            ##
 ##                                                                         ##
 ## This program is free software; you can redistribute it and/or modify it ##
@@ -184,7 +184,7 @@ skinny_speaker_modes = {
 }
 
 skinny_lamp_mode = {
-    0x1: "Off (?)",
+    0x1: "Off(?)",
     0x2: "On",
 }
 
@@ -203,12 +203,12 @@ class SkinnyDateTimeField(StrFixedLenField):
 
     def m2i(self, pkt, s):
         year,month,dow,day,hour,min,sec,milisecond=struct.unpack('<8I', s)
-        return (year, month, day, hour, min, sec)
+        return(year, month, day, hour, min, sec)
     
     def i2m(self, pkt, val):
         if type(val) is str:
             val = self.h2i(pkt, val)
-        l= val[:2] + (0,) + val[2:7] + (0,)
+        l= val[:2] +(0,) + val[2:7] +(0,)
         return struct.pack('<8I', *l)
 
     def i2h(self, pkt, x):
@@ -221,14 +221,14 @@ class SkinnyDateTimeField(StrFixedLenField):
         return self.i2h(pkt, x)
     
     def h2i(self, pkt, s):
-        t = ()
+        t =()
         if type(s) is str:
             t = time.strptime(s)
             t = t[:2] + t[2:-3]
         else:
             if not s:
                 y,m,d,h,min,sec,rest,rest,rest = time.gmtime(time.time())
-                t = (y,m,d,h,min,sec)
+                t =(y,m,d,h,min,sec)
             else:
                 t=s
         return t
@@ -303,7 +303,7 @@ class SkinnyMessageSpeakerMode(Packet):
     fields_desc = [ LEIntEnumField("ring", 0x1, skinny_speaker_modes) ]
 
 class SkinnyMessageSetLamp(Packet):
-    name='Lamp message (light of the phone)'
+    name='Lamp message(light of the phone)'
     fields_desc = [ LEIntEnumField("stimulus", 0x5, skinny_stimulus),
                     LEIntField("instance", 1),
                     LEIntEnumField("mode", 2, skinny_lamp_mode) ]

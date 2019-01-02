@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -13,7 +13,7 @@ import zmq
 from zmq.tests import BaseZMQTestCase, skip_if, skip_pypy
 from zmq.utils.monitor import recv_monitor_message
 
-skip_lt_4 = skip_if(zmq.zmq_version_info() < (4,), "requires zmq >= 4")
+skip_lt_4 = skip_if(zmq.zmq_version_info() <(4,), "requires zmq >= 4")
 
 class TestSocketMonitor(BaseZMQTestCase):
 

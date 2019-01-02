@@ -1,4 +1,4 @@
-## This file is (hopefully) part of Scapy
+## This file is(hopefully) part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
 ## <jellch@harris.com>
 ## This program is published under a GPLv2 license
@@ -8,7 +8,7 @@
 
 
 """
-PPI (Per-Packet Information).
+PPI(Per-Packet Information).
 """
 import logging,struct
 from scapy.config import conf
@@ -50,11 +50,11 @@ def _PPIGuessPayloadClass(p, **kargs):
         cls = getPPIType(t, "default")
         pfh_len += 4
         out = cls(p[:pfh_len], **kargs)
-        if (out.payload):
+        if(out.payload):
             out.payload = conf.raw_layer(out.payload.load)
-            if (len(p) > pfh_len):
+            if(len(p) > pfh_len):
                 out.payload.payload = conf.padding_layer(p[pfh_len:])
-        elif (len(p) > pfh_len):
+        elif(len(p) > pfh_len):
             out.payload = conf.padding_layer(p[pfh_len:])
         
     else:

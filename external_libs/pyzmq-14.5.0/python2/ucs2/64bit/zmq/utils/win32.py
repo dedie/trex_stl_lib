@@ -1,7 +1,7 @@
 """Win32 compatibility utilities."""
 
 #-----------------------------------------------------------------------------
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 #-----------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ class _allow_interrupt(object):
     """Utility for fixing CTRL-C events on Windows.
 
     On Windows, the Python interpreter intercepts CTRL-C events in order to
-    translate them into ``KeyboardInterrupt`` exceptions.  It (presumably)
+    translate them into ``KeyboardInterrupt`` exceptions.  It(presumably)
     does this by setting a flag in its "control control handler" and
     checking it later at a convenient location in the interpreter.
 
@@ -35,7 +35,7 @@ class _allow_interrupt(object):
     respond normally to CTRL-C events on Windows.  If a CTRL-C event occurs
     while blocked on ZMQ socket polling, the translation to a
     ``KeyboardInterrupt`` exception will be delayed until the I/O completes
-    and control returns to the Python interpreter (this may never happen if
+    and control returns to the Python interpreter(this may never happen if
     you use an infinite timeout).
 
     A no-op implementation is provided on non-Win32 systems to avoid the
@@ -63,7 +63,7 @@ class _allow_interrupt(object):
         """Translate ``action`` into a CTRL-C handler.
 
         ``action`` is a callable that takes no arguments and returns no
-        value (returned value is ignored).  It must *NEVER* raise an
+        value(returned value is ignored).  It must *NEVER* raise an
         exception.
         
         If unspecified, a no-op will be used.
@@ -88,7 +88,7 @@ if os.name == 'nt':
     # <http://msdn.microsoft.com/en-us/library/ms686016.aspx>
     PHANDLER_ROUTINE = WINFUNCTYPE(BOOL, DWORD)
     SetConsoleCtrlHandler = kernel32.SetConsoleCtrlHandler
-    SetConsoleCtrlHandler.argtypes = (PHANDLER_ROUTINE, BOOL)
+    SetConsoleCtrlHandler.argtypes =(PHANDLER_ROUTINE, BOOL)
     SetConsoleCtrlHandler.restype = BOOL
 
     class allow_interrupt(_allow_interrupt):

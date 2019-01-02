@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -- Content-Encoding: UTF-8 --
+import sys
 """
 The configuration module.
 
@@ -11,7 +12,7 @@ The configuration module.
 
     Copyright 2015 isandlaTech
 
-    Licensed under the Apache License, Version 2.0 (the "License");
+    Licensed under the Apache License, Version 2.0(the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
@@ -33,15 +34,15 @@ __docformat__ = "restructuredtext en"
 
 # ------------------------------------------------------------------------------
 
-import sys
 
 # ------------------------------------------------------------------------------
 
 
 class LocalClasses(dict):
     """
-    Associates local classes with their names (used in the jsonclass module)
+    Associates local classes with their names(used in the jsonclass module)
     """
+
     def add(self, cls, name=None):
         """
         Stores a local class
@@ -63,6 +64,7 @@ class Config(object):
     You can change serialize_method and ignore_attribute, or use
     the local_classes.add(class) to include "local" classes.
     """
+
     def __init__(self, version=2.0, content_type="application/json-rpc",
                  user_agent=None, use_jsonclass=True,
                  serialize_method='_serialize',
@@ -99,7 +101,7 @@ class Config(object):
 
         # Default user agent
         if user_agent is None:
-            user_agent = 'jsonrpclib/{0} (Python {1})'.format(
+            user_agent = 'jsonrpclib/{0}(Python {1})'.format(
                 __version__, '.'.join(str(ver)
                                       for ver in sys.version_info[0:3]))
         self.user_agent = user_agent
@@ -136,6 +138,7 @@ class Config(object):
         new_config.classes = self.classes.copy()
         new_config.serialize_handlers = self.serialize_handlers.copy()
         return new_config
+
 
 # Default configuration
 DEFAULT = Config()

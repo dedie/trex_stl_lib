@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -71,7 +71,7 @@ def sane_color(x):
     r=""
     for i in x:
         j = orb(i)
-        if (j < 32) or (j >= 127):
+        if(j < 32) or(j >= 127):
             r=r+conf.color_theme.not_printable(".")
         else:
             r=r+chb(i)
@@ -84,7 +84,7 @@ def sane(x):
           j = ord(i)
         else:
           j = i
-        if (j < 32) or (j >= 127):
+        if(j < 32) or(j >= 127):
             r=r+"."
         else:
             r=r+chb(i)
@@ -164,22 +164,22 @@ def hexdiff(x,y):
     d={}
     d[-1,-1] = 0,(-1,-1)
     for j in range(len(y)):
-        d[-1,j] = d[-1,j-1][0]+INSERT, (-1,j-1)
+        d[-1,j] = d[-1,j-1][0]+INSERT,(-1,j-1)
     for i in range(len(x)):
-        d[i,-1] = d[i-1,-1][0]+INSERT, (i-1,-1)
+        d[i,-1] = d[i-1,-1][0]+INSERT,(i-1,-1)
 
     for j in range(len(y)):
         for i in range(len(x)):
-            d[i,j] = min( ( d[i-1,j-1][0]+SUBST*(x[i] != y[j]), (i-1,j-1) ),
-                          ( d[i-1,j][0]+INSERT, (i-1,j) ),
-                          ( d[i,j-1][0]+INSERT, (i,j-1) ) )
+            d[i,j] = min(( d[i-1,j-1][0]+SUBST*(x[i] != y[j]),(i-1,j-1) ),
+                         ( d[i-1,j][0]+INSERT,(i-1,j) ),
+                         ( d[i,j-1][0]+INSERT,(i,j-1) ) )
                           
 
     backtrackx = []
     backtracky = []
     i=len(x)-1
     j=len(y)-1
-    while not (i == j == -1):
+    while not(i == j == -1):
         i2,j2 = d[i,j][1]
         backtrackx.append(x[i2+1:i+1])
         backtracky.append(y[j2+1:j+1])
@@ -272,7 +272,7 @@ if struct.pack("H",1) == b"\x00\x01": # big endian
         if len(pkt) % 2 == 1:
             pkt += b"\0"
         s = sum(array.array("H", pkt))
-        s = (s >> 16) + (s & 0xffff)
+        s =(s >> 16) +(s & 0xffff)
         s += s >> 16
         s = ~s
         return s & 0xffff
@@ -281,10 +281,10 @@ else:
         if len(pkt) % 2 == 1:
             pkt += b"\0"
         s = sum(array.array("H", pkt))
-        s = (s >> 16) + (s & 0xffff)
+        s =(s >> 16) +(s & 0xffff)
         s += s >> 16
         s = ~s
-        return (((s>>8)&0xff)|s<<8) & 0xffff
+        return(((s>>8)&0xff)|s<<8) & 0xffff
 
 def warning(x):
     log_runtime.warning(x)
@@ -296,10 +296,10 @@ def mac2str(mac):
     return b''.join([ bytes([int(i, 16)]) for i in mac.split(":") ])
 
 def str2mac(s):
-    return ("%02x:"*6)[:-1] % tuple(s) 
+    return("%02x:"*6)[:-1] % tuple(s) 
 
 def str2ip(s):
-    return ("%s."*4)[:-1] % tuple(s)
+    return("%s."*4)[:-1] % tuple(s)
 
 def strxor(x,y):
     #return "".join(map(lambda i,j:chr(ord(i)^ord(j)),x,y))
@@ -336,16 +336,16 @@ def ltoa(x):
     return inet_ntoa(struct.pack("!I", x&0xffffffff))
 
 def itom(x):
-    return (0xffffffff00000000>>x)&0xffffffff
+    return(0xffffffff00000000>>x)&0xffffffff
 
-def do_graph(graph,prog=None,format='png',target=None,string=False,options=None, figsize = (12, 12), **kargs):
+def do_graph(graph,prog=None,format='png',target=None,string=False,options=None, figsize =(12, 12), **kargs):
     """do_graph(graph, prog=conf.prog.dot, format="png",
          target=None, options=None, string=False):
     if networkx library is available and graph is instance of Graph, use networkx.draw
 
     string: if not False, simply return the graph string
     graph: GraphViz graph description
-    format: output type (svg, ps, gif, jpg, etc.), passed to dot's "-T" option. Ignored if target==None
+    format: output type(svg, ps, gif, jpg, etc.), passed to dot's "-T" option. Ignored if target==None
     target: filename. If None uses matplotlib to display
     prog: which graphviz program to use
     options: options to be passed to prog"""
@@ -366,7 +366,7 @@ def do_graph(graph,prog=None,format='png',target=None,string=False,options=None,
             format = 'png'
         format = "-T %s" % format
 
-        p = subprocess.Popen("%s %s %s" % (prog,options or "", format or ""), shell = True, stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+        p = subprocess.Popen("%s %s %s" %(prog,options or "", format or ""), shell = True, stdin = subprocess.PIPE, stdout = subprocess.PIPE)
         w, r = p.stdin, p.stdout
         w.write(graph.encode('utf-8'))
         w.close()
@@ -412,7 +412,7 @@ def colgen(*lstcol,**kargs):
     trans: a function to convert the three arguments into a color. lambda x,y,z:(x,y,z) by default"""
     if len(lstcol) < 2:
         lstcol *= 2
-    trans = kargs.get("trans", lambda x,y,z: (x,y,z))
+    trans = kargs.get("trans", lambda x,y,z:(x,y,z))
     while 1:
         for i in range(len(lstcol)):
             for j in range(len(lstcol)):
@@ -435,7 +435,7 @@ class EnumElement:
         self._key = key
         self._value = value
     def __repr__(self):
-        return "<%s %s[%r]>" % (self.__dict__.get("_name", self.__class__.__name__), self._key, self._value)
+        return "<%s %s[%r]>" %(self.__dict__.get("_name", self.__class__.__name__), self._key, self._value)
     def __getattr__(self, attr):
         return getattr(self._value, attr)
     def __str__(self):
@@ -507,7 +507,7 @@ def corrupt_bytes(s, p=0.01, n=None):
     if n is None:
         n = max(1,int(l*p))
     for i in random.sample(range(l), n):
-        s[i] = (s[i]+random.randint(1,255))%256
+        s[i] =(s[i]+random.randint(1,255))%256
     return s.tobytes()
 
 @conf.commands.register
@@ -519,7 +519,7 @@ def corrupt_bits(s, p=0.01, n=None):
     if n is None:
         n = max(1, int(l*p))
     for i in random.sample(range(l), n):
-        s[i//8] ^= 1 << (i%8)
+        s[i//8] ^= 1 <<(i%8)
     return s.tobytes()
 
 
@@ -564,7 +564,7 @@ class RawPcapReader:
         elif magic == b"\x0a\x0d\x0d\x0a": #PcapNG
             self.reader = _RawPcapNGReader(self.f) 
         else:
-            raise Scapy_Exception("Not a pcap capture file (bad magic)")
+            raise Scapy_Exception("Not a pcap capture file(bad magic)")
 
     def __enter__(self):
         return self.reader
@@ -612,7 +612,7 @@ class RawPcapReader:
         return self.reader.read_packet(size)
 
 def align32(n):
-  return n + (4 - n % 4) % 4
+  return n +(4 - n % 4) % 4
 
 class _RawPcapNGReader:
     def __init__(self, filep):
@@ -647,7 +647,7 @@ class _RawPcapNGReader:
             elif block_type == 6:
                 return self.read_enhanced_packet(size)
             else:
-                warning("PacketNGReader: Unparsed block type %d/#%x" % (block_type, block_type))
+                warning("PacketNGReader: Unparsed block type %d/#%x" %(block_type, block_type))
                 self.read_generic_block()
 
     def _read_bytes(self, n, check = True):
@@ -674,8 +674,8 @@ class _RawPcapNGReader:
         if options:
             opt = self.parse_options(options)
             for i in opt.keys():
-                if not i & (0b1 << 15):
-                    warning("PcapNGReader: Unparsed option %d/#%x in section header" % (i, i))
+                if not i &(0b1 << 15):
+                    warning("PcapNGReader: Unparsed option %d/#%x in section header" %(i, i))
         self._check_length(block_length)
 
     def read_interface_description(self):
@@ -687,12 +687,12 @@ class _RawPcapNGReader:
             for i in opt.keys():
                 if 9 in opt:
                     self.tsresol = opt[9][0]
-                elif not i & (0b1 << 15):
-                    warning("PcapNGReader: Unparsed option %d/#%x in enhanced packet block" % (i, i))
+                elif not i &(0b1 << 15):
+                    warning("PcapNGReader: Unparsed option %d/#%x in enhanced packet block" %(i, i))
         try:
             self.LLcls = conf.l2types[self.linktype]
         except KeyError:
-            warning("RawPcapReader: unknown LL type [%i]/[%#x]. Using Raw packets" % (self.linktype,self.linktype))
+            warning("RawPcapReader: unknown LL type [%i]/[%#x]. Using Raw packets" %(self.linktype,self.linktype))
             self.LLcls = conf.raw_layer
 
         self._check_length(block_length)
@@ -700,17 +700,17 @@ class _RawPcapNGReader:
     def read_enhanced_packet(self, size = MTU):
         buf = self._read_bytes(24)
         block_length, interface, ts_high, ts_low, caplen, wirelen = struct.unpack(self.endian + 'IIIIII', buf)
-        timestamp = (ts_high << 32) + ts_low
+        timestamp =(ts_high << 32) + ts_low
 
         pkt = self._read_bytes(align32(caplen))[:caplen]
         options = self._read_bytes(block_length - align32(caplen) - 32)
         if options:
             opt = self.parse_options(options)
             for i in opt.keys():
-                if not i & (0b1 << 15):
-                    warning("PcapNGReader: Unparsed option %d/#%x in enhanced packet block" % (i, i))
+                if not i &(0b1 << 15):
+                    warning("PcapNGReader: Unparsed option %d/#%x in enhanced packet block" %(i, i))
         self._check_length(block_length)
-        return pkt[:MTU], (self.parse_sec(timestamp), self.parse_usec(timestamp), wirelen)
+        return pkt[:MTU],(self.parse_sec(timestamp), self.parse_usec(timestamp), wirelen)
     
     def parse_sec(self, t):
         if self.tsresol & 0b10000000:
@@ -720,7 +720,7 @@ class _RawPcapNGReader:
 
     def parse_usec(self, t):
         if self.tsresol & 0b10000000:
-            return t & (1 << self.tsresol) - 1
+            return t &(1 << self.tsresol) - 1
         else:
             return t % pow(10, self.tsresol)
 
@@ -746,15 +746,15 @@ class _RawPcapOldReader:
         self.f = filep
         hdr = self.f.read(20)
         if len(hdr)<20:
-            raise Scapy_Exception("Invalid pcap file (too short)")
+            raise Scapy_Exception("Invalid pcap file(too short)")
         vermaj,vermin,tz,sig,snaplen,linktype = struct.unpack(self.endian+"HHIIII",hdr)
 
         self.linktype = linktype
         try:
             self.LLcls = conf.l2types[self.linktype]
         except KeyError:
-            raise Scapy_Exception("Scapy PcapReader: unknown LL type [%i]/[%#x]" % (self.linktype,self.linktype))
-            #warning("RawPcapReader: unknown LL type [%i]/[%#x]. Using Raw packets" % (self.linktype,self.linktype))
+            raise Scapy_Exception("Scapy PcapReader: unknown LL type [%i]/[%#x]" %(self.linktype,self.linktype))
+            #warning("RawPcapReader: unknown LL type [%i]/[%#x]. Using Raw packets" %(self.linktype,self.linktype))
             self.LLcls = conf.raw_layer
 
     def __iter__(self):
@@ -769,7 +769,7 @@ class _RawPcapOldReader:
 
     def read_packet(self, size=MTU):
         """return a single packet read from the file
-        bytes, (sec, #timestamp seconds
+        bytes,(sec, #timestamp seconds
                 usec, #timestamp microseconds
                 wirelen) #actual length of packet 
         returns None when no more packets are available
@@ -829,7 +829,7 @@ class RawPcapWriter:
         linktype: force linktype to a given value. If None, linktype is taken
                   from the first writter packet
         gz: compress the capture on the fly
-        endianness: force an endianness (little:"<", big:">"). Default is native
+        endianness: force an endianness(little:"<", big:">"). Default is native
         append: append packets to the capture file instead of truncating it
         sync: do not bufferize writes to the capture file
         """
@@ -919,7 +919,7 @@ class PcapWriter(RawPcapWriter):
             try:
                 self.linktype = conf.l2types[pkt.__class__]
             except KeyError:
-                warning("PcapWriter: unknown LL type for %s. Using type 1 (Ethernet)" % pkt.__class__.__name__)
+                warning("PcapWriter: unknown LL type for %s. Using type 1(Ethernet)" % pkt.__class__.__name__)
                 self.linktype = 1
         RawPcapWriter._write_header(self, pkt)
 
@@ -1060,7 +1060,7 @@ def make_tex_table(*args, **kargs):
 def str2int(s):
     if type(s) is str:
         s = str2bytes(s)
-    assert type(s) in (str, bytes), type(s)
+    assert type(s) in(str, bytes), type(s)
     i = 0
     for c in s:
         i = i << 8
@@ -1077,7 +1077,7 @@ def int2str(num, length = None):
     if length is None:
         return str2bytes(s)
     if length < len(s):
-        raise Exception("Given integer: '%s' can't fit string of length '%s'!" % (num, length))
+        raise Exception("Given integer: '%s' can't fit string of length '%s'!" %(num, length))
     return str2bytes(s.rjust(length, '\0'))
 
 

@@ -1,5 +1,5 @@
 """Execution environment for events that synchronizes passing of time
-with the real-time (aka *wall-clock time*).
+with the real-time(aka *wall-clock time*).
 
 """
 try:
@@ -14,8 +14,8 @@ from simpy.core import Environment, EmptySchedule, Infinity
 
 class RealtimeEnvironment(Environment):
     """Execution environment for an event-based simulation which is
-    synchronized with the real-time (also known as wall-clock time). A time
-    step will take *factor* seconds of real time (one second by default).
+    synchronized with the real-time(also known as wall-clock time). A time
+    step will take *factor* seconds of real time(one second by default).
     A step from ``0`` to ``3`` with a ``factor=0.5`` will, for example, take at
     least
     1.5 seconds.
@@ -69,15 +69,15 @@ class RealtimeEnvironment(Environment):
         if evt_time is Infinity:
             raise EmptySchedule()
 
-        real_time = self.real_start + (evt_time - self.env_start) * self.factor
+        real_time = self.real_start +(evt_time - self.env_start) * self.factor
 
         if self.strict and time() - real_time > self.factor:
             # Events scheduled for time *t* may take just up to *t+1*
             # for their computation, before an error is raised.
-            raise RuntimeError('Simulation too slow for real time (%.3fs).' % (
+            raise RuntimeError('Simulation too slow for real time(%.3fs).' %(
                 time() - real_time))
 
-        # Sleep in a loop to fix inaccuracies of windows (see
+        # Sleep in a loop to fix inaccuracies of windows(see
         # http://stackoverflow.com/a/15967564 for details) and to ignore
         # interrupts.
         while True:

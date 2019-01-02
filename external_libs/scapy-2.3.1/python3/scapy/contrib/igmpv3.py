@@ -57,7 +57,7 @@ class IGMPv3gr(Packet):
     """
     p += pay
     if self.auxdlen != 0:
-      print("NOTICE: A properly formatted and complaint V3 Group Record should have an Auxiliary Data length of zero (0).")
+      print("NOTICE: A properly formatted and complaint V3 Group Record should have an Auxiliary Data length of zero(0).")
       print("        Subsequent Group Records are lost!")
     return p
 #--------------------------------------------------------------------------
@@ -79,7 +79,7 @@ class IGMPv3(Packet):
     c = IGMPv3()
     c.srcaddrs = ['1.2.3.4', '5.6.7.8']
     c.srcaddrs += ['192.168.10.24']
-  At this point, 'c.numsrc' is three (3)
+  At this point, 'c.numsrc' is three(3)
 
   'chksum' is automagically calculated before the packet is sent.
 
@@ -100,14 +100,14 @@ class IGMPv3(Packet):
                     ]
                                           # use float_encode()
 
-    # if type = 0x11 (Membership Query), the next field is group address 
+    # if type = 0x11(Membership Query), the next field is group address 
     #   ConditionalField(IPField("gaddr", "0.0.0.0"), "type", lambda x:x==0x11),
-    # else if type = 0x22 (Membership Report), the next fields are 
+    # else if type = 0x22(Membership Report), the next fields are 
     #         reserved and number of group records
     #ConditionalField(ShortField("rsvd2", 0), "type", lambda x:x==0x22),
     #ConditionalField(ShortField("numgrp", 0), "type", lambda x:x==0x22),
 #                  FieldLenField("numgrp", None, "grprecs")]
-    # else if type = 0x30 (Multicast Router Advertisement), the next fields are 
+    # else if type = 0x30(Multicast Router Advertisement), the next fields are 
     #         query interval and robustness
     #ConditionalField(ShortField("qryIntvl", 0), "type", lambda x:x==0x30),
     #ConditionalField(ShortField("robust", 0), "type", lambda x:x==0x30),
@@ -137,7 +137,7 @@ class IGMPv3(Packet):
         exp+=1
         value>>=1
       exp<<=4
-      code = 0x80 | exp | (value & 0x0F)
+      code = 0x80 | exp |(value & 0x0F)
     return code
 
 #--------------------------------------------------------------------------
@@ -150,7 +150,7 @@ class IGMPv3(Packet):
       pay     Additional payload for the IGMPv3 message
     """
     p += pay
-    if self.type in [0, 0x31, 0x32, 0x22]:   # for these, field is reserved (0)
+    if self.type in [0, 0x31, 0x32, 0x22]:   # for these, field is reserved(0)
       p = p[:1]+chr(0)+p[2:]
     if self.chksum is None:
       ck = checksum(p)
@@ -188,24 +188,24 @@ class IGMPv3(Packet):
     """
 
 # The rules are:
-#   1.  ttl = 1 (RFC 2236, section 2)
-#  igmp_binds = [ (IP, IGMP,   { "proto": 2 , "ttl": 1 }),
-#   2.  tos = 0xC0 (RFC 3376, section 4)
-#               (IP, IGMPv3, { "proto": 2 , "ttl": 1, "tos":0xc0 }),
-#               (IGMPv3, IGMPv3gr, { }) ]
+#   1.  ttl = 1(RFC 2236, section 2)
+#  igmp_binds = [(IP, IGMP,   { "proto": 2 , "ttl": 1 }),
+#   2.  tos = 0xC0(RFC 3376, section 4)
+#              (IP, IGMPv3, { "proto": 2 , "ttl": 1, "tos":0xc0 }),
+#              (IGMPv3, IGMPv3gr, { }) ]
 # The rules are:
 #   1.  the Max Response time is meaningful only in Membership Queries and should be zero 
-#       otherwise (RFC 2236, section 2.2)
+#       otherwise(RFC 2236, section 2.2)
 
-    if (self.type != 0x11):         #rule 1
+    if(self.type != 0x11):         #rule 1
       self.mrtime = 0
       
-    if (self.adjust_ip(ip) == True):
-      if (self.adjust_ether(ip, ether) == True): return True
+    if(self.adjust_ip(ip) == True):
+      if(self.adjust_ether(ip, ether) == True): return True
     return False
 
 #--------------------------------------------------------------------------
-  def adjust_ether (self, ip=None, ether=None):
+  def adjust_ether(self, ip=None, ether=None):
     """Called to explicitely fixup an associated Ethernet header
 
     The function adjusts the ethernet header destination MAC address based on 
@@ -215,29 +215,29 @@ class IGMPv3(Packet):
 #   1. send to the group mac address address corresponding to the IP.dst
     if ip != None and ip.haslayer(IP) and ether != None and ether.haslayer(Ether):
       iplong = atol(ip.dst)
-      ether.dst = "01:00:5e:%02x:%02x:%02x" % ( (iplong>>16)&0x7F, (iplong>>8)&0xFF, (iplong)&0xFF )
+      ether.dst = "01:00:5e:%02x:%02x:%02x" %((iplong>>16)&0x7F,(iplong>>8)&0xFF,(iplong)&0xFF )
       # print "igmpize ip " + ip.dst + " as mac " + ether.dst 
       return True
     else:
       return False
 
 #--------------------------------------------------------------------------
-  def adjust_ip (self, ip=None):
+  def adjust_ip(self, ip=None):
     """Called to explicitely fixup an associated IP header
 
     The function adjusts the IP header based on conformance rules 
     and the group address encoded in the IGMP message.
     The rules are:
-    1. Send General Group Query to 224.0.0.1 (all systems)
-    2. Send Leave Group to 224.0.0.2 (all routers)
+    1. Send General Group Query to 224.0.0.1(all systems)
+    2. Send Leave Group to 224.0.0.2(all routers)
     3a.Otherwise send the packet to the group address
     3b.Send reports/joins to the group address
-    4. ttl = 1 (RFC 2236, section 2)
-    5. send the packet with the router alert IP option (RFC 2236, section 2)
+    4. ttl = 1(RFC 2236, section 2)
+    5. send the packet with the router alert IP option(RFC 2236, section 2)
     """
     if ip != None and ip.haslayer(IP):
-      if (self.type == 0x11):
-        if (self.gaddr == "0.0.0.0"):
+      if(self.type == 0x11):
+        if(self.gaddr == "0.0.0.0"):
           ip.dst = "224.0.0.1"                   # IP rule 1
           retCode = True                     
         elif isValidMCAddr(self.gaddr):
@@ -246,10 +246,10 @@ class IGMPv3(Packet):
         else:
           print("Warning: Using invalid Group Address")
           retCode = False
-      elif ((self.type == 0x17) and isValidMCAddr(self.gaddr)):
+      elif((self.type == 0x17) and isValidMCAddr(self.gaddr)):
           ip.dst = "224.0.0.2"                   # IP rule 2
           retCode = True
-      elif ((self.type == 0x12) or (self.type == 0x16)) and (isValidMCAddr(self.gaddr)):
+      elif((self.type == 0x12) or(self.type == 0x16)) and(isValidMCAddr(self.gaddr)):
           ip.dst = self.gaddr                    # IP rule 3b
           retCode = True
       else:

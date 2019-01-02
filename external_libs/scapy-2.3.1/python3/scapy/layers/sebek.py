@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -40,9 +40,9 @@ class SebekV1(Packet):
                     StrLenField("data", "", length_from=lambda x:x.data_length) ]
     def mysummary(self):
         if isinstance(self.underlayer, SebekHead):
-            return self.underlayer.sprintf("Sebek v1 %SebekHead.type% (%SebekV1.command%)")
+            return self.underlayer.sprintf("Sebek v1 %SebekHead.type%(%SebekV1.command%)")
         else:
-            return self.sprintf("Sebek v1 (%SebekV1.command%)")
+            return self.sprintf("Sebek v1(%SebekV1.command%)")
 
 class SebekV3(Packet):
     name = "Sebek v3"
@@ -56,16 +56,16 @@ class SebekV3(Packet):
                     StrLenField("data", "", length_from=lambda x:x.data_length) ]
     def mysummary(self):
         if isinstance(self.underlayer, SebekHead):
-            return self.underlayer.sprintf("Sebek v%SebekHead.version% %SebekHead.type% (%SebekV3.command%)")
+            return self.underlayer.sprintf("Sebek v%SebekHead.version% %SebekHead.type%(%SebekV3.command%)")
         else:
-            return self.sprintf("Sebek v3 (%SebekV3.command%)")
+            return self.sprintf("Sebek v3(%SebekV3.command%)")
 
 class SebekV2(SebekV3):
     def mysummary(self):
         if isinstance(self.underlayer, SebekHead):
-            return self.underlayer.sprintf("Sebek v%SebekHead.version% %SebekHead.type% (%SebekV2.command%)")
+            return self.underlayer.sprintf("Sebek v%SebekHead.version% %SebekHead.type%(%SebekV2.command%)")
         else:
-            return self.sprintf("Sebek v2 (%SebekV2.command%)")
+            return self.sprintf("Sebek v2(%SebekV2.command%)")
 
 class SebekV3Sock(Packet):
     name = "Sebek v2 socket"
@@ -88,16 +88,16 @@ class SebekV3Sock(Packet):
                     ByteEnumField("proto", 0, IP_PROTOS) ]
     def mysummary(self):
         if isinstance(self.underlayer, SebekHead):
-            return self.underlayer.sprintf("Sebek v%SebekHead.version% %SebekHead.type% (%SebekV3Sock.command%)")
+            return self.underlayer.sprintf("Sebek v%SebekHead.version% %SebekHead.type%(%SebekV3Sock.command%)")
         else:
-            return self.sprintf("Sebek v3 socket (%SebekV3Sock.command%)")
+            return self.sprintf("Sebek v3 socket(%SebekV3Sock.command%)")
 
 class SebekV2Sock(SebekV3Sock):
     def mysummary(self):
         if isinstance(self.underlayer, SebekHead):
-            return self.underlayer.sprintf("Sebek v%SebekHead.version% %SebekHead.type% (%SebekV2Sock.command%)")
+            return self.underlayer.sprintf("Sebek v%SebekHead.version% %SebekHead.type%(%SebekV2Sock.command%)")
         else:
-            return self.sprintf("Sebek v2 socket (%SebekV2Sock.command%)")
+            return self.sprintf("Sebek v2 socket(%SebekV2Sock.command%)")
 
 bind_layers( UDP,           SebekHead,     sport=1101)
 bind_layers( UDP,           SebekHead,     dport=1101)

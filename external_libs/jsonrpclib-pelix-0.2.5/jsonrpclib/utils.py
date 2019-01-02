@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -- Content-Encoding: UTF-8 --
+import sys
 """
 Utility methods, for compatibility between Python version
 
@@ -12,7 +13,7 @@ Utility methods, for compatibility between Python version
 
     Copyright 2015 isandlaTech
 
-    Licensed under the Apache License, Version 2.0 (the "License");
+    Licensed under the Apache License, Version 2.0(the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
@@ -34,7 +35,6 @@ __docformat__ = "restructuredtext en"
 
 # ------------------------------------------------------------------------------
 
-import sys
 
 # ------------------------------------------------------------------------------
 

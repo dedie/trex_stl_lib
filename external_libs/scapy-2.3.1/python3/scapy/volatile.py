@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -31,7 +31,7 @@ class RandomEnumeration:
         self.top = sup-inf+1
     
         n=0
-        while (1<<n) < self.top:
+        while(1<<n) < self.top:
             n += 1
         self.n =n
 
@@ -45,7 +45,7 @@ class RandomEnumeration:
         return self
     def __next__(self):
         while True:
-            if self.turns == 0 or (self.i == 0 and self.renewkeys):
+            if self.turns == 0 or(self.i == 0 and self.renewkeys):
                 self.cnt_key = self.rnd.randint(0,2**self.n-1)
                 self.sbox = [self.rnd.randint(0,self.fsmask) for k in range(self.sbox_size)]
             self.turns += 1
@@ -56,7 +56,7 @@ class RandomEnumeration:
                     lsb = ct & self.fsmask
                     ct >>= self.fs
                     lsb ^= self.sbox[ct%self.sbox_size]
-                    ct |= lsb << (self.n-self.fs)
+                    ct |= lsb <<(self.n-self.fs)
                 
                 if ct < self.top:
                     return self.inf+ct
@@ -246,7 +246,7 @@ class RandMAC(RandString):
     def __init__(self, template="*"):
         template += ":*:*:*:*:*"
         template = template.split(":")
-        self.mac = ()
+        self.mac =()
         for i in range(6):
             if template[i] == "*":
                 v = RandByte()
@@ -255,7 +255,7 @@ class RandMAC(RandString):
                 v = RandNum(int(x,16), int(y,16))
             else:
                 v = int(template[i],16)
-            self.mac += (v,)
+            self.mac +=(v,)
     def _fix(self):
         return "%02x:%02x:%02x:%02x:%02x:%02x" % self.mac
     
@@ -324,7 +324,7 @@ class RandOID(RandString):
         if self.ori_fmt is None:
             return "<%s>" % self.__class__.__name__
         else:
-            return "<%s [%s]>" % (self.__class__.__name__, self.ori_fmt)
+            return "<%s [%s]>" %(self.__class__.__name__, self.ori_fmt)
     def _fix(self):
         if self.fmt is None:
             return ".".join(map(str, [self.idnum for i in range(1+self.depth)]))
@@ -348,7 +348,7 @@ class RandRegExp(RandField):
         self._lambda = lambda_
 
     @staticmethod
-    def choice_expand(s): #XXX does not support special sets like (ex ':alnum:')
+    def choice_expand(s): #XXX does not support special sets like(ex ':alnum:')
         m = ""
         invert = s and s[0] == "^"
         while True:
@@ -427,7 +427,7 @@ class RandRegExp(RandField):
                 p = current[0]
                 ch = p[-1]
                 if type(ch) is not tuple:
-                    ch = ("choice",[current])
+                    ch =("choice",[current])
                     p[-1] = ch
                 else:
                     ch[1].append(current)
@@ -470,7 +470,7 @@ class RandRegExp(RandField):
                 if c == "s":
                     c = RandChoice(" ","\t")
                 elif c in "0123456789":
-                    c = ("cite",ord(c)-0x30)
+                    c =("cite",ord(c)-0x30)
                 current.append(c)
                 i += 1
             elif not interp:
@@ -493,7 +493,7 @@ class RandRegExp(RandField):
 
         return RandRegExp.stack_fix(stack[1:], index)
     def __repr__(self):
-        return "<%s [%r]>" % (self.__class__.__name__, self._regexp)
+        return "<%s [%r]>" %(self.__class__.__name__, self._regexp)
 
 class RandSingularity(RandChoice):
     pass
@@ -615,7 +615,7 @@ class RandSingString(RandSingularity): #TODO3
 
 class RandPool(RandField):
     def __init__(self, *args):
-        """Each parameter is a volatile object or a couple (volatile object, weight)"""
+        """Each parameter is a volatile object or a couple(volatile object, weight)"""
         pool = []
         for p in args:
             w = 1

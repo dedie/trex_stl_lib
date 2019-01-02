@@ -33,7 +33,7 @@ class TestWindowsConsoleControlHandler(BaseZMQTestCase):
 
             # <http://msdn.microsoft.com/en-us/library/ms683155.aspx>
             GenerateConsoleCtrlEvent = kernel32.GenerateConsoleCtrlEvent
-            GenerateConsoleCtrlEvent.argtypes = (DWORD, DWORD)
+            GenerateConsoleCtrlEvent.argtypes =(DWORD, DWORD)
             GenerateConsoleCtrlEvent.restype = BOOL
 
             try:

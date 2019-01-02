@@ -32,8 +32,8 @@ DESCRIPTION
         table = Texttable()
         table.set_deco(Texttable.HEADER)
         table.set_cols_dtype(['t',  # text 
-                              'f',  # float (decimal)
-                              'e',  # float (exponent)
+                              'f',  # float(decimal)
+                              'e',  # float(exponent)
                               'i',  # integer
                               'a']) # automatic
         table.set_cols_align(["l", "r", "r", "r", "l"])
@@ -126,7 +126,7 @@ CLASSES
      |      
      |      - the elements of the array should be either "a", "t", "f", "e" or "i":
      |      
-     |          * "a": automatic (try to use the most appropriate datatype)
+     |          * "a": automatic(try to use the most appropriate datatype)
      |          * "t": treat as text
      |          * "f": treat as float in decimal format
      |          * "e": treat as float in exponential format

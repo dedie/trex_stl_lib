@@ -1,4 +1,4 @@
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import time
@@ -6,7 +6,7 @@ import time
 import zmq
 from zmq import devices
 from zmq.tests import BaseZMQTestCase, SkipTest, have_gevent, GreenTest, PYPY
-from zmq.utils.strtypes import (bytes,str,str)
+from zmq.utils.strtypes import(bytes,str,str)
 
 if PYPY:
     # cleanup of shared Context doesn't work on PyPy
@@ -15,7 +15,7 @@ if PYPY:
 class TestDevice(BaseZMQTestCase):
     
     def test_device_types(self):
-        for devtype in (zmq.STREAMER, zmq.FORWARDER, zmq.QUEUE):
+        for devtype in(zmq.STREAMER, zmq.FORWARDER, zmq.QUEUE):
             dev = devices.Device(devtype, zmq.PAIR, zmq.PAIR)
             self.assertEqual(dev.device_type, devtype)
             del dev
@@ -96,7 +96,7 @@ class TestDevice(BaseZMQTestCase):
         req.close()
     
     def test_proxy(self):
-        if zmq.zmq_version_info() < (3,2):
+        if zmq.zmq_version_info() <(3,2):
             raise SkipTest("Proxies only in libzmq >= 3")
         dev = devices.ThreadProxy(zmq.PULL, zmq.PUSH, zmq.PUSH)
         binder = self.context.socket(zmq.REQ)
@@ -106,18 +106,18 @@ class TestDevice(BaseZMQTestCase):
         port3 = binder.bind_to_random_port(iface)
         binder.close()
         time.sleep(0.1)
-        dev.bind_in("%s:%i" % (iface, port))
-        dev.bind_out("%s:%i" % (iface, port2))
-        dev.bind_mon("%s:%i" % (iface, port3))
+        dev.bind_in("%s:%i" %(iface, port))
+        dev.bind_out("%s:%i" %(iface, port2))
+        dev.bind_mon("%s:%i" %(iface, port3))
         dev.start()
         time.sleep(0.25)
         msg = b'hello'
         push = self.context.socket(zmq.PUSH)
-        push.connect("%s:%i" % (iface, port))
+        push.connect("%s:%i" %(iface, port))
         pull = self.context.socket(zmq.PULL)
-        pull.connect("%s:%i" % (iface, port2))
+        pull.connect("%s:%i" %(iface, port2))
         mon = self.context.socket(zmq.PULL)
-        mon.connect("%s:%i" % (iface, port3))
+        mon.connect("%s:%i" %(iface, port3))
         push.send(msg)
         self.sockets.extend([push, pull, mon])
         self.assertEqual(msg, self.recv(pull))

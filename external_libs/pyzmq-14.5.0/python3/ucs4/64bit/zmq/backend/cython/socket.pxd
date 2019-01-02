@@ -1,14 +1,14 @@
 """0MQ Socket class declaration."""
 
 #
-#    Copyright (c) 2010-2011 Brian E. Granger & Min Ragan-Kelley
+#    Copyright(c) 2010-2011 Brian E. Granger & Min Ragan-Kelley
 #
 #    This file is part of pyzmq.
 #
 #    pyzmq is free software; you can redistribute it and/or modify it under
 #    the terms of the Lesser GNU General Public License as published by
 #    the Free Software Foundation; either version 3 of the License, or
-#    (at your option) any later version.
+#   (at your option) any later version.
 #
 #    pyzmq is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -39,7 +39,7 @@ cdef class Socket:
     # collected until the socket it done with it.
     cdef public Context context # The zmq Context object that owns this.
     cdef public bint _closed    # bool property for a closed socket.
-    cdef int _pid               # the pid of the process which created me (for fork safety)
+    cdef int _pid               # the pid of the process which created me(for fork safety)
 
     # cpdef methods for direct-cython access:
     cpdef object send(self, object data, int flags=*, copy=*, track=*)

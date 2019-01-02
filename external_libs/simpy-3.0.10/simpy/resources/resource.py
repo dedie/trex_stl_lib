@@ -75,14 +75,14 @@ class Release(base.Get):
     """
     def __init__(self, resource, request):
         self.request = request
-        """The request (:class:`Request`) that is to be released."""
+        """The request(:class:`Request`) that is to be released."""
         super(Release, self).__init__(resource)
 
 
 class PriorityRequest(Request):
     """Request the usage of *resource* with a given *priority*. If the
     *resource* supports preemption and *preempt* is ``True`` other usage
-    requests of the *resource* may be preempted (see
+    requests of the *resource* may be preempted(see
     :class:`PreemptiveResource` for details).
 
     This event type inherits :class:`Request` and adds some additional
@@ -97,15 +97,15 @@ class PriorityRequest(Request):
 
         self.preempt = preempt
         """Indicates whether the request should preempt a resource user or not
-        (:class:`PriorityResource` ignores this flag)."""
+       (:class:`PriorityResource` ignores this flag)."""
 
         self.time = resource._env.now
         """The time at which the request was made."""
 
-        self.key = (self.priority, self.time, not self.preempt)
-        """Key for sorting events. Consists of the priority (lower value is
-        more important), the time at which the request was made (earlier
-        requests are more important) and finally the preemption flag (preempt
+        self.key =(self.priority, self.time, not self.preempt)
+        """Key for sorting events. Consists of the priority(lower value is
+        more important), the time at which the request was made(earlier
+        requests are more important) and finally the preemption flag(preempt
         requests are more important)."""
 
         super(PriorityRequest, self).__init__(resource)
@@ -188,7 +188,7 @@ class PriorityResource(Resource):
     requests.
 
     Pending requests in the :attr:`~Resource.queue` are sorted in ascending
-    order by their *priority* (that means lower values are more important).
+    order by their *priority*(that means lower values are more important).
 
     """
     PutQueue = SortedQueue

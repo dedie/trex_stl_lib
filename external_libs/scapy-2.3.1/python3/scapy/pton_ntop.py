@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -49,9 +49,9 @@ def inet_pton(af, addr):
                 except TypeError:
                     raise Exception("Illegal syntax for IP address")
                     
-        # If there's a wildcard, fill up with zeros to reach 128bit (16 bytes) 
+        # If there's a wildcard, fill up with zeros to reach 128bit(16 bytes) 
         if JOKER in addr:
-            result = (result[:joker_pos] + b"\x00" * (16 - len(result))
+            result =(result[:joker_pos] + b"\x00" *(16 - len(result))
                       + result[joker_pos:])
     
         if len(result) != 16:
@@ -66,7 +66,7 @@ def inet_ntop(af, addr):
     if af == socket.AF_INET:
         return inet_ntoa(addr)
     elif af == socket.AF_INET6:
-        # IPv6 addresses have 128bits (16 bytes)
+        # IPv6 addresses have 128bits(16 bytes)
         if len(addr) != 16:
             raise Exception("Illegal syntax for IP address")
         parts = []

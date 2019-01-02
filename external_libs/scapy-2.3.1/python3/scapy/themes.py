@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -35,7 +35,7 @@ def create_styler(fmt=None, before="", after="", fmt2="%s"):
                 val = str(val)
         else:
             val = fmt % val
-        return fmt2 % (before+val+after)
+        return fmt2 %(before+val+after)
     return do_style
 
 class ColorTheme:

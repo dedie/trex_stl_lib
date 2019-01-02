@@ -1,10 +1,10 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
-SNMP (Simple Network Management Protocol).
+SNMP(Simple Network Management Protocol).
 """
 
 from scapy.asn1packet import *
@@ -226,8 +226,8 @@ class SNMP(ASN1_Packet):
                      SNMPtrapv1, SNMPbulk, SNMPinform, SNMPtrapv2)
         )
     def answers(self, other):
-        return ( isinstance(self.PDU, SNMPresponse)    and
-                 ( isinstance(other.PDU, SNMPget) or
+        return( isinstance(self.PDU, SNMPresponse)    and
+                ( isinstance(other.PDU, SNMPget) or
                    isinstance(other.PDU, SNMPnext) or
                    isinstance(other.PDU, SNMPset)    ) and
                  self.PDU.id == other.PDU.id )
@@ -247,7 +247,7 @@ def snmpwalk(dst, oid="1", community=b"public"):
             if r is None:
                 print("No answers")
                 break
-            print(("%-40s: %r" % (r[SNMPvarbind].oid.val,r[SNMPvarbind].value)))
+            print(("%-40s: %r" %(r[SNMPvarbind].oid.val,r[SNMPvarbind].value)))
             oid = r[SNMPvarbind].oid
             
     except KeyboardInterrupt:

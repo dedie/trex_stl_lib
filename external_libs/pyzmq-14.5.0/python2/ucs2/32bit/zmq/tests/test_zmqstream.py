@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -24,7 +24,7 @@ class TestZMQStream(TestCase):
         self.context.term()
     
     def test_callable_check(self):
-        """Ensure callable check works (py3k)."""
+        """Ensure callable check works(py3k)."""
         
         self.stream.on_send(lambda *args: None)
         self.stream.on_recv(lambda *args: None)

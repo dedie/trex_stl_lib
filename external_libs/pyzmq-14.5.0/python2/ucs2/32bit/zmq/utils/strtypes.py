@@ -5,7 +5,7 @@ Authors
 * MinRK
 """
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import sys
@@ -13,7 +13,7 @@ import sys
 if sys.version_info[0] >= 3:
     bytes = bytes
     str = str
-    str = (bytes, str)
+    str =(bytes, str)
 else:
     str = str
     bytes = str

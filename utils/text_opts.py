@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import json
 import re
 import sys
@@ -19,19 +21,22 @@ TEXT_CODES = {'bold': {'start': '\x1b[1m',
               'underline': {'start': '\x1b[4m',
                             'end': '\x1b[24m'}}
 
+
 class TextCodesStripper:
-    keys = [re.escape(v['start']) for k,v in list(TEXT_CODES.items())]
-    keys += [re.escape(v['end']) for k,v in list(TEXT_CODES.items())]
+    keys = [re.escape(v['start']) for k, v in list(TEXT_CODES.items())]
+    keys += [re.escape(v['end']) for k, v in list(TEXT_CODES.items())]
     pattern = re.compile("|".join(keys))
 
     @staticmethod
-    def strip (s):
+    def strip(s):
         return re.sub(TextCodesStripper.pattern, '', s)
+
 
 def clear_formatting(s):
     return TextCodesStripper.strip(s)
 
-def format_num (size, suffix = "", compact = True, opts = None):
+
+def format_num(size, suffix="", compact=True, opts=None):
     if opts is None:
         opts = ()
 
@@ -43,7 +48,7 @@ def format_num (size, suffix = "", compact = True, opts = None):
     u = ''
 
     if compact:
-        for unit in ['','K','M','G','T','P']:
+        for unit in ['', 'K', 'M', 'G', 'T', 'P']:
             if abs(size) < 1000.0:
                 u = unit
                 break
@@ -63,8 +68,7 @@ def format_num (size, suffix = "", compact = True, opts = None):
         return format_text(txt, (opts))
 
 
-
-def format_time (t_sec):
+def format_time(t_sec):
     if t_sec < 0:
         return "infinite"
 
@@ -100,8 +104,9 @@ def format_time (t_sec):
         return '{:,.2f} [{:}]'.format(t_sec, 'days')
 
 
-def format_percentage (size):
+def format_percentage(size):
     return "%0.2f %%" % (size)
+
 
 def bold(text):
     return text_attribute(text, 'bold')
@@ -126,19 +131,23 @@ def magenta(text):
 def green(text):
     return text_attribute(text, 'green')
 
+
 def yellow(text):
     return text_attribute(text, 'yellow')
+
 
 def underline(text):
     return text_attribute(text, 'underline')
 
 # apply attribute on each non-empty line
+
+
 def text_attribute(text, attribute):
     return '\n'.join(['{start}{txt}{end}'.format(
-            start = TEXT_CODES[attribute]['start'],
-            txt = line,
-            end = TEXT_CODES[attribute]['end'])
-                      if line else '' for line in str(text).split('\n')])
+        start=TEXT_CODES[attribute]['start'],
+        txt=line,
+        end=TEXT_CODES[attribute]['end'])
+        if line else '' for line in str(text).split('\n')])
 
 
 FUNC_DICT = {'blue': blue,
@@ -161,15 +170,16 @@ def __format_text_tty(text, *args):
     return return_string
 
 
-def __format_text_non_tty (text, *args):
+def __format_text_non_tty(text, *args):
     return str(text)
 
 
 # choose according to stdout type
-format_text = __format_text_tty if sys.stdout.isatty() else __format_text_non_tty
+format_text = (__format_text_tty if sys
+               .stdout.isatty() else __format_text_non_tty)
 
 
-def format_threshold (value, red_zone, green_zone):
+def format_threshold(value, red_zone, green_zone):
     try:
         if value >= red_zone[0] and value <= red_zone[1]:
             return format_text("{0}".format(value), 'red')
@@ -183,23 +193,30 @@ def format_threshold (value, red_zone, green_zone):
     return "{0}".format(value)
 
 # pretty print for JSON
-def pretty_json (json_str, use_colors = True):
-    pretty_str = json.dumps(json.loads(json_str), indent = 4, separators=(',', ': '), sort_keys = True)
+
+
+def pretty_json(json_str, use_colors=True):
+    pretty_str = json.dumps(json.loads(json_str), indent=4,
+                            separators=(',', ': '), sort_keys=True)
 
     if not use_colors:
         return pretty_str
 
     try:
         # int numbers
-        pretty_str = re.sub(r'([ ]*:[ ]+)(\-?[1-9][0-9]*[^.])',r'\1{0}'.format(blue(r'\2')), pretty_str)
+        pretty_str = re.sub(r'([ ]*:[ ]+)(\-?[1-9][0-9]*[^.])',
+                            r'\1{0}'.format(blue(r'\2')), pretty_str)
         # float
-        pretty_str = re.sub(r'([ ]*:[ ]+)(\-?[1-9][0-9]*\.[0-9]+)',r'\1{0}'.format(magenta(r'\2')), pretty_str)
+        pretty_str = re.sub(r'([ ]*:[ ]+)(\-?[1-9][0-9]*\.[0-9]+)',
+                            r'\1{0}'.format(magenta(r'\2')), pretty_str)
         # # strings
         #
-        pretty_str = re.sub(r'([ ]*:[ ]+)("[^"]*")',r'\1{0}'.format(red(r'\2')), pretty_str)
-        pretty_str = re.sub(r"('[^']*')", r'{0}\1{1}'.format(TEXT_CODES['magenta']['start'],
-                                                             TEXT_CODES['red']['start']), pretty_str)
-    except :
+        pretty_str = re.sub(r'([ ]*:[ ]+)("[^"]*")',
+                            r'\1{0}'.format(red(r'\2')), pretty_str)
+        pretty_str = re.sub(r"('[^']*')", r'{0}\1{1}'
+                            .format(TEXT_CODES['magenta']['start'],
+                                    TEXT_CODES['red']['start']), pretty_str)
+    except Exception:
         pass
 
     return pretty_str

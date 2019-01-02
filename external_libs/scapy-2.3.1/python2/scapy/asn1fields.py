@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -68,13 +68,13 @@ class ASN1F_field(ASN1F_element):
         if x is None:
             x = 0
         if isinstance(x, ASN1_Object):
-            if ( self.ASN1_tag == ASN1_Class_UNIVERSAL.ANY
+            if( self.ASN1_tag == ASN1_Class_UNIVERSAL.ANY
                  or x.tag == ASN1_Class_UNIVERSAL.RAW
                  or x.tag == ASN1_Class_UNIVERSAL.ERROR
                  or self.ASN1_tag == x.tag ):
                 return x.enc(pkt.ASN1_codec)
             else:
-                raise ASN1_Error("Encoding Error: got %r instead of an %r for field [%s]" % (x, self.ASN1_tag, self.name))
+                raise ASN1_Error("Encoding Error: got %r instead of an %r for field [%s]" %(x, self.ASN1_tag, self.name))
         return self.ASN1_tag.get_codec(pkt.ASN1_codec).enc(x)
 
     def do_copy(self, x):
@@ -201,7 +201,7 @@ class ASN1F_SEQUENCE(ASN1F_field):
             self.ASN1_tag = kargs["ASN1_tag"]
         self.seq = seq
     def __repr__(self):
-        return "<%s%r>" % (self.__class__.__name__,self.seq,)
+        return "<%s%r>" %(self.__class__.__name__,self.seq,)
     def set_val(self, pkt, val):
         for f in self.seq:
             f.set_val(pkt,val)
@@ -278,7 +278,7 @@ class ASN1F_SEQUENCE_OF(ASN1F_SEQUENCE):
     def randval(self):
         return fuzz(self.asn1pkt())
     def __repr__(self):
-        return "<%s %s>" % (self.__class__.__name__,self.name)
+        return "<%s %s>" %(self.__class__.__name__,self.name)
 
 class ASN1F_PACKET(ASN1F_field):
     holds_packets = 1
@@ -319,7 +319,7 @@ class ASN1F_CHOICE(ASN1F_PACKET):
             raise ASN1_Error("ASN1F_CHOICE: got empty string")
         if ord(x[0]) not in self.choice:
             return conf.raw_layer(x),"" # XXX return RawASN1 packet ? Raise error 
-            raise ASN1_Error("Decoding Error: choice [%i] not found in %r" % (ord(x[0]), list(self.choice.keys())))
+            raise ASN1_Error("Decoding Error: choice [%i] not found in %r" %(ord(x[0]), list(self.choice.keys())))
 
         z = ASN1F_PACKET.extract_packet(self, self.choice[ord(x[0])], x)
         return z

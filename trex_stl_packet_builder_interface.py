@@ -1,17 +1,18 @@
-
+#!/usr/bin/python3
 # base object class for a packet builder
+
+
 class CTrexPktBuilderInterface(object):
 
-    def compile (self):
+    def compile(self):
         """
         Compiles the packet and VM
         """
         raise Exception("implement me")
 
-
     def dump_pkt(self):
         """
-        Dumps the packet as a decimal array of bytes (each item x gets value between 0-255)
+        Dumps the packet as a decimal array of bytes(each item x gets value between 0-255)
 
         :parameters:
             None
@@ -26,10 +27,9 @@ class CTrexPktBuilderInterface(object):
 
         raise Exception("implement me")
 
-
     def get_vm_data(self):
         """
-        Dumps the instructions 
+        Dumps the instructions
 
         :parameters:
             None
@@ -40,4 +40,3 @@ class CTrexPktBuilderInterface(object):
         """
 
         raise Exception("implement me")
-

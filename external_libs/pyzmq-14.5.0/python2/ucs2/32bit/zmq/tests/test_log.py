@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -59,7 +59,7 @@ class TestPubLog(BaseZMQTestCase):
         msg1 = 'message'
         logger.info(msg1)
         
-        (topic, msg2) = sub.recv_multipart()
+       (topic, msg2) = sub.recv_multipart()
         self.assertEqual(topic, b'zmq.INFO')
         self.assertEqual(msg2, b(msg1)+b'\n')
         logger.removeHandler(handler)
@@ -80,7 +80,7 @@ class TestPubLog(BaseZMQTestCase):
         msg1 = 'message'
         logger.info(msg1)
         
-        (topic, msg2) = sub.recv_multipart()
+       (topic, msg2) = sub.recv_multipart()
         self.assertEqual(topic, b'zmq.INFO')
         self.assertEqual(msg2, b(msg1)+b'\n')
         logger.removeHandler(handler)
@@ -106,9 +106,9 @@ class TestPubLog(BaseZMQTestCase):
         logger, handler, sub = self.connect_handler()
         base_topic = b(self.topic + '.INFO')
         for msg, expected in [
-            (u('hello'), [base_topic, b('hello\n')]),
-            (u('héllo'), [base_topic, b('héllo\n')]),
-            (u('tøpic::héllo'), [base_topic + b('.tøpic'), b('héllo\n')]),
+           (u('hello'), [base_topic, b('hello\n')]),
+           (u('héllo'), [base_topic, b('héllo\n')]),
+           (u('tøpic::héllo'), [base_topic + b('.tøpic'), b('héllo\n')]),
         ]:
             logger.info(msg)
             received = sub.recv_multipart()

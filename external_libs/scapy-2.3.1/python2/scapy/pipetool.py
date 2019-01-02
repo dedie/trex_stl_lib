@@ -2,7 +2,7 @@
 
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 
@@ -25,12 +25,12 @@ class PipeEngine:
             doc = pc.__doc__ or ""
             if doc:
                 doc = doc.splitlines()[0]
-            print("%20s: %s" % (pn, doc))
+            print("%20s: %s" %(pn, doc))
     @classmethod
     def list_pipes_detailed(cls):
         for pn,pc in sorted(cls.pipes.items()):
             if pc.__doc__:
-                print("###### %s\n %s" % (pn ,pc.__doc__))
+                print("###### %s\n %s" %(pn ,pc.__doc__))
             else:
                 print("###### %s" % pn)
     
@@ -95,7 +95,7 @@ class PipeEngine:
             exhausted = set([])
             RUN=True
             STOP_IF_EXHAUSTED = False
-            while RUN and (not STOP_IF_EXHAUSTED or len(sources) > 1):
+            while RUN and(not STOP_IF_EXHAUSTED or len(sources) > 1):
                 fds,fdo,fde=select.select(sources,[],[])
                 for fd in fds:
                     if fd is self.__fdr:
@@ -114,7 +114,7 @@ class PipeEngine:
                         try:
                             fd.deliver()
                         except Exception as e:
-                            log_interactive.exception("piping from %s failed: %s" % (fd.name, e))
+                            log_interactive.exception("piping from %s failed: %s" %(fd.name, e))
                         else:
                             if fd.exhausted():
                                 exhausted.add(fd)
@@ -143,7 +143,7 @@ class PipeEngine:
                     os.write(self.__fdw, _cmd)
                     while not self.thread_lock.acquire(0):
                         time.sleep(0.01) # interruptible wait for thread to terminate
-                    self.thread_lock.release() # (not using .join() because it needs 'threading' module)
+                    self.thread_lock.release() #(not using .join() because it needs 'threading' module)
                 else:
                     warning("Pipe engine thread not running")
         except KeyboardInterrupt:
@@ -160,17 +160,17 @@ class PipeEngine:
     def graph(self,**kargs):
         g=['digraph "pipe" {',"\tnode [shape=rectangle];",]
         for p in self.active_pipes:
-            g.append('\t"%i" [label="%s"];' % (id(p), p.name))
+            g.append('\t"%i" [label="%s"];' %(id(p), p.name))
         g.append("")
         g.append("\tedge [color=blue, arrowhead=vee];")
         for p in self.active_pipes:
             for q in p.sinks:
-                g.append('\t"%i" -> "%i";' % (id(p), id(q)))
+                g.append('\t"%i" -> "%i";' %(id(p), id(q)))
         g.append("")
         g.append("\tedge [color=red, arrowhead=veevee];")
         for p in self.active_pipes:
             for q in p.high_sinks:
-                g.append('\t"%i" -> "%i" [color="red"];' % (id(p), id(q)))
+                g.append('\t"%i" -> "%i" [color="red"];' %(id(p), id(q)))
         g.append('}')
         graph = "\n".join(g)
         scapy.utils.do_graph(graph, **kargs) 
@@ -219,7 +219,7 @@ class Pipe(_ConnectorLogic):
     def __init__(self, name=None):
         _ConnectorLogic.__init__(self)
         if name is None:
-            name = "%s" % (self.__class__.__name__)
+            name = "%s" %(self.__class__.__name__)
         self.name = name
     def _send(self, msg):
         for s in self.sinks:
@@ -230,26 +230,26 @@ class Pipe(_ConnectorLogic):
 
     def __repr__(self):
         ct = conf.color_theme
-        s = "%s%s" % (ct.punct("<"), ct.layer_name(self.name))
+        s = "%s%s" %(ct.punct("<"), ct.layer_name(self.name))
         if self.sources or self.sinks:
             s+= " %s" % ct.punct("[")
             if self.sources:
-                s+="%s%s" %  (ct.punct(",").join(ct.field_name(s.name) for s in self.sources),
+                s+="%s%s" % (ct.punct(",").join(ct.field_name(s.name) for s in self.sources),
                               ct.field_value(">"))
             s += ct.layer_name("#")
             if self.sinks:
-                s+="%s%s" % (ct.field_value(">"),
+                s+="%s%s" %(ct.field_value(">"),
                              ct.punct(",").join(ct.field_name(s.name) for s in self.sinks))
             s += ct.punct("]")
 
         if self.high_sources or self.high_sinks:
             s+= " %s" % ct.punct("[")
             if self.high_sources:
-                s+="%s%s" %  (ct.punct(",").join(ct.field_name(s.name) for s in self.high_sources),
+                s+="%s%s" % (ct.punct(",").join(ct.field_name(s.name) for s in self.high_sources),
                               ct.field_value(">>"))
             s += ct.layer_name("#")
             if self.high_sinks:
-                s+="%s%s" % (ct.field_value(">>"),
+                s+="%s%s" %(ct.field_value(">>"),
                              ct.punct(",").join(ct.field_name(s.name) for s in self.high_sinks))
             s += ct.punct("]")
 
@@ -276,7 +276,7 @@ class Source(Pipe):
         pass
 
 class Drain(Pipe):
-    """Repeat messages from low/high entries to (resp.) low/high exits
+    """Repeat messages from low/high entries to(resp.) low/high exits
      +-------+
   >>-|-------|->>
      |       |

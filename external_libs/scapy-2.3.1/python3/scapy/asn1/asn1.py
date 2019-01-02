@@ -1,10 +1,10 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
-ASN.1 (Abstract Syntax Notation One)
+ASN.1(Abstract Syntax Notation One)
 """
 
 import random
@@ -32,7 +32,7 @@ class RandASN1Object(RandField):
         elif issubclass(o, ASN1_STRING):
             z = int(random.expovariate(0.05)+1)
             return o(bytes([random.choice(self.chars) for i in range(z)]))
-        elif issubclass(o, ASN1_SEQUENCE) and (n < 10):
+        elif issubclass(o, ASN1_SEQUENCE) and(n < 10):
             z = int(random.expovariate(0.08)+1)
 #            return o(map(lambda x:x._fix(n+1), [self.__class__(objlist=self.objlist)]*z))
             return o([ x._fix(n+1) for x in [self.__class__(objlist=self.objlist)]*z])
@@ -104,7 +104,7 @@ class ASN1Tag(EnumElement):
         try:
             c = self._codec[codec]
         except KeyError as msg:
-            raise ASN1_Error("Codec %r not found for tag %r" % (codec, self))
+            raise ASN1_Error("Codec %r not found for tag %r" %(codec, self))
         return c
 
 class ASN1_Class_metaclass(Enum_metaclass):
@@ -181,7 +181,7 @@ class ASN1_Object_metaclass(type):
         try:
             c.tag.register_asn1_object(c)
         except:
-            warning("Error registering %r for %r" % (c.tag, c.codec))
+            warning("Error registering %r for %r" %(c.tag, c.codec))
         return c
 
 
@@ -192,14 +192,14 @@ class ASN1_Object(metaclass = ASN1_Object_metaclass):
     def enc(self, codec):
         return self.tag.get_codec(codec).enc(self.val)
     def __repr__(self):
-        return "<%s[%r]>" % (self.__dict__.get("name", self.__class__.__name__), self.val)
+        return "<%s[%r]>" %(self.__dict__.get("name", self.__class__.__name__), self.val)
     def __str__(self):
         raise Exception("Should not get here")
         #return self.enc(conf.ASN1_default_codec)
     def __bytes__(self):
         return self.enc(conf.ASN1_default_codec)
     def strshow(self, lvl=0):
-        return ("  "*lvl)+repr(self)+"\n"
+        return("  "*lvl)+repr(self)+"\n"
     def show(self, lvl=0):
         print((self.strshow(lvl)))
     def __eq__(self, other):
@@ -215,7 +215,7 @@ class ASN1_DECODING_ERROR(ASN1_Object):
         ASN1_Object.__init__(self, val)
         self.exc = exc
     def __repr__(self):
-        return "<%s[%r]{{%s}}>" % (self.__dict__.get("name", self.__class__.__name__),
+        return "<%s[%r]{{%s}}>" %(self.__dict__.get("name", self.__class__.__name__),
                                    self.val, self.exc.args[0])
     def enc(self, codec):
         if isinstance(self.val, ASN1_Object):
@@ -296,7 +296,7 @@ class ASN1_COUNTER32(ASN1_INTEGER):
 class ASN1_SEQUENCE(ASN1_Object):
     tag = ASN1_Class_UNIVERSAL.SEQUENCE
     def strshow(self, lvl=0):
-        s = ("  "*lvl)+("# %s:" % self.__class__.__name__)+"\n"
+        s =("  "*lvl)+("# %s:" % self.__class__.__name__)+"\n"
         for o in self.val:
             s += o.strshow(lvl=lvl+1)
         return s
@@ -312,7 +312,7 @@ class ASN1_OID(ASN1_Object):
         val = conf.mib._oid(val)
         ASN1_Object.__init__(self, val)
     def __repr__(self):
-        return "<%s[%r]>" % (self.__dict__.get("name", self.__class__.__name__), conf.mib._oidname(self.val))
+        return "<%s[%r]>" %(self.__dict__.get("name", self.__class__.__name__), conf.mib._oidname(self.val))
     def __oidname__(self):
         return '%s'%conf.mib._oidname(self.val)
     

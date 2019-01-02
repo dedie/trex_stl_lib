@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -38,7 +38,7 @@ class Neighbor:
             return self.resolvers[k](l2inst,l3inst)
 
     def __repr__(self):
-        return "\n".join("%-15s -> %-15s" % (l2.__name__, l3.__name__) for l2,l3 in self.resolvers)
+        return "\n".join("%-15s -> %-15s" %(l2.__name__, l3.__name__) for l2,l3 in self.resolvers)
 
 conf.neighbor = Neighbor()
 
@@ -52,10 +52,10 @@ def getmacbyip(ip, chainCC=0):
         ip = next(iter(ip))
     ip = inet_ntoa(inet_aton(ip))
     tmp = inet_aton(ip)
-    if (tmp[0] & 0xf0) == 0xe0: # mcast @
-        return "01:00:5e:%.2x:%.2x:%.2x" % (tmp[1]&0x7f,tmp[2],tmp[3])
+    if(tmp[0] & 0xf0) == 0xe0: # mcast @
+        return "01:00:5e:%.2x:%.2x:%.2x" %(tmp[1]&0x7f,tmp[2],tmp[3])
     iff,a,gw = conf.route.route(ip)
-    if ( (iff == "lo") or (ip == conf.route.get_if_bcast(iff)) ):
+    if((iff == "lo") or(ip == conf.route.get_if_bcast(iff)) ):
         return "ff:ff:ff:ff:ff:ff"
     if gw != "0.0.0.0":
         ip = gw
@@ -112,7 +112,7 @@ class Ether(Packet):
                 return self.payload.answers(other.payload)
         return 0
     def mysummary(self):
-        return self.sprintf("%src% > %dst% (%type%)")
+        return self.sprintf("%src% > %dst%(%type%)")
     @classmethod
     def dispatch_hook(cls, _pkt=None, *args, **kargs):
         if _pkt and len(_pkt) >= 14:
@@ -134,7 +134,7 @@ class Dot3(Packet):
             return self.payload.answers(other.payload)
         return 0
     def mysummary(self):
-        return "802.3 %s > %s" % (self.src, self.dst)
+        return "802.3 %s > %s" %(self.src, self.dst)
     @classmethod
     def dispatch_hook(cls, _pkt=None, *args, **kargs):
         if _pkt and len(_pkt) >= 14:
@@ -181,8 +181,8 @@ class Dot1Q(Packet):
                      XShortEnumField("type", 0x0000, ETHER_TYPES) ]
     def answers(self, other):
         if isinstance(other,Dot1Q):
-            if ( (self.type == other.type) and
-                 (self.vlan == other.vlan) ):
+            if((self.type == other.type) and
+                (self.vlan == other.vlan) ):
                 return self.payload.answers(other.payload)
         else:
             return self.payload.answers(other)
@@ -197,9 +197,9 @@ class Dot1Q(Packet):
         return s,None
     def mysummary(self):
         if isinstance(self.underlayer, Ether):
-            return self.underlayer.sprintf("802.1q %Ether.src% > %Ether.dst% (%Dot1Q.type%) vlan %Dot1Q.vlan%")
+            return self.underlayer.sprintf("802.1q %Ether.src% > %Ether.dst%(%Dot1Q.type%) vlan %Dot1Q.vlan%")
         else:
-            return self.sprintf("802.1q (%Dot1Q.type%) vlan %Dot1Q.vlan%")
+            return self.sprintf("802.1q(%Dot1Q.type%) vlan %Dot1Q.vlan%")
 
             
 conf.neighbor.register_l3(Ether, Dot1Q, lambda l2,l3: conf.neighbor.resolve(l2,l3.payload))
@@ -241,8 +241,8 @@ class EAPOL(Packet):
         return bytes([self.type])+self.payload.hashret()
     def answers(self, other):
         if isinstance(other,EAPOL):
-            if ( (self.type == self.EAP_PACKET) and
-                 (other.type == self.EAP_PACKET) ):
+            if((self.type == self.EAP_PACKET) and
+                (other.type == self.EAP_PACKET) ):
                 return self.payload.answers(other.payload)
         return 0
     def mysummary(self):
@@ -269,8 +269,8 @@ class EAP(Packet):
             if self.code == self.REQUEST:
                 return 0
             elif self.code == self.RESPONSE:
-                if ( (other.code == self.REQUEST) and
-                     (other.type == self.type) ):
+                if((other.code == self.REQUEST) and
+                    (other.type == self.type) ):
                     return 1
             elif other.code == self.RESPONSE:
                 return 1
@@ -298,9 +298,9 @@ class ARP(Packet):
     is_at = 2
     def answers(self, other):
         if isinstance(other,ARP):
-            if ( (self.op == self.is_at) and
-                 (other.op == self.who_has) and
-                 (self.psrc == other.pdst) ):
+            if((self.op == self.is_at) and
+                (other.op == self.who_has) and
+                (self.psrc == other.pdst) ):
                 return 1
         return 0
     def route(self):
@@ -408,7 +408,7 @@ conf.l3types.register(ETH_P_ARP, ARP)
 
 @conf.commands.register
 def arpcachepoison(target, victim, interval=60):
-    """Poison target's cache with (your MAC,victim's IP) couple
+    """Poison target's cache with(your MAC,victim's IP) couple
 arpcachepoison(target, victim, [interval=60]) -> None
 """
     tmac = getmacbyip(target)
@@ -446,7 +446,7 @@ Set cache=True if you want arping to modify internal ARP-Cache"""
 
     if cache and ans is not None:
         for pair in ans:
-            conf.netcache.arp_cache[pair[1].psrc] = (pair[1].hwsrc, time.time())
+            conf.netcache.arp_cache[pair[1].psrc] =(pair[1].hwsrc, time.time())
     if verbose:
         ans.show()
     return ans,unans
@@ -482,9 +482,9 @@ class ARP_am(AnsweringMachine):
         self.ARP_addr=ARP_addr
 
     def is_request(self, req):
-        return (req.haslayer(ARP) and
+        return(req.haslayer(ARP) and
                 req.getlayer(ARP).op == 1 and
-                (self.IP_addr == None or self.IP_addr == req.getlayer(ARP).pdst))
+               (self.IP_addr == None or self.IP_addr == req.getlayer(ARP).pdst))
     
     def make_reply(self, req):
         ether = req.getlayer(Ether)

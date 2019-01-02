@@ -12,7 +12,7 @@ Priority: ``simplejson`` > ``jsonlib2`` > stdlib ``json``
 ``jsonapi.jsonmod`` will be the module of the actual underlying implementation.
 """
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 from zmq.utils.strtypes import bytes, str
@@ -29,13 +29,13 @@ for mod in priority:
         break
 
 def dumps(o, **kwargs):
-    """Serialize object to JSON bytes (utf-8).
+    """Serialize object to JSON bytes(utf-8).
     
     See jsonapi.jsonmod.dumps for details on kwargs.
     """
     
     if 'separators' not in kwargs:
-        kwargs['separators'] = (',', ':')
+        kwargs['separators'] =(',', ':')
     
     s = jsonmod.dumps(o, **kwargs)
     
@@ -45,7 +45,7 @@ def dumps(o, **kwargs):
     return s
 
 def loads(s, **kwargs):
-    """Load object from JSON bytes (utf-8).
+    """Load object from JSON bytes(utf-8).
     
     See jsonapi.jsonmod.loads for details on kwargs.
     """

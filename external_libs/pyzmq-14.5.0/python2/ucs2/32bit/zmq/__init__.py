@@ -1,6 +1,6 @@
 """Python bindings for 0MQ."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import os
@@ -13,7 +13,7 @@ here = os.path.dirname(__file__)
 
 bundled = []
 bundled_sodium = []
-for ext in ('pyd', 'so', 'dll', 'dylib'):
+for ext in('pyd', 'so', 'dll', 'dylib'):
     bundled_sodium.extend(glob.glob(os.path.join(here, 'libsodium*.%s*' % ext)))
     bundled.extend(glob.glob(os.path.join(here, 'libzmq*.%s*' % ext)))
 
@@ -37,7 +37,7 @@ else:
         if isinstance(__loader__, zipimport.zipimporter):
             # a zipped pyzmq egg
             from zmq import libzmq as _libzmq
-    except (NameError, ImportError):
+    except(NameError, ImportError):
         pass
     finally:
         del zipimport
@@ -57,7 +57,7 @@ def get_includes():
     from os.path import join, dirname, abspath, pardir
     base = dirname(__file__)
     parent = abspath(join(base, pardir))
-    return [ parent ] + [ join(parent, base, subdir) for subdir in ('utils',) ]
+    return [ parent ] + [ join(parent, base, subdir) for subdir in('utils',) ]
 
 
 __all__ = ['get_includes'] + sugar.__all__ + backend.__all__

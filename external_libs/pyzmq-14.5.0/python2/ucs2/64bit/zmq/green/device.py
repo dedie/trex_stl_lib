@@ -1,18 +1,18 @@
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import zmq
 from zmq.green import Poller
 
 def device(device_type, isocket, osocket):
-    """Start a zeromq device (gevent-compatible).
+    """Start a zeromq device(gevent-compatible).
     
     Unlike the true zmq.device, this does not release the GIL.
 
     Parameters
     ----------
-    device_type : (QUEUE, FORWARDER, STREAMER)
-        The type of device to start (ignored).
+    device_type :(QUEUE, FORWARDER, STREAMER)
+        The type of device to start(ignored).
     isocket : Socket
         The Socket instance for the incoming traffic.
     osocket : Socket

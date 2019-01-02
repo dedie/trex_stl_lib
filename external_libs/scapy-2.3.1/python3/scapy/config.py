@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -35,7 +35,7 @@ class ConfClass(object):
                 wlen = 76-max(len(i),10)
                 if len(r) > wlen:
                     r = r[:wlen-3]+"..."
-                s += "%-10s = %s\n" % (i, r)
+                s += "%-10s = %s\n" %(i, r)
         return s[:-1]
 
 class Interceptor(object):
@@ -86,7 +86,7 @@ class ConfigFieldList:
             return elt in self.layers
         return elt in self.fields
     def __repr__(self):
-        return "<%s [%s]>" %  (self.__class__.__name__," ".join(str(x) for x in self.fields))
+        return "<%s [%s]>" % (self.__class__.__name__," ".join(str(x) for x in self.fields))
 
 class Emphasize(ConfigFieldList):
     pass
@@ -129,10 +129,10 @@ class Num2Layer:
                 dir = "<->"
             else:
                 dir = " ->"
-            lst.append((num,"%#6x %s %-20s (%s)" % (num,dir,layer.__name__,layer.name)))
+            lst.append((num,"%#6x %s %-20s(%s)" %(num,dir,layer.__name__,layer.name)))
         for layer,num in list(self.layer2num.items()):
             if num not in self.num2layer or self.num2layer[num] != layer:
-                lst.append((num,"%#6x <-  %-20s (%s)" % (num,layer.__name__,layer.name)))
+                lst.append((num,"%#6x <-  %-20s(%s)" %(num,layer.__name__,layer.name)))
         lst.sort()
         return "\n".join(y for x,y in lst)
             
@@ -141,7 +141,7 @@ class LayersList(list):
     def __repr__(self):
         s=[]
         for l in self:
-            s.append("%-20s: %s" % (l.__name__,l.name))
+            s.append("%-20s: %s" %(l.__name__,l.name))
         return "\n".join(s)
     def register(self, layer):
         self.append(layer)
@@ -154,7 +154,7 @@ class CommandsList(list):
                 doc = l.__doc__.split("\n")[0]
             else:
                 doc = "--"
-            s.append("%-20s: %s" % (l.__name__,doc))
+            s.append("%-20s: %s" %(l.__name__,doc))
         return "\n".join(s)
     def register(self, cmd):
         self.append(cmd)
@@ -195,24 +195,24 @@ class CacheInstance(dict):
         if self.timeout is None:
             return dict.items(self)
         t0=time.time()
-        return ((k,v) for (k,v) in dict.items(self) if t0-self._timetable[k] < self.timeout) 
+        return((k,v) for(k,v) in dict.items(self) if t0-self._timetable[k] < self.timeout) 
     def keys(self):
         if self.timeout is None:
             return dict.keys(self)
         t0=time.time()
-        return (k for k in dict.keys(self) if t0-self._timetable[k] < self.timeout)
+        return(k for k in dict.keys(self) if t0-self._timetable[k] < self.timeout)
     def __iter__(self):
         return list(self.keys())
     def values(self):
         if self.timeout is None:
             return dict.values(self)
         t0=time.time()
-        return (v for (k,v) in dict.items(self) if t0-self._timetable[k] < self.timeout)
+        return(v for(k,v) in dict.items(self) if t0-self._timetable[k] < self.timeout)
     def items(self):
         if self.timeout is None:
             return dict.items(self)
         t0=time.time()
-        return [(k,v) for (k,v) in dict.items(self) if t0-self._timetable[k] < self.timeout]
+        return [(k,v) for(k,v) in dict.items(self) if t0-self._timetable[k] < self.timeout]
     def keys(self):
         if self.timeout is None:
             return dict.keys(self)
@@ -222,18 +222,18 @@ class CacheInstance(dict):
         if self.timeout is None:
             return dict.values(self)
         t0=time.time()
-        return [v for (k,v) in dict.items(self) if t0-self._timetable[k] < self.timeout]
+        return [v for(k,v) in dict.items(self) if t0-self._timetable[k] < self.timeout]
     def __len__(self):
         if self.timeout is None:
             return dict.__len__(self)
         return len(list(self.keys()))
     def summary(self):
-        return "%s: %i valid items. Timeout=%rs" % (self.name, len(self), self.timeout)
+        return "%s: %i valid items. Timeout=%rs" %(self.name, len(self), self.timeout)
     def __repr__(self):
         s = []
         if self:
             mk = max(len(k) for k in list(self.keys()))
-            fmt = "%%-%is %%s" % (mk+1)
+            fmt = "%%-%is %%s" %(mk+1)
             for item in list(self.items()):
                 s.append(fmt % item)
         return "\n".join(s)
@@ -297,15 +297,15 @@ class Conf(ConfClass):
 session  : filename where the session will be saved
 interactive_shell : If set to "ipython", use IPython as shell. Default: IPython. 
 ipython_embedded : If True use embedded ipython shell, standard ipython shell otherwise.
-stealth  : if 1, prevents any unwanted packet to go out (ARP, DNS, ...)
+stealth  : if 1, prevents any unwanted packet to go out(ARP, DNS, ...)
 checkIPID: if 0, doesn't check that IPID matches between IP sent and ICMP IP citation received
-           if 1, checks that they either are equal or byte swapped equals (bug in some IP stacks)
+           if 1, checks that they either are equal or byte swapped equals(bug in some IP stacks)
            if 2, strictly checks that they are equals
-checkIPsrc: if 1, checks IP src in IP and ICMP IP citation match (bug in some NAT stacks)
+checkIPsrc: if 1, checks IP src in IP and ICMP IP citation match(bug in some NAT stacks)
 check_TCPerror_seqack: if 1, also check that TCP seq and ack match the ones in ICMP citation
 iff      : selects the default output interface for srp() and sendp(). default:"eth0")
-verb     : level of verbosity, from 0 (almost mute) to 3 (verbose)
-promisc  : default mode for listening socket (to get answers if you spoof on a lan)
+verb     : level of verbosity, from 0(almost mute) to 3(verbose)
+promisc  : default mode for listening socket(to get answers if you spoof on a lan)
 sniff_promisc : default mode for sniff()
 filter   : bpf filter added to every sniffing socket to exclude traffic from analysis
 histfile : history file

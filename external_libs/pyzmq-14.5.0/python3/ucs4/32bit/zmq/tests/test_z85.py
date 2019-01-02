@@ -4,7 +4,7 @@
 confirm values and roundtrip with test values from the reference implementation.
 """
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 from unittest import TestCase

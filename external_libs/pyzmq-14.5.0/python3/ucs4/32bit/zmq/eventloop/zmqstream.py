@@ -1,7 +1,7 @@
 #
 # Copyright 2009 Facebook
 #
-# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# Licensed under the Apache License, Version 2.0(the "License"); you may
 # not use this file except in compliance with the License. You may obtain
 # a copy of the License at
 #
@@ -212,7 +212,7 @@ class ZMQStream(object):
         
         callback : callable
             callback must take exactly two arguments, which will be
-            the message being sent (always a list),
+            the message being sent(always a list),
             and the return result of socket.send_multipart(msg) -
             MessageTracker or None.
             
@@ -320,7 +320,7 @@ class ZMQStream(object):
 
         Returns
         -------
-        int : count of events handled (both send and recv)
+        int : count of events handled(both send and recv)
         """
         self._check_closed()
         # unset self._flushed, so callbacks will execute, in case flush has
@@ -332,14 +332,14 @@ class ZMQStream(object):
         def update_flag():
             """Update the poll flag, to prevent registering POLLOUT events
             if we don't have pending sends."""
-            return flag & zmq.POLLIN | (self.sending() and flag & zmq.POLLOUT)
+            return flag & zmq.POLLIN |(self.sending() and flag & zmq.POLLOUT)
         flag = update_flag()
         if not flag:
             # nothing to do
             return 0
         self.poller.register(self.socket, flag)
         events = self.poller.poll(0)
-        while events and (not limit or count < limit):
+        while events and(not limit or count < limit):
             s,event = events[0]
             if event & zmq.POLLIN: # receiving
                 self._handle_recv()
@@ -409,7 +409,7 @@ class ZMQStream(object):
             gen_log.error("Uncaught exception, closing connection.",
                           exc_info=True)
             # Close the socket on an uncaught exception from a user callback
-            # (It would eventually get closed when the socket object is
+            #(It would eventually get closed when the socket object is
             # gc'd, but we don't want to rely on gc happening before we
             # run out of file descriptors)
             self.close()
@@ -513,7 +513,7 @@ class ZMQStream(object):
     def _drop_io_state(self, state):
         """Stop poller from watching an io_state."""
         if self._state & state:
-            self._state = self._state & (~state)
+            self._state = self._state &(~state)
             self._update_handler(self._state)
     
     def _update_handler(self, state):

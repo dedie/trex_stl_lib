@@ -1,6 +1,6 @@
 """Tracker for zero-copy messages with 0MQ."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import time
@@ -8,7 +8,7 @@ import time
 try:
     # below 3.3
     from threading import _Event as Event
-except (ImportError, AttributeError):
+except(ImportError, AttributeError):
     # python throws ImportError, cython throws AttributeError
     from threading import Event
 
@@ -81,7 +81,7 @@ class MessageTracker(object):
         Parameters
         ----------
         timeout : float [default: -1, wait forever]
-            Maximum time in (s) to wait before raising NotDone.
+            Maximum time in(s) to wait before raising NotDone.
 
         Returns
         -------
@@ -106,7 +106,7 @@ class MessageTracker(object):
             if not evt.is_set():
                 raise NotDone
             toc = time.time()
-            remaining -= (toc-tic)
+            remaining -=(toc-tic)
             tic = toc
         
         for peer in self.peers:
@@ -114,7 +114,7 @@ class MessageTracker(object):
                 raise NotDone
             peer.wait(timeout=remaining)
             toc = time.time()
-            remaining -= (toc-tic)
+            remaining -=(toc-tic)
             tic = toc
 
 __all__ = ['MessageTracker']

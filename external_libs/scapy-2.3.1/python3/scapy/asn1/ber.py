@@ -1,10 +1,10 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
-Basic Encoding Rules (BER) for ASN.1
+Basic Encoding Rules(BER) for ASN.1
 """
 
 from scapy.error import warning
@@ -63,19 +63,19 @@ def BER_len_enc(l, size=0):
             l >>= 8
             size -= 1
         if len(s) > 127:
-            raise BER_Exception("BER_len_enc: Length too long (%i) to be encoded [%r]" % (len(s),s))
+            raise BER_Exception("BER_len_enc: Length too long(%i) to be encoded [%r]" %(len(s),s))
         return bytes([len(s)|0x80])+s
 def BER_len_dec(s):
-        l = (s[0])
+        l =(s[0])
         if not l & 0x80:
             return l,s[1:]
         l &= 0x7f
         if len(s) <= l:
-            raise BER_Decoding_Error("BER_len_dec: Got %i bytes while expecting %i" % (len(s)-1, l),remaining=s)
+            raise BER_Decoding_Error("BER_len_dec: Got %i bytes while expecting %i" %(len(s)-1, l),remaining=s)
         ll = 0
         for c in s[1:l+1]:
             ll <<= 8
-            ll |= (c)
+            ll |=(c)
         return ll,s[l+1:]
         
 def BER_num_enc(l, size=1):
@@ -90,7 +90,7 @@ def BER_num_enc(l, size=1):
 def BER_num_dec(s):
         x = 0
         for i in range(len(s)):
-            c = (s[i])
+            c =(s[i])
             x <<= 7
             x |= c&0x7f
             if not c&0x80:
@@ -107,7 +107,7 @@ class BERcodec_metaclass(type):
         try:
             c.tag.register(c.codec, c)
         except:
-            warning("Error registering %r for %r" % (c.tag, c.codec))
+            warning("Error registering %r for %r" %(c.tag, c.codec))
         return c
 
 
@@ -123,13 +123,13 @@ class BERcodec_Object( metaclass = BERcodec_metaclass):
     def check_string(cls, s):
         if not s:
             raise BER_Decoding_Error("%s: Got empty object while expecting tag %r" %
-                                     (cls.__name__,cls.tag), remaining=s)        
+                                    (cls.__name__,cls.tag), remaining=s)        
     @classmethod
     def check_type(cls, s):
         cls.check_string(s)
-        if hash(cls.tag) != (s[0]):
+        if hash(cls.tag) !=(s[0]):
             raise BER_BadTag_Decoding_Error("%s: Got tag [%i/%#x] while expecting %r" %
-                                            (cls.__name__, (s[0]), (s[0]),cls.tag), remaining=s)
+                                           (cls.__name__,(s[0]),(s[0]),cls.tag), remaining=s)
         return s[1:]
     @classmethod
     def check_type_get_len(cls, s):
@@ -143,7 +143,7 @@ class BERcodec_Object( metaclass = BERcodec_metaclass):
         l,s3 = cls.check_type_get_len(s)
         if len(s3) < l:
             raise BER_Decoding_Error("%s: Got %i bytes while expecting %i" %
-                                     (cls.__name__, len(s3), l), remaining=s)
+                                    (cls.__name__, len(s3), l), remaining=s)
         return l,s3[:l],s3[l:]
 
     @classmethod
@@ -151,12 +151,12 @@ class BERcodec_Object( metaclass = BERcodec_metaclass):
         if context is None:
             context = cls.tag.context
         cls.check_string(s)
-        p = (s[0])
+        p =(s[0])
         if p not in context:
             t = s
             if len(t) > 18:
                 t = t[:15]+"..."
-            raise BER_Decoding_Error("Unknown prefix [%02x] for [%r]" % (p,t), remaining=s)
+            raise BER_Decoding_Error("Unknown prefix [%02x] for [%r]" %(p,t), remaining=s)
         codec = context[p].get_codec(ASN1_Codecs.BER)
         return codec.dec(s,context,safe)
 
@@ -218,11 +218,11 @@ class BERcodec_INTEGER(BERcodec_Object):
         l,s,t = cls.check_type_check_len(s)
         x = 0
         if s:
-            if (s[0])&0x80: # negative int
+            if(s[0])&0x80: # negative int
                 x = -1
             for c in s:
                 x <<= 8
-                x |= (c)
+                x |=(c)
         return cls.asn1_object(x),t
     
 
@@ -262,7 +262,7 @@ class BERcodec_BIT_STRING(BERcodec_STRING):
 class BERcodec_PRINTABLE_STRING(BERcodec_STRING):
     tag = ASN1_Class_UNIVERSAL.PRINTABLE_STRING
 
-class BERcodec_T61_STRING (BERcodec_STRING):
+class BERcodec_T61_STRING(BERcodec_STRING):
     tag = ASN1_Class_UNIVERSAL.T61_STRING
 
 class BERcodec_IA5_STRING(BERcodec_STRING):
@@ -362,7 +362,7 @@ class BERcodec_OID(BERcodec_Object):
         while s:
             l,s = BER_num_dec(s)
             lst.append(l)
-        if (len(lst) > 0):
+        if(len(lst) > 0):
             lst.insert(0,lst[0]//40)
             lst[1] %= 40
         return cls.asn1_object(b".".join([str(k).encode('ascii') for k in lst])), t

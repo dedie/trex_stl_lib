@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -140,7 +140,7 @@ def read_routes6():
         if 'link' in nh:
             nh = '::'
 
-        cset = [] # candidate set (possible source addresses)
+        cset = [] # candidate set(possible source addresses)
         dp = 128
         if d == 'default':
             d = '::'

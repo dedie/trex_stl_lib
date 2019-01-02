@@ -1,6 +1,6 @@
 """0MQ authentication related functions and classes."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -76,7 +76,7 @@ def create_certificates(key_dir, name, metadata=None):
 def load_certificate(filename):
     """Load public and secret key from a zmq certificate.
     
-    Returns (public_key, secret_key)
+    Returns(public_key, secret_key)
     
     If the certificate file only contains the public key,
     secret_key will be None.

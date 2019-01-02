@@ -9,13 +9,13 @@ OSPF extension for Scapy <http://www.secdev.org/scapy>
 This module provides Scapy layers for the Open Shortest Path First
 routing protocol as defined in RFC 2328 and RFC 5340.
 
-Copyright (c) 2008 Dirk Loss  :  mail dirk-loss de
-Copyright (c) 2010 Jochen Bartl  :  jochen.bartl gmail com
+Copyright(c) 2008 Dirk Loss  :  mail dirk-loss de
+Copyright(c) 2010 Jochen Bartl  :  jochen.bartl gmail com
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+of the License, or(at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -60,7 +60,7 @@ class OSPF_Hdr(Packet):
                     ConditionalField(ByteField("keyid", 1), lambda pkt:pkt.authtype == 2),
                     ConditionalField(ByteField("authdatalen", 0), lambda pkt:pkt.authtype == 2),
                     ConditionalField(XIntField("seq", 0), lambda pkt:pkt.authtype == 2),
-                    # TODO: Support authdata (which is appended to the packets as if it were padding)
+                    # TODO: Support authdata(which is appended to the packets as if it were padding)
                     ]
 
     def post_build(self, p, pay):
@@ -81,14 +81,14 @@ class OSPF_Hdr(Packet):
                 # Algorithm is the same as in IP()
                 ck = checksum(p[:16] + p[24:])
                 p = p[:12] + chr(ck >> 8) + chr(ck & 0xff) + p[14:]
-            # TODO: Handle Crypto: Add message digest  (RFC 2328, D.4.3)
+            # TODO: Handle Crypto: Add message digest (RFC 2328, D.4.3)
         return p
 
     def hashret(self):
         return struct.pack("H", self.area) + self.payload.hashret()
 
     def answers(self, other):
-        if (isinstance(other, OSPF_Hdr) and
+        if(isinstance(other, OSPF_Hdr) and
             self.area == other.area and
             self.type == 5):  # Only acknowledgements answer other packets
                 return self.payload.answers(other.payload)
@@ -104,7 +104,7 @@ class OSPF_Hello(Packet):
                    IntField("deadinterval", 40),
                    IPField("router", "0.0.0.0"),
                    IPField("backup", "0.0.0.0"),
-                   FieldListField("neighbors", [], IPField("", "0.0.0.0"), length_from=lambda pkt: (pkt.underlayer.len - 44))]
+                   FieldListField("neighbors", [], IPField("", "0.0.0.0"), length_from=lambda pkt:(pkt.underlayer.len - 44))]
 
     def guess_payload_class(self, payload):
         # check presence of LLS data block flag
@@ -216,7 +216,7 @@ def ospf_lsa_checksum(lsa):
     CHKSUM_OFFSET = 16
 
     if len(lsa) < CHKSUM_OFFSET:
-        raise Exception("LSA Packet too short (%s bytes)" % len(lsa))
+        raise Exception("LSA Packet too short(%s bytes)" % len(lsa))
 
     c0 = c1 = 0
     # Calculation is done with checksum set to zero
@@ -228,16 +228,16 @@ def ospf_lsa_checksum(lsa):
     c0 %= 255
     c1 %= 255
 
-    x = ((len(lsa) - CHKSUM_OFFSET - 1) * c0 - c1) % 255
+    x =((len(lsa) - CHKSUM_OFFSET - 1) * c0 - c1) % 255
 
-    if (x <= 0):
+    if(x <= 0):
         x += 255
 
     y = 510 - c0 - x
 
-    if (y > 255):
+    if(y > 255):
         y -= 255
-    #checksum = (x << 8) + y
+    #checksum =(x << 8) + y
 
     return chr(x) + chr(y)
 
@@ -343,7 +343,7 @@ class OSPF_Network_LSA(OSPF_BaseLSA):
 
 
 class OSPF_SummaryIP_LSA(OSPF_BaseLSA):
-    name = "OSPF Summary LSA (IP Network)"
+    name = "OSPF Summary LSA(IP Network)"
     fields_desc = [ShortField("age", 1),
                    OSPFOptionsField(),
                    ByteField("type", 3),
@@ -361,7 +361,7 @@ class OSPF_SummaryIP_LSA(OSPF_BaseLSA):
 
 
 class OSPF_SummaryASBR_LSA(OSPF_SummaryIP_LSA):
-    name = "OSPF Summary LSA (AS Boundary Router)"
+    name = "OSPF Summary LSA(AS Boundary Router)"
     type = 4
     id = "2.2.2.2"
     mask = "0.0.0.0"
@@ -369,7 +369,7 @@ class OSPF_SummaryASBR_LSA(OSPF_SummaryIP_LSA):
 
 
 class OSPF_External_LSA(OSPF_BaseLSA):
-    name = "OSPF External LSA (ASBR)"
+    name = "OSPF External LSA(ASBR)"
     fields_desc = [ShortField("age", 1),
                    OSPFOptionsField(),
                    ByteField("type", 5),
@@ -413,7 +413,7 @@ class OSPF_DBDesc(Packet):
 
 
 class OSPF_LSReq_Item(Packet):
-    name = "OSPF Link State Request (item)"
+    name = "OSPF Link State Request(item)"
     fields_desc = [IntEnumField("type", 1, _OSPF_LStypes),
                    IPField("id", "1.1.1.1"),
                    IPField("adrouter", "1.1.1.1")]
@@ -423,7 +423,7 @@ class OSPF_LSReq_Item(Packet):
 
 
 class OSPF_LSReq(Packet):
-    name = "OSPF Link State Request (container)"
+    name = "OSPF Link State Request(container)"
     fields_desc = [PacketListField("requests", None, OSPF_LSReq_Item,
                                   count_from = lambda pkt:None,
                                   length_from = lambda pkt:pkt.underlayer.len - 24)]
@@ -447,7 +447,7 @@ class OSPF_LSAck(Packet):
         if isinstance(other, OSPF_LSUpd):
             for reqLSA in other.lsalist:
                 for ackLSA in self.lsaheaders:
-                    if (reqLSA.type == ackLSA.type and
+                    if(reqLSA.type == ackLSA.type and
                         reqLSA.seq == ackLSA.seq):
                         return 1
         return 0
@@ -491,7 +491,7 @@ class OspfIP6Field(StrField, IP6Field):
         if l > 128:
             warning("OspfIP6Field: Prefix length is > 128. Dissection of this packet will fail")
         else:
-            pad = "\x00" * (16 - prefixlen)
+            pad = "\x00" *(16 - prefixlen)
             x += pad
 
         return inet_ntop(socket.AF_INET6, x)
@@ -562,7 +562,7 @@ class OSPFv3_Hello(Packet):
                    IPField("router", "0.0.0.0"),
                    IPField("backup", "0.0.0.0"),
                    FieldListField("neighbors", [], IPField("", "0.0.0.0"),
-                                    length_from=lambda pkt: (pkt.underlayer.len - 36))]
+                                    length_from=lambda pkt:(pkt.underlayer.len - 36))]
 
 
 _OSPFv3_LStypes = {0x2001: "router",
@@ -782,7 +782,7 @@ class OSPFv3_DBDesc(Packet):
 
 
 class OSPFv3_LSReq_Item(Packet):
-    name = "OSPFv3 Link State Request (item)"
+    name = "OSPFv3 Link State Request(item)"
     fields_desc = [ShortField("reserved", 0),
                    ShortEnumField("type", 0x2001, _OSPFv3_LStypes),
                    IPField("id", "1.1.1.1"),
@@ -793,7 +793,7 @@ class OSPFv3_LSReq_Item(Packet):
 
 
 class OSPFv3_LSReq(Packet):
-    name = "OSPFv3 Link State Request (container)"
+    name = "OSPFv3 Link State Request(container)"
     fields_desc = [PacketListField("requests", None, OSPFv3_LSReq_Item,
                                   count_from = lambda pkt:None,
                                   length_from = lambda pkt:pkt.underlayer.len - 16)]

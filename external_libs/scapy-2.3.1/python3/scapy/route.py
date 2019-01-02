@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -33,7 +33,7 @@ class Route:
     def __repr__(self):
         rt = "Network         Netmask         Gateway         Iface           Output IP\n"
         for net,msk,gw,iface,addr in self.routes:
-            rt += "%-15s %-15s %-15s %-15s %-15s\n" % (ltoa(net),
+            rt += "%-15s %-15s %-15s %-15s %-15s\n" %(ltoa(net),
                                               ltoa(msk),
                                               gw,
                                               iface,
@@ -58,7 +58,7 @@ class Route:
             dev,ifaddr,x = self.route(nhop)
         else:
             ifaddr = get_if_addr(dev)
-        return (atol(thenet), itom(msk), gw, dev, ifaddr)
+        return(atol(thenet), itom(msk), gw, dev, ifaddr)
 
     def add(self, *args, **kargs):
         """Ex:
@@ -80,7 +80,7 @@ class Route:
              
     def ifchange(self, iff, addr):
         self.invalidate_cache()
-        the_addr,the_msk = (addr.split("/")+["32"])[:2]
+        the_addr,the_msk =(addr.split("/")+["32"])[:2]
         the_msk = itom(int(the_msk))
         the_rawaddr = atol(the_addr)
         the_net = the_rawaddr & the_msk
@@ -91,9 +91,9 @@ class Route:
             if iface != iff:
                 continue
             if gw == '0.0.0.0':
-                self.routes[i] = (the_net,the_msk,gw,iface,the_addr)
+                self.routes[i] =(the_net,the_msk,gw,iface,the_addr)
             else:
-                self.routes[i] = (net,msk,gw,iface,the_addr)
+                self.routes[i] =(net,msk,gw,iface,the_addr)
         conf.netcache.flush()
         
                 
@@ -108,7 +108,7 @@ class Route:
         
     def ifadd(self, iff, addr):
         self.invalidate_cache()
-        the_addr,the_msk = (addr.split("/")+["32"])[:2]
+        the_addr,the_msk =(addr.split("/")+["32"])[:2]
         the_msk = itom(int(the_msk))
         the_rawaddr = atol(the_addr)
         the_net = the_rawaddr & the_msk
@@ -129,7 +129,7 @@ class Route:
             l = dst.find("-")
             if l < 0:
                 break
-            m = (dst[l:]+".").find(".")
+            m =(dst[l:]+".").find(".")
             dst = dst[:l]+dst[l+m:]
 
             
@@ -140,13 +140,13 @@ class Route:
             #Commented out after issue with virtual network with local address 0.0.0.0
             #if aa == dst:
             #    pathes.append((0xffffffff,(LOOPBACK_NAME,a,"0.0.0.0")))
-            if (dst & m) == (d & m):
+            if(dst & m) ==(d & m):
                 pathes.append((m,(i,a,gw)))
         if not pathes:
             if verbose:
-                warning("No route found (no default route?)")
+                warning("No route found(no default route?)")
             return LOOPBACK_NAME,"0.0.0.0","0.0.0.0" #XXX linux specific!
-        # Choose the more specific route (greatest netmask).
+        # Choose the more specific route(greatest netmask).
         # XXX: we don't care about metrics
         pathes.sort()
         ret = pathes[-1][1]
@@ -155,7 +155,7 @@ class Route:
             
     def get_if_bcast(self, iff):
         for net, msk, gw, iface, addr in self.routes:
-            if (iff == iface and net != 0):
+            if(iff == iface and net != 0):
                 bcast = atol(addr)|(~msk&0xffffffff); # FIXME: check error in atol()
                 return ltoa(bcast);
         warning("No broadcast address found for iface %s\n" % iff);

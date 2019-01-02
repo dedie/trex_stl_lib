@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -37,7 +37,7 @@ class Field:
         self._offset = 0
 
 
-    def get_size_bytes (self):
+    def get_size_bytes(self):
         if  hasattr(self, 'size'): 
             return 0; # bitfield
         else:
@@ -99,7 +99,7 @@ class Field:
                     x[i] = x[i].copy()
         return x
     def __repr__(self):
-        return "<Field (%s).%s>" % (",".join(x.__name__ for x in self.owners),self.name)
+        return "<Field(%s).%s>" %(",".join(x.__name__ for x in self.owners),self.name)
     def copy(self):
         return copy.deepcopy(self)
     def randval(self):
@@ -114,7 +114,7 @@ class Field:
                 l = int(self.fmt[1:-1])
             return RandBin(l)
         else:
-            warning("no random class for [%s] (fmt=%s)." % (self.name, self.fmt))
+            warning("no random class for [%s](fmt=%s)." %(self.name, self.fmt))
             
 
 
@@ -186,7 +186,7 @@ class PadField:
 
     def addfield(self, pkt, s, val):
         sval = self._fld.addfield(pkt, b"", val)
-        return s+sval+struct.pack("%is" % (self.padlen(len(sval))), self._padwith)
+        return s+sval+struct.pack("%is" %(self.padlen(len(sval))), self._padwith)
     
     def __getattr__(self, attr):
         return getattr(self._fld,attr)
@@ -518,9 +518,9 @@ class StrFixedLenEnumField(StrFixedLenField):
         r = v.rstrip("\0")
         rr = repr(r)
         if v in self.enum:
-            rr = "%s (%s)" % (rr, self.enum[v])
+            rr = "%s(%s)" %(rr, self.enum[v])
         elif r in self.enum:
-            rr = "%s (%s)" % (rr, self.enum[r])
+            rr = "%s(%s)" %(rr, self.enum[r])
         return rr
 
 class NetBIOSNameField(StrFixedLenField):
@@ -700,12 +700,12 @@ class BitField(Field):
         if self.rev:
             val = self.reverse(val)
         v <<= self.size
-        v |= val & ((1<<self.size) - 1)
+        v |= val &((1<<self.size) - 1)
         bitsdone += self.size
         while bitsdone >= 8:
             bitsdone -= 8
             s = s+struct.pack("!B", v >> bitsdone)
-            v &= (1<<bitsdone)-1
+            v &=(1<<bitsdone)-1
         if bitsdone:
             return s,bitsdone,v
         else:
@@ -716,7 +716,7 @@ class BitField(Field):
         else:
             bn = 0
         # we don't want to process all the string
-        nb_bytes = (self.size+bn-1)//8 + 1
+        nb_bytes =(self.size+bn-1)//8 + 1
         w = s[:nb_bytes]
 
         # split the substring byte by byte
@@ -724,13 +724,13 @@ class BitField(Field):
 
         b = 0
         for c in range(nb_bytes):
-            b |= int(bs[c]) << (nb_bytes-c-1)*8
+            b |= int(bs[c]) <<(nb_bytes-c-1)*8
 
         # get rid of high order bits
-        b &= (1 << (nb_bytes*8-bn)) - 1
+        b &=(1 <<(nb_bytes*8-bn)) - 1
 
         # remove low order bits
-        b = b >> (nb_bytes*8 - self.size - bn)
+        b = b >>(nb_bytes*8 - self.size - bn)
 
         if self.rev:
             b = self.reverse(b)
@@ -740,7 +740,7 @@ class BitField(Field):
         bn = bn%8
         b = self.m2i(pkt, b)
         if bn:
-            return (s,bn),b
+            return(s,bn),b
         else:
             return s,b
     def randval(self):
@@ -864,7 +864,7 @@ class MultiEnumField(EnumField):
                 self.s2i_all[v] = k
         Field.__init__(self, name, default, fmt)
     def any2i_one(self, pkt, x):
-        if type (x) is str:
+        if type(x) is str:
             v = self.depends_on(pkt)
             if v in self.s2i_multi:
                 s2i = self.s2i_multi[v]
@@ -948,12 +948,12 @@ class FixedPointField(BitField):
         if val is None:
             return val
         ival = int(val)
-        fract = int( (val-ival) * 2**self.frac_bits )
-        return (ival << self.frac_bits) | fract
+        fract = int((val-ival) * 2**self.frac_bits )
+        return(ival << self.frac_bits) | fract
 
     def i2h(self, pkt, val):
         int_part = val >> self.frac_bits
-        frac_part = val & (1 << self.frac_bits) - 1
+        frac_part = val &(1 << self.frac_bits) - 1
         frac_part /= 2.0**self.frac_bits
         return int_part+frac_part
     def i2repr(self, pkt, val):

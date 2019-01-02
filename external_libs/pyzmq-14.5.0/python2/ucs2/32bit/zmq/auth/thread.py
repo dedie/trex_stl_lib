@@ -3,7 +3,7 @@
 .. versionadded:: 14.1
 """
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import logging
@@ -15,9 +15,10 @@ from zmq.utils.strtypes import bytes, str, b, u
 
 from .base import Authenticator
 
+
 class AuthenticationThread(Thread):
     """A Thread for running a zmq Authenticator
-    
+
     This is run in the background by ThreadedAuthenticator
     """
 
@@ -62,7 +63,8 @@ class AuthenticationThread(Thread):
         Handle a message from the ZAP socket.
         """
         msg = self.authenticator.zap_socket.recv_multipart()
-        if not msg: return
+        if not msg:
+            return
         self.authenticator.handle_zap_message(msg)
 
     def _handle_pipe(self):
@@ -98,7 +100,8 @@ class AuthenticationThread(Thread):
         elif command == b'PLAIN':
             domain = u(msg[1], self.encoding)
             json_passwords = msg[2]
-            self.authenticator.configure_plain(domain, jsonapi.loads(json_passwords))
+            self.authenticator.configure_plain(
+                domain, jsonapi.loads(json_passwords))
 
         elif command == b'CURVE':
             # For now we don't do anything with domains
@@ -117,6 +120,7 @@ class AuthenticationThread(Thread):
 
         return terminate
 
+
 def _inherit_docstrings(cls):
     """inherit docstrings from Authenticator, so we don't duplicate them"""
     for name, method in list(cls.__dict__.items()):
@@ -126,6 +130,7 @@ def _inherit_docstrings(cls):
         if not method.__doc__:
             method.__doc__ = upstream_method.__doc__
     return cls
+
 
 @_inherit_docstrings
 class ThreadAuthenticator(object):
@@ -140,13 +145,16 @@ class ThreadAuthenticator(object):
         self.thread = None
 
     def allow(self, *addresses):
-        self.pipe.send_multipart([b'ALLOW'] + [b(a, self.encoding) for a in addresses])
+        self.pipe.send_multipart(
+            [b'ALLOW'] + [b(a, self.encoding) for a in addresses])
 
     def deny(self, *addresses):
-        self.pipe.send_multipart([b'DENY'] + [b(a, self.encoding) for a in addresses])
+        self.pipe.send_multipart(
+            [b'DENY'] + [b(a, self.encoding) for a in addresses])
 
     def configure_plain(self, domain='*', passwords=None):
-        self.pipe.send_multipart([b'PLAIN', b(domain, self.encoding), jsonapi.dumps(passwords or {})])
+        self.pipe.send_multipart(
+            [b'PLAIN', b(domain, self.encoding), jsonapi.dumps(passwords or {})])
 
     def configure_curve(self, domain='*', location=''):
         domain = b(domain, self.encoding)
@@ -159,7 +167,8 @@ class ThreadAuthenticator(object):
         self.pipe = self.context.socket(zmq.PAIR)
         self.pipe.linger = 1
         self.pipe.bind(self.pipe_endpoint)
-        self.thread = AuthenticationThread(self.context, self.pipe_endpoint, encoding=self.encoding, log=self.log)
+        self.thread = AuthenticationThread(
+            self.context, self.pipe_endpoint, encoding=self.encoding, log=self.log)
         self.thread.start()
 
     def stop(self):
@@ -180,5 +189,6 @@ class ThreadAuthenticator(object):
 
     def __del__(self):
         self.stop()
+
 
 __all__ = ['ThreadAuthenticator']

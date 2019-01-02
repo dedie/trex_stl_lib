@@ -9,7 +9,7 @@ support for concurrent futures - this will only be available if you
 have tornado ≥ 3.0.
 """
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -18,7 +18,7 @@ import os
 import time
 import warnings
 
-from zmq import (
+from zmq import(
     Poller,
     POLLIN, POLLOUT, POLLERR,
     ZMQError, ETERM,
@@ -27,8 +27,8 @@ from zmq import (
 try:
     import tornado
     tornado_version = tornado.version_info
-except (ImportError, AttributeError):
-    tornado_version = ()
+except(ImportError, AttributeError):
+    tornado_version =()
 
 try:
     # tornado ≥ 3
@@ -120,7 +120,7 @@ class ZMQPoller(object):
         Event masks will be IOLoop.READ/WRITE/ERROR
         """
         z_events = self._poller.poll(1000*timeout)
-        return [ (fd,self._remap_events(evt)) for (fd,evt) in z_events ]
+        return [(fd,self._remap_events(evt)) for(fd,evt) in z_events ]
     
     def close(self):
         pass
@@ -142,7 +142,7 @@ class ZMQIOLoop(PollIOLoop):
         """
         # install ZMQIOLoop as the active IOLoop implementation
         # when using tornado 3
-        if tornado_version >= (3,):
+        if tornado_version >=(3,):
             PollIOLoop.configure(ZMQIOLoop)
         return PollIOLoop.instance()
     
@@ -157,9 +157,9 @@ class ZMQIOLoop(PollIOLoop):
                 raise e
 
 
-if tornado_version >= (3,0) and tornado_version < (3,1):
+if tornado_version >=(3,0) and tornado_version <(3,1):
     def backport_close(self, all_fds=False):
-        """backport IOLoop.close to 3.0 from 3.1 (supports fd.close() method)"""
+        """backport IOLoop.close to 3.0 from 3.1(supports fd.close() method)"""
         from zmq.eventloop.minitornado.ioloop import PollIOLoop as mini_loop
         return mini_loop.close.__get__(self)(all_fds)
     ZMQIOLoop.close = backport_close
@@ -181,10 +181,10 @@ def install():
     from tornado import ioloop
     # check if tornado's IOLoop is already initialized to something other
     # than the pyzmq IOLoop instance:
-    assert (not ioloop.IOLoop.initialized()) or \
+    assert(not ioloop.IOLoop.initialized()) or \
         ioloop.IOLoop.instance() is IOLoop.instance(), "tornado IOLoop already initialized"
     
-    if tornado_version >= (3,):
+    if tornado_version >=(3,):
         # tornado 3 has an official API for registering new defaults, yay!
         ioloop.IOLoop.configure(ZMQIOLoop)
     else:

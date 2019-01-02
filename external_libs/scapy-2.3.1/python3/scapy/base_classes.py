@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -34,13 +34,13 @@ class SetGen(Gen):
     #     return element
     def __iter__(self):
         for i in self.col:
-            if (type(i) is tuple) and (len(i) == 2) and type(i[0]) is int and type(i[1]) is int:
-                if  (i[0] <= i[1]):
+            if(type(i) is tuple) and(len(i) == 2) and type(i[0]) is int and type(i[1]) is int:
+                if (i[0] <= i[1]):
                     j=i[0]
                     while j <= i[1]:
                         yield j
                         j += 1
-            elif isinstance(i, Gen) and (self._iterpacket or not isinstance(i,BasePacket)):
+            elif isinstance(i, Gen) and(self._iterpacket or not isinstance(i,BasePacket)):
                 for j in i:
                     yield j
             else:
@@ -57,14 +57,14 @@ class Net(Gen):
     def _parse_digit(a,netmask):
         netmask = min(8,max(netmask,0))
         if a == "*":
-            a = (0,256)
+            a =(0,256)
         elif a.find("-") >= 0:
             x,y = list(map(int,a.split("-")))
             if x > y:
                 y = x
-            a = (x &  (0xff<<netmask) , max(y, (x | (0xff>>(8-netmask))))+1)
+            a =(x & (0xff<<netmask) , max(y,(x |(0xff>>(8-netmask))))+1)
         else:
-            a = (int(a) & (0xff<<netmask),(int(a) | (0xff>>(8-netmask)))+1)
+            a =(int(a) &(0xff<<netmask),(int(a) |(0xff>>(8-netmask)))+1)
         return a
 
     @classmethod
@@ -73,8 +73,8 @@ class Net(Gen):
         #if not cls.ipaddress.match(net):
         #    tmp[0]=socket.gethostbyname(tmp[0])
         netmask = int(tmp[1])
-        #return map(lambda x,y: cls._parse_digit(x,y), tmp[0].split("."), map(lambda x,nm=netmask: x-nm, (8,16,24,32))),netmask
-        return list(map(lambda x,y: cls._parse_digit(x,y), tmp[0].split("."), [ i - netmask for i in (8,16,24,32)] )),netmask
+        #return map(lambda x,y: cls._parse_digit(x,y), tmp[0].split("."), map(lambda x,nm=netmask: x-nm,(8,16,24,32))),netmask
+        return list(map(lambda x,y: cls._parse_digit(x,y), tmp[0].split("."), [ i - netmask for i in(8,16,24,32)] )),netmask
 
     def __init__(self, net):
         self.repr=net
@@ -85,7 +85,7 @@ class Net(Gen):
             for c in range(*self.parsed[2]):
                 for b in range(*self.parsed[1]):
                     for a in range(*self.parsed[0]):
-                        yield "%i.%i.%i.%i" % (a,b,c,d)
+                        yield "%i.%i.%i.%i" %(a,b,c,d)
     def choice(self):
         ip = []
         for v in self.parsed:
@@ -105,7 +105,7 @@ class Net(Gen):
             p2 = other.parsed
         else:
             p2,nm2 = self._parse_net(other)
-        for (a1,b1),(a2,b2) in zip(self.parsed,p2):
+        for(a1,b1),(a2,b2) in zip(self.parsed,p2):
             if a1 > a2 or b1 < b2:
                 return False
         return True
@@ -201,7 +201,7 @@ class Packet_metaclass(type):
 
 
 class NewDefaultValues(Packet_metaclass):
-    """NewDefaultValues is deprecated (not needed anymore)
+    """NewDefaultValues is deprecated(not needed anymore)
     
     remove this:
         __metaclass__ = NewDefaultValues
@@ -218,7 +218,7 @@ class NewDefaultValues(Packet_metaclass):
         except:
             f,l="??",-1
             raise
-        log_loading.warning("Deprecated (no more needed) use of NewDefaultValues  (%s l. %i)." % (f,l))
+        log_loading.warning("Deprecated(no more needed) use of NewDefaultValues (%s l. %i)." %(f,l))
         
         return super(NewDefaultValues, cls).__new__(cls, name, bases, dct)
 

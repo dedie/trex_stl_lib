@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -39,13 +39,13 @@ class DADict:
     def _show(self):
         for k in list(self.__dict__.keys()):
             if k and k[0] != "_":
-                print("%10s = %r" % (k,getattr(self,k)))
+                print("%10s = %r" %(k,getattr(self,k)))
     def __repr__(self):
-        return "<%s/ %s>" % (self._name," ".join([x for x in list(self.__dict__.keys()) if x and x[0]!="_"]))
+        return "<%s/ %s>" %(self._name," ".join([x for x in list(self.__dict__.keys()) if x and x[0]!="_"]))
 
     def _branch(self, br, uniq=0):
         if uniq and br._name in self:
-            raise DADict_Exception("DADict: [%s] already branched in [%s]" % (br._name, self._name))
+            raise DADict_Exception("DADict: [%s] already branched in [%s]" %(br._name, self._name))
         self[br._name] = br
 
     def _my_find(self, *args, **kargs):

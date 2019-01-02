@@ -1,10 +1,10 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
-Resolve Autonomous Systems (AS).
+Resolve Autonomous Systems(AS).
 """
 
 
@@ -47,7 +47,7 @@ class AS_resolver:
     def _resolve_one(self, ip):
         self.s.send(b"".join([ip.encode('ascii')])+b"\n")
         x = b""
-        while not (b"%" in x or b"source" in x):
+        while not(b"%" in x or b"source" in x):
             x += self.s.recv(8192)
         asn, desc = self._parse_whois(x)
         return ip,asn,desc
@@ -97,7 +97,7 @@ class AS_resolver_cymru(AS_resolver):
         return ASNlist
 
 class AS_resolver_multi(AS_resolver):
-    resolvers_list = ( AS_resolver_cymru(),AS_resolver_riswhois(),AS_resolver_radb() )
+    resolvers_list =( AS_resolver_cymru(),AS_resolver_riswhois(),AS_resolver_radb() )
     def __init__(self, *reslist):
         if reslist:
             self.resolvers_list = reslist

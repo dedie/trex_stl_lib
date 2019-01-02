@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import logging
@@ -14,11 +14,11 @@ from zmq.auth.ioloop import IOLoopAuthenticator
 from zmq.auth.thread import ThreadAuthenticator
 
 from zmq.eventloop import ioloop, zmqstream
-from zmq.tests import (BaseZMQTestCase, SkipTest)
+from zmq.tests import(BaseZMQTestCase, SkipTest)
 
 class BaseAuthTestCase(BaseZMQTestCase):
     def setUp(self):
-        if zmq.zmq_version_info() < (4,0):
+        if zmq.zmq_version_info() <(4,0):
             raise SkipTest("security is new in libzmq 4.0")
         try:
             zmq.curve_keypair()
@@ -70,7 +70,7 @@ class BaseAuthTestCase(BaseZMQTestCase):
                 shutil.move(os.path.join(keys_dir, key_file),
                             os.path.join(secret_keys_dir, '.'))
 
-        return (base_dir, public_keys_dir, secret_keys_dir)
+        return(base_dir, public_keys_dir, secret_keys_dir)
 
     def remove_certs(self, base_dir):
         """Remove certificates for a test"""
@@ -98,7 +98,7 @@ class TestThreadAuthentication(BaseAuthTestCase):
         result = False
         iface = 'tcp://127.0.0.1'
         port = server.bind_to_random_port(iface)
-        client.connect("%s:%i" % (iface, port))
+        client.connect("%s:%i" %(iface, port))
         msg = [b"Hello World"]
         server.send_multipart(msg)
         if client.poll(1000):
@@ -295,7 +295,7 @@ class TestIOLoopAuthentication(BaseAuthTestCase):
         """Check if client can connect to server using tcp transport"""
         iface = 'tcp://127.0.0.1'
         port = self.server.bind_to_random_port(iface)
-        self.client.connect("%s:%i" % (iface, port))
+        self.client.connect("%s:%i" %(iface, port))
 
     def send_msg(self):
         """Send a message from server to a client"""

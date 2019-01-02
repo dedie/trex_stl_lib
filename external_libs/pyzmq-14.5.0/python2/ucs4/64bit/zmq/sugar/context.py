@@ -1,7 +1,7 @@
 # coding: utf-8
 """Python bindings for 0MQ."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import atexit
@@ -107,7 +107,7 @@ class Context(ContextBase, AttributeSetter):
     def __dir__(self):
         keys = dir(self.__class__)
 
-        for collection in (
+        for collection in(
             ctx_opt_names,
         ):
             keys.extend(collection)

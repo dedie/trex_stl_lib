@@ -1,7 +1,7 @@
 # coding: utf-8
 """0MQ Frame pure Python methods."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 

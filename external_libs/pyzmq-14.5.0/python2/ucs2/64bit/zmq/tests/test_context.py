@@ -1,4 +1,4 @@
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import gc
@@ -7,7 +7,7 @@ import time
 from threading import Thread, Event
 
 import zmq
-from zmq.tests import (
+from zmq.tests import(
     BaseZMQTestCase, have_gevent, GreenTest, skip_green, PYPY, SkipTest,
 )
 
@@ -28,7 +28,7 @@ class TestContext(BaseZMQTestCase):
     def test_dir(self):
         ctx = self.Context()
         self.assertTrue('socket' in dir(ctx))
-        if zmq.zmq_version_info() > (3,):
+        if zmq.zmq_version_info() >(3,):
             self.assertTrue('IO_THREADS' in dir(ctx))
         ctx.term()
 
@@ -113,7 +113,7 @@ class TestContext(BaseZMQTestCase):
         self.context.destroy(linger=0)
         # reaper is not instantaneous
         time.sleep(1e-2)
-        for s in (req,rep):
+        for s in(req,rep):
             self.assertTrue(s.closed)
         
     def test_term_noclose(self):
@@ -134,7 +134,7 @@ class TestContext(BaseZMQTestCase):
         if PYPY:
             raise SkipTest("GC doesn't work ")
             
-        # test credit @dln (GH #137):
+        # test credit @dln(GH #137):
         def gcf():
             def inner():
                 ctx = self.Context()
@@ -148,7 +148,7 @@ class TestContext(BaseZMQTestCase):
     
     def test_cyclic_destroy(self):
         """ctx.destroy should succeed when cyclic ref prevents gc"""
-        # test credit @dln (GH #137):
+        # test credit @dln(GH #137):
         class CyclicReference(object):
             def __init__(self, parent=None):
                 self.parent = parent
@@ -167,7 +167,7 @@ class TestContext(BaseZMQTestCase):
         crash_zmq()
     
     def test_term_thread(self):
-        """ctx.term should not crash active threads (#139)"""
+        """ctx.term should not crash active threads(#139)"""
         ctx = self.Context()
         evt = Event()
         evt.clear()
@@ -204,7 +204,7 @@ class TestContext(BaseZMQTestCase):
         assert ctx.closed
     
     def test_ctx_opts(self):
-        if zmq.zmq_version_info() < (3,):
+        if zmq.zmq_version_info() <(3,):
             raise SkipTest("context options require libzmq 3")
         ctx = self.Context()
         ctx.set(zmq.MAX_SOCKETS, 2)

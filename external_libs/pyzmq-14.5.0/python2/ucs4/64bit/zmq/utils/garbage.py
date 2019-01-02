@@ -2,7 +2,7 @@
 used in zero-copy sends.
 """
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -64,7 +64,7 @@ class GarbageCollector(object):
     of the Python objects whose memory are currently in use by zeromq.
     
     When zeromq is done with the memory, it sends a message on an inproc PUSH socket
-    containing the packed size_t (32 or 64-bit unsigned int),
+    containing the packed size_t(32 or 64-bit unsigned int),
     which is the key in the dict.
     When the PULL socket in the gc thread receives that message,
     the reference is popped from the dict,
@@ -145,7 +145,7 @@ class GarbageCollector(object):
         
         Includes checks for process shutdown or fork.
         """
-        if (getpid is None or
+        if(getpid is None or
             getpid() != self.pid or
             self.thread is None or
             not self.thread.is_alive()
@@ -154,7 +154,7 @@ class GarbageCollector(object):
         return True
     
     def store(self, obj, event=None):
-        """store an object and (optionally) event for zero-copy"""
+        """store an object and(optionally) event for zero-copy"""
         if not self.is_alive():
             if self._stay_down:
                 return 0
@@ -175,6 +175,6 @@ class GarbageCollector(object):
         try:
             self.stop()
         except Exception as e:
-            raise (e)
+            raise(e)
 
 gc = GarbageCollector()

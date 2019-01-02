@@ -1,4 +1,4 @@
-# scapy.contrib.description = Label Distribution Protocol (LDP)
+# scapy.contrib.description = Label Distribution Protocol(LDP)
 # scapy.contrib.status = loads
 
 # http://git.savannah.gnu.org/cgit/ldpscapy.git/snapshot/ldpscapy-5285b81d6e628043df2a83301b292f24a95f0ba1.tar.gz
@@ -6,7 +6,7 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+#(at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Copyright (C) 2010 Florian Duraffourg
+# Copyright(C) 2010 Florian Duraffourg
 
 import struct
 
@@ -74,7 +74,7 @@ class FecTLVField(StrField):
             if mask % 8:
                 nbroctets += 1
             add=inet_ntoa(x[4:4+nbroctets]+"\x00"*(4-nbroctets))
-            list.append( (add, mask) )
+            list.append((add, mask) )
             used += 4 + nbroctets
             x=x[4+nbroctets:]
         return list
@@ -160,8 +160,8 @@ class StatusTLVField(StrField):
     def m2i(self, pkt, x):
         l = []
         statuscode = struct.unpack("!I",x[4:8])[0]
-        l.append( (statuscode & 2**31) >> 31)
-        l.append( (statuscode & 2**30) >> 30)
+        l.append((statuscode & 2**31) >> 31)
+        l.append((statuscode & 2**30) >> 30)
         l.append( statuscode & 0x3FFFFFFF )
         l.append( struct.unpack("!I", x[8:12])[0] )
         l.append( struct.unpack("!H", x[12:14])[0] )
@@ -199,9 +199,9 @@ class CommonHelloTLVField(StrField):
         v = struct.unpack("!H",x[4:6])[0]
         list.append(v)
         flags = struct.unpack("B",x[6])[0]
-        v = ( flags & 0x80 ) >> 7
+        v =( flags & 0x80 ) >> 7
         list.append(v)
-        v = ( flags & 0x40 ) >> 7
+        v =( flags & 0x40 ) >> 7
         list.append(v)
         return list
     def i2m(self, pkt, x):
@@ -229,8 +229,8 @@ class CommonSessionTLVField(StrField):
         l = []
         l.append(struct.unpack("!H",x[6:8])[0])
         octet = struct.unpack("B",x[8:9])[0]
-        l.append( (octet & 2**7 ) >> 7 )
-        l.append( (octet & 2**6 ) >> 6 )
+        l.append((octet & 2**7 ) >> 7 )
+        l.append((octet & 2**6 ) >> 6 )
         l.append( struct.unpack("B",x[9:10])[0] )
         l.append( struct.unpack("!H",x[10:12])[0] )
         l.append( inet_ntoa(x[12:16]) )

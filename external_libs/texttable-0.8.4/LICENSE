@@ -1,7 +1,7 @@
                    GNU LESSER GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
- Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+ Copyright(C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
 
@@ -48,7 +48,7 @@ without being bound by section 3 of the GNU GPL.
 
   If you modify a copy of the Library, and, in your modifications, a
 facility refers to a function or data to be supplied by an Application
-that uses the facility (other than as an argument passed when the
+that uses the facility(other than as an argument passed when the
 facility is invoked), then you may convey a copy of the modified
 version:
 
@@ -107,9 +107,9 @@ the following:
        Corresponding Source.
 
        1) Use a suitable shared library mechanism for linking with the
-       Library.  A suitable mechanism is one that (a) uses at run time
+       Library.  A suitable mechanism is one that(a) uses at run time
        a copy of the Library already present on the user's computer
-       system, and (b) will operate properly with a modified version
+       system, and(b) will operate properly with a modified version
        of the Library that is interface-compatible with the Linked
        Version.
 
@@ -118,7 +118,7 @@ the following:
    GNU GPL, and only to the extent that such information is
    necessary to install and execute a modified version of the
    Combined Work produced by recombining or relinking the
-   Application with a modified version of the Linked Version. (If
+   Application with a modified version of the Linked Version.(If
    you use option 4d0, the Installation Information must accompany
    the Minimal Corresponding Source and Corresponding Application
    Code. If you use option 4d1, you must provide the Installation

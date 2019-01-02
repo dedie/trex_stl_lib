@@ -1,7 +1,7 @@
 # coding: utf-8
 """0MQ Socket pure Python methods."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -19,7 +19,7 @@ from zmq.utils import jsonapi
 from zmq.utils.strtypes import bytes,str,str
 from zmq.utils.interop import cast_int_addr
 
-from .constants import (
+from .constants import(
     SNDMORE, ENOTSUP, POLLIN,
     int64_sockopt_names,
     int_sockopt_names,
@@ -101,7 +101,7 @@ class Socket(SocketBase, AttributeSetter):
     
     def __dir__(self):
         keys = dir(self.__class__)
-        for collection in (
+        for collection in(
             bytes_sockopt_names,
             int_sockopt_names,
             int64_sockopt_names,
@@ -128,7 +128,7 @@ class Socket(SocketBase, AttributeSetter):
         option : int
             The name of the option to set. Can be any of: SUBSCRIBE, 
             UNSUBSCRIBE, IDENTITY
-        optval : unicode string (unicode on py2, str on py3)
+        optval : unicode string(unicode on py2, str on py3)
             The value of the option to set.
         encoding : str
             The encoding to be used, default is utf8
@@ -151,7 +151,7 @@ class Socket(SocketBase, AttributeSetter):
 
         Returns
         -------
-        optval : unicode string (unicode on py2, str on py3)
+        optval : unicode string(unicode on py2, str on py3)
             The value of the option as a unicode string.
         """
     
@@ -169,9 +169,9 @@ class Socket(SocketBase, AttributeSetter):
         addr : str
             The address string without the port to pass to ``Socket.bind()``.
         min_port : int, optional
-            The minimum port in the range of ports to try (inclusive).
+            The minimum port in the range of ports to try(inclusive).
         max_port : int, optional
-            The maximum port in the range of ports to try (exclusive).
+            The maximum port in the range of ports to try(exclusive).
         max_tries : int, optional
             The maximum number of bind attempts to make.
 
@@ -188,7 +188,7 @@ class Socket(SocketBase, AttributeSetter):
         for i in range(max_tries):
             try:
                 port = random.randrange(min_port, max_port)
-                self.bind('%s:%s' % (addr, port))
+                self.bind('%s:%s' %(addr, port))
             except ZMQError as exception:
                 if not exception.errno == zmq.EADDRINUSE:
                     raise
@@ -256,14 +256,14 @@ class Socket(SocketBase, AttributeSetter):
         ----------
         msg_parts : iterable
             A sequence of objects to send as a multipart message. Each element
-            can be any sendable object (Frame, bytes, buffer-providers)
+            can be any sendable object(Frame, bytes, buffer-providers)
         flags : int, optional
             SNDMORE is handled automatically for frames before the last.
         copy : bool, optional
             Should the frame(s) be sent in a copying or non-copying manner.
         track : bool, optional
             Should the frame(s) be tracked for notification that ZMQ has
-            finished with it (ignored if copy=True).
+            finished with it(ignored if copy=True).
     
         Returns
         -------
@@ -293,7 +293,7 @@ class Socket(SocketBase, AttributeSetter):
             the bytes is made for each frame.
         track : bool, optional
             Should the message frame(s) be tracked for notification that ZMQ has
-            finished with it? (ignored if copy=True)
+            finished with it?(ignored if copy=True)
         
         Returns
         -------
@@ -314,11 +314,11 @@ class Socket(SocketBase, AttributeSetter):
         """send a Python unicode string as a message with an encoding
     
         0MQ communicates with raw bytes, so you must encode/decode
-        text (unicode on py2, str on py3) around 0MQ.
+        text(unicode on py2, str on py3) around 0MQ.
         
         Parameters
         ----------
-        u : Python unicode string (unicode on py2, str on py3)
+        u : Python unicode string(unicode on py2, str on py3)
             The unicode string to send.
         flags : int, optional
             Any valid send flag.
@@ -343,7 +343,7 @@ class Socket(SocketBase, AttributeSetter):
 
         Returns
         -------
-        s : unicode string (unicode on py2, str on py3)
+        s : unicode string(unicode on py2, str on py3)
             The Python unicode string that arrives as encoded bytes.
         """
         b = self.recv(flags=flags)
@@ -427,15 +427,15 @@ class Socket(SocketBase, AttributeSetter):
         Parameters
         ----------
         timeout : int [default: None]
-            The timeout (in milliseconds) to wait for an event. If unspecified
-            (or specified None), will wait forever for an event.
-        flags : bitfield (int) [default: POLLIN]
-            The event flags to poll for (any combination of POLLIN|POLLOUT).
-            The default is to check for incoming events (POLLIN).
+            The timeout(in milliseconds) to wait for an event. If unspecified
+           (or specified None), will wait forever for an event.
+        flags : bitfield(int) [default: POLLIN]
+            The event flags to poll for(any combination of POLLIN|POLLOUT).
+            The default is to check for incoming events(POLLIN).
 
         Returns
         -------
-        events : bitfield (int)
+        events : bitfield(int)
             The events that are ready and waiting.  Will be 0 if no events were ready
             by the time timeout was reached.
         """
@@ -457,18 +457,18 @@ class Socket(SocketBase, AttributeSetter):
         
         Parameters
         ----------
-        events : bitfield (int) [default: ZMQ_EVENTS_ALL]
+        events : bitfield(int) [default: ZMQ_EVENTS_ALL]
             The bitmask defining which events are wanted.
         addr :  string [default: None]
             The optional endpoint for the monitoring sockets.
 
         Returns
         -------
-        socket :  (PAIR)
+        socket : (PAIR)
             The socket is already connected and ready to receive messages.
         """
         # safe-guard, method only available on libzmq >= 4
-        if zmq.zmq_version_info() < (4,):
+        if zmq.zmq_version_info() <(4,):
             raise NotImplementedError("get_monitor_socket requires libzmq >= 4, have %s" % zmq.zmq_version())
         if addr is None:
             # create endpoint name from internal fd
@@ -484,7 +484,7 @@ class Socket(SocketBase, AttributeSetter):
         return ret
 
     def disable_monitor(self):
-        """Shutdown the PAIR socket (created using get_monitor_socket)
+        """Shutdown the PAIR socket(created using get_monitor_socket)
         that is serving socket events.
         
         .. versionadded:: 14.4

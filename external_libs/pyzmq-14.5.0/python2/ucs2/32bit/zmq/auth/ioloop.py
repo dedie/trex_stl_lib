@@ -3,7 +3,7 @@
 .. versionadded:: 14.1
 """
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 from zmq.eventloop import ioloop, zmqstream
@@ -30,5 +30,6 @@ class IOLoopAuthenticator(Authenticator):
             self.zap_stream.close()
             self.zap_stream = None
         super(IOLoopAuthenticator, self).stop()
+
 
 __all__ = ['IOLoopAuthenticator']

@@ -1,4 +1,4 @@
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import json
@@ -22,7 +22,7 @@ class TestConstants(TestCase):
             if cnt > 1:
                 dupes[name] = cnt
         if dupes:
-            self.fail("The following names occur more than once in %s: %s" % (listname, json.dumps(dupes, indent=2)))
+            self.fail("The following names occur more than once in %s: %s" %(listname, json.dumps(dupes, indent=2)))
     
     def test_duplicate_all(self):
         return self._duplicate_test(constant_names.all_names, "all_names")
@@ -33,7 +33,7 @@ class TestConstants(TestCase):
 
     def test_duplicate_changed(self):
         all_changed = []
-        for change in ("new", "removed"):
+        for change in("new", "removed"):
             d = getattr(constant_names, change + "_in")
             for version, namelist in list(d.items()):
                 all_changed.extend(namelist)
@@ -43,7 +43,7 @@ class TestConstants(TestCase):
     
     def test_changed_in_all(self):
         missing = {}
-        for change in ("new", "removed"):
+        for change in("new", "removed"):
             d = getattr(constant_names, change + "_in")
             for version, namelist in list(d.items()):
                 key = self._change_key(change, version)
@@ -86,7 +86,7 @@ class TestConstants(TestCase):
                         self.fail("AttributeError: zmq.%s" % name)
                 else:
                     if not should_have:
-                        self.fail("Shouldn't have: zmq.%s=%s" % (name, value))
+                        self.fail("Shouldn't have: zmq.%s=%s" %(name, value))
 
     def test_removed(self):
         zmq_version = zmq.zmq_version_info()
@@ -100,5 +100,5 @@ class TestConstants(TestCase):
                         self.fail("AttributeError: zmq.%s" % name)
                 else:
                     if not should_have:
-                        self.fail("Shouldn't have: zmq.%s=%s" % (name, value))
+                        self.fail("Shouldn't have: zmq.%s=%s" %(name, value))
 

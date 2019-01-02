@@ -1,10 +1,10 @@
 """0MQ Constants."""
 
-# Copyright (c) PyZMQ Developers.
+# Copyright(c) PyZMQ Developers.
 # Distributed under the terms of the Modified BSD License.
 
 from zmq.backend import constants
-from zmq.utils.constant_names import (
+from zmq.utils.constant_names import(
     base_names,
     switched_sockopt_names,
     int_sockopt_names,
@@ -79,9 +79,9 @@ for name in msg_opt_names:
 
 # ensure some aliases are always defined
 aliases = [
-    ('DONTWAIT', 'NOBLOCK'),
-    ('XREQ', 'DEALER'),
-    ('XREP', 'ROUTER'),
+   ('DONTWAIT', 'NOBLOCK'),
+   ('XREQ', 'DEALER'),
+   ('XREP', 'ROUTER'),
 ]
 for group in aliases:
     undefined = set()

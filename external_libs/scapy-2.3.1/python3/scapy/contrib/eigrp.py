@@ -15,7 +15,7 @@
         This program is free software; you can redistribute it and/or
         modify it under the terms of the GNU General Public License
         as published by the Free Software Foundation; either version 2
-        of the License, or (at your option) any later version.
+        of the License, or(at your option) any later version.
 
         This program is distributed in the hope that it will be useful,
         but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,7 +34,7 @@
 
     :Thanks:
 
-    - TLV code derived from the CDP implementation of scapy. (Thanks to Nicolas Bareil and Arnaud Ebalard)
+    - TLV code derived from the CDP implementation of scapy.(Thanks to Nicolas Bareil and Arnaud Ebalard)
         http://trac.secdev.org/scapy/ticket/18
     - IOS / EIGRP Version Representation FIX by Dirk Loss
 """
@@ -150,7 +150,7 @@ class EigrpIP6Field(StrField, IP6Field, EigrpIPField):
         if l > 128:
             warning("EigrpIP6Field: Prefix length is > 128. Dissection of this packet will fail")
         else:
-            pad = "\x00" * (16 - prefixlen)
+            pad = "\x00" *(16 - prefixlen)
             x += pad
 
         return inet_ntop(socket.AF_INET6, x)
@@ -245,12 +245,12 @@ class ShortVersionField(ShortField):
     def i2repr(self, pkt, x):
         try:
             minor = x & 0xff
-            major = (x >> 8) & 0xff
+            major =(x >> 8) & 0xff
         except TypeError:
             return "unknown"
         else:
             # We print a leading 'v' so that these values don't look like floats
-            return "v%s.%s" % (major, minor)
+            return "v%s.%s" %(major, minor)
 
     def h2i(self, pkt, x):
         """The field accepts string values like v12.1, v1.1 or integer values.
@@ -262,7 +262,7 @@ class ShortVersionField(ShortField):
             major = int(x.split(".")[0][1:])
             minor = int(x.split(".")[1])
 
-            return (major << 8) | minor
+            return(major << 8) | minor
 
         elif type(x) is int and x >= 0 and x <= 65535:
             return x
@@ -472,9 +472,9 @@ class EIGRP(Packet):
         return p
 
     def mysummary(self):
-        summarystr = "EIGRP (AS=%EIGRP.asn% Opcode=%EIGRP.opcode%"
+        summarystr = "EIGRP(AS=%EIGRP.asn% Opcode=%EIGRP.opcode%"
         if self.opcode == 5 and self.ack != 0:
-            summarystr += " (ACK)"
+            summarystr += "(ACK)"
         if self.flags != 0:
             summarystr += " Flags=%EIGRP.flags%"
 

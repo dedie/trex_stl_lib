@@ -4,15 +4,15 @@ from scapy.layers.inet import UDP
 from scapy.layers.dns import DNSQRField, DNSRRField, DNSRRCountField
 
 """
-LLMNR (Link Local Multicast Node Resolution).
+LLMNR(Link Local Multicast Node Resolution).
 
 [RFC 4795]
 """
 
 #############################################################################
-###                           LLMNR (RFC4795)                             ###
+###                           LLMNR(RFC4795)                             ###
 #############################################################################
-# LLMNR is based on the DNS packet format (RFC1035 Section 4)
+# LLMNR is based on the DNS packet format(RFC1035 Section 4)
 # RFC also envisions LLMNR over TCP. Like vista, we don't support it -- arno
 
 _LLMNR_IPv6_mcast_Addr = "FF02:0:0:0:0:0:1:3"
@@ -43,7 +43,7 @@ class LLMNRResponse(LLMNRQuery):
     name = "Link Local Multicast Node Resolution - Response"
     qr = 1
     def answers(self, other):
-        return (isinstance(other, LLMNRQuery) and
+        return(isinstance(other, LLMNRQuery) and
                 self.id == other.id and
                 self.qr == 1 and
                 other.qr == 0)
@@ -51,7 +51,7 @@ class LLMNRResponse(LLMNRQuery):
 def _llmnr_dispatcher(x, *args, **kargs):
     cls = conf.raw_layer
     if len(x) >= 3:
-        if (ord(x[4]) & 0x80): # Response
+        if(ord(x[4]) & 0x80): # Response
             cls = LLMNRResponse
         else:                  # Query
             cls = LLMNRQuery

@@ -1,4 +1,4 @@
-# Copyright (c) PyZMQ Developers.
+# Copyright(c) PyZMQ Developers.
 # Distributed under the terms of the Modified BSD License.
 
 import functools
@@ -30,7 +30,7 @@ except ImportError:
 PYPY = 'PyPy' in sys.version
 
 #-----------------------------------------------------------------------------
-# skip decorators (directly from unittest)
+# skip decorators(directly from unittest)
 #-----------------------------------------------------------------------------
 
 _id = lambda x: x
@@ -40,7 +40,7 @@ def skip(reason):
     Unconditionally skip a test.
     """
     def decorator(test_item):
-        if not (isinstance(test_item, type) and issubclass(test_item, TestCase)):
+        if not(isinstance(test_item, type) and issubclass(test_item, TestCase)):
             @functools.wraps(test_item)
             def skip_wrapper(*args, **kwargs):
                 raise SkipTest(reason)
@@ -109,7 +109,7 @@ class BaseZMQTestCase(TestCase):
         port = s1.bind_to_random_port(interface)
         s2 = self.context.socket(type2)
         s2.setsockopt(zmq.LINGER, 0)
-        s2.connect('%s:%s' % (interface, port))
+        s2.connect('%s:%s' %(interface, port))
         self.sockets.extend([s1,s2])
         return s1, s2
 
@@ -141,13 +141,13 @@ class BaseZMQTestCase(TestCase):
             func(*args, **kwargs)
         except zmq.ZMQError as e:
             self.assertEqual(e.errno, errno, "wrong error raised, expected '%s' \
-got '%s'" % (zmq.ZMQError(errno), zmq.ZMQError(e.errno)))
+got '%s'" %(zmq.ZMQError(errno), zmq.ZMQError(e.errno)))
         else:
             self.fail("Function did not raise any error")
     
     def _select_recv(self, multipart, socket, **kwargs):
         """call recv[_multipart] in a way that raises if there is nothing to receive"""
-        if zmq.zmq_version_info() >= (3,1,0):
+        if zmq.zmq_version_info() >=(3,1,0):
             # zmq 3.1 has a bug, where poll can return false positives,
             # so we wait a little bit just in case
             # See LIBZMQ-280 on JIRA
@@ -184,7 +184,7 @@ class GreenTest:
         except zmq.ZMQError:
             e = sys.exc_info()[1]
             self.assertEqual(e.errno, errno, "wrong error raised, expected '%s' \
-got '%s'" % (zmq.ZMQError(errno), zmq.ZMQError(e.errno)))
+got '%s'" %(zmq.ZMQError(errno), zmq.ZMQError(e.errno)))
         else:
             self.fail("Function did not raise any error")
 

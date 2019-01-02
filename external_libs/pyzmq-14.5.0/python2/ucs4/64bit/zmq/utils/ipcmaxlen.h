@@ -2,7 +2,7 @@
 
 Platform-independant detection of IPC path max length
 
-Copyright (c) 2012 Godefroid Chapelle
+Copyright(c) 2012 Godefroid Chapelle
 
 Distributed under the terms of the New BSD License.  The full license is in
 the file COPYING.BSD, distributed as part of this software.

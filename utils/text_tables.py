@@ -1,4 +1,4 @@
-
+#!/usr/bin/python3
 
 import sys
 from texttable import Texttable
@@ -13,6 +13,7 @@ class TRexTextTable(Texttable):
         self.set_chars(['-', '|', '-', '-'])
         self.set_deco(Texttable.HEADER | Texttable.VLINES)
 
+
 class TRexTextInfo(Texttable):
 
     def __init__(self):
@@ -21,15 +22,18 @@ class TRexTextInfo(Texttable):
         self.set_chars(['-', ':', '-', '-'])
         self.set_deco(Texttable.VLINES)
 
+
 def generate_trex_stats_table():
     pass
 
-def print_table_with_header(texttable_obj, header="", untouched_header="", buffer=sys.stdout):
+
+def print_table_with_header(texttable_obj, header="", untouched_header="",
+                            buffer=sys.stdout):
     header = header.replace("_", " ").title() + untouched_header
     print(format_text(header, 'cyan', 'underline') + "\n", file=buffer)
 
     print((texttable_obj.draw() + "\n"), file=buffer)
 
+
 if __name__ == "__main__":
     pass
-

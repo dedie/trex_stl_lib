@@ -6,7 +6,7 @@ import types
 from heapq import heappush, heappop
 from itertools import count
 
-from simpy.events import (AllOf, AnyOf, Event, Process, Timeout, URGENT,
+from simpy.events import(AllOf, AnyOf, Event, Process, Timeout, URGENT,
                           NORMAL)
 
 
@@ -63,13 +63,13 @@ class BaseEnvironment(object):
     """Base class for event processing environments.
 
     An implementation must at least provide the means to access the current
-    time of the environment (see :attr:`now`) and to schedule (see
-    :meth:`schedule()`) events as well as processing them (see :meth:`step()`.
+    time of the environment(see :attr:`now`) and to schedule(see
+    :meth:`schedule()`) events as well as processing them(see :meth:`step()`.
 
     The class is meant to be subclassed for different execution environments.
     For example, SimPy defines a :class:`Environment` for simulations with
     a virtual time and and a :class:`~simpy.rt.RealtimeEnvironment` that
-    schedules and executes events in real (e.g., wallclock) time.
+    schedules and executes events in real(e.g., wallclock) time.
 
     """
     @property
@@ -98,7 +98,7 @@ class BaseEnvironment(object):
     def run(self, until=None):
         """Executes :meth:`step()` until the given criterion *until* is met.
 
-        - If it is ``None`` (which is the default), this method will return
+        - If it is ``None``(which is the default), this method will return
           when there are no further events to be processed.
 
         - If it is an :class:`~simpy.events.Event`, the method will continue
@@ -193,7 +193,7 @@ class Environment(BaseEnvironment):
     def schedule(self, event, priority=NORMAL, delay=0):
         """Schedule an *event* with a given *priority* and a *delay*."""
         heappush(self._queue,
-                 (self._now + delay, priority, next(self._eid), event))
+                (self._now + delay, priority, next(self._eid), event))
 
     def peek(self):
         """Get the time of the next scheduled event. Return

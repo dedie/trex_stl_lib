@@ -3,7 +3,7 @@
 Just CFFI pointer casting for now.
 """
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 

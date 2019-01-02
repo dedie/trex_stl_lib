@@ -1,4 +1,4 @@
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -30,7 +30,7 @@ class TestReqRep(BaseZMQTestCase):
         
         if zmq.zmq_version() != '2.1.8':
             # this doesn't work on 2.1.8
-            for copy in (True,False):
+            for copy in(True,False):
                 self.assertRaisesErrno(zmq.EFSM, s1.recv, copy=copy)
                 self.assertRaisesErrno(zmq.EFSM, s2.send, b'asdf', copy=copy)
 

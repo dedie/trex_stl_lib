@@ -21,11 +21,11 @@ output:
 
 
 try: # P2
-    string_types = (str, str)
-    int_types = (int, int)
+    string_types =(str, str)
+    int_types =(int, int)
 except: # P3
-    string_types = (bytes, str)
-    int_types = (int,)
+    string_types =(bytes, str)
+    int_types =(int,)
 
 
 class _SimpleEnumVar(object):
@@ -43,7 +43,7 @@ class _SimpleEnumVar(object):
         return self._name
 
     def __str__(self):
-        return '%s.%s' % (self._class_name, self._name)
+        return '%s.%s' %(self._class_name, self._name)
 
     __repr__ = __str__
 
@@ -70,12 +70,12 @@ class SimpleEnum(object):
             return self._dict_by_val[val]
         elif val in self._dict_by_name:
             return self._dict_by_name[val]
-        raise Exception("Value '%s' is not part of enum '%s'" % (val, self._class_name))
+        raise Exception("Value '%s' is not part of enum '%s'" %(val, self._class_name))
 
     __getattr__ = __call__
 
     def __str__(self):
-        return '%s(%s)' % (self._class_name, ', '.join(['%s: %s' % (self._dict_by_val[val].name, val) for val in sorted(self._dict_by_val.keys())]))
+        return '%s(%s)' %(self._class_name, ', '.join(['%s: %s' %(self._dict_by_val[val].name, val) for val in sorted(self._dict_by_val.keys())]))
 
     __repr__ = __str__
 

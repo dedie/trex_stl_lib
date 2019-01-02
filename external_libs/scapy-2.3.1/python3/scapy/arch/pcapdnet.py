@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -69,7 +69,7 @@ if conf.use_netifaces:
 if conf.use_netifaces:
   def get_if_raw_hwaddr(iff):
       if iff == scapy.arch.LOOPBACK_NAME:
-          return (772, '\x00'*6)
+          return(772, '\x00'*6)
       try:
           s = netifaces.ifaddresses(iff)[netifaces.AF_LINK][0]['addr']
           return struct.pack('BBBBBB', *[ int(i, 16) for i in s.split(':') ])
@@ -87,7 +87,7 @@ if conf.use_netifaces:
       return netifaces.interfaces()
   def in6_getifaddr():
       """
-      Returns a list of 3-tuples of the form (addr, scope, iface) where
+      Returns a list of 3-tuples of the form(addr, scope, iface) where
       'addr' is the address of scope 'scope' associated to the interface
       'ifcace'.
 
@@ -271,9 +271,9 @@ if conf.use_winpcapy:
           if type == ETH_P_ALL: # Do not apply any filter if Ethernet type is given
               if conf.except_filter:
                   if filter:
-                      filter = "(%s) and not (%s)" % (filter, conf.except_filter)
+                      filter = "(%s) and not(%s)" %(filter, conf.except_filter)
                   else:
-                      filter = "not (%s)" % conf.except_filter
+                      filter = "not(%s)" % conf.except_filter
               if filter:
                   self.ins.setfilter(filter)
   
@@ -286,7 +286,7 @@ if conf.use_winpcapy:
               cls = conf.l2types[ll]
           else:
               cls = conf.default_l2
-              warning("Unable to guess datalink type (interface=%s linktype=%i). Using %s" % (self.iface, ll, cls.name))
+              warning("Unable to guess datalink type(interface=%s linktype=%i). Using %s" %(self.iface, ll, cls.name))
   
           pkt = None
           while pkt is None:
@@ -331,12 +331,12 @@ if conf.use_winpcapy:
           else:
               if conf.except_filter:
                   if filter:
-                      filter = "(%s) and not (%s)" % (filter, conf.except_filter)
+                      filter = "(%s) and not(%s)" %(filter, conf.except_filter)
                   else:
-                      filter = "not (%s)" % conf.except_filter
+                      filter = "not(%s)" % conf.except_filter
               if type != ETH_P_ALL:  # PF_PACKET stuff. Need to emulate this for pcap
                   if filter:
-                      filter = "(ether proto %i) and (%s)" % (type,filter)
+                      filter = "(ether proto %i) and(%s)" %(type,filter)
                   else:
                       filter = "ether proto %i" % type
           if filter:
@@ -353,7 +353,7 @@ if conf.use_winpcapy:
               cls = conf.l2types[ll]
           else:
               cls = conf.default_l2
-              warning("Unable to guess datalink type (interface=%s linktype=%i). Using %s" % (self.iface, ll, cls.name))
+              warning("Unable to guess datalink type(interface=%s linktype=%i). Using %s" %(self.iface, ll, cls.name))
   
           pkt = next(self.ins)
           if pkt is not None:
@@ -424,12 +424,12 @@ if conf.use_winpcapy and conf.use_dnet:
             else:
                 if conf.except_filter:
                     if filter:
-                        filter = "(%s) and not (%s)" % (filter, conf.except_filter)
+                        filter = "(%s) and not(%s)" %(filter, conf.except_filter)
                     else:
-                        filter = "not (%s)" % conf.except_filter
+                        filter = "not(%s)" % conf.except_filter
                 if type != ETH_P_ALL:  # PF_PACKET stuff. Need to emulate this for pcap
                     if filter:
-                        filter = "(ether proto %i) and (%s)" % (type,filter)
+                        filter = "(ether proto %i) and(%s)" %(type,filter)
                     else:
                         filter = "ether proto %i" % type
             if filter:
@@ -463,7 +463,7 @@ if conf.use_winpcapy and conf.use_dnet:
                 cls = conf.l2types[ll]
             else:
                 cls = conf.default_l2
-                warning("Unable to guess datalink type (interface=%s linktype=%i). Using %s" % (self.iface, ll, cls.name))
+                warning("Unable to guess datalink type(interface=%s linktype=%i). Using %s" %(self.iface, ll, cls.name))
     
             pkt = next(self.ins)
             if pkt is not None:
@@ -513,12 +513,12 @@ if conf.use_winpcapy and conf.use_dnet:
             else:
                 if conf.except_filter:
                     if filter:
-                        filter = "(%s) and not (%s)" % (filter, conf.except_filter)
+                        filter = "(%s) and not(%s)" %(filter, conf.except_filter)
                     else:
-                        filter = "not (%s)" % conf.except_filter
+                        filter = "not(%s)" % conf.except_filter
                 if type != ETH_P_ALL:  # PF_PACKET stuff. Need to emulate this for pcap
                     if filter:
-                        filter = "(ether proto %i) and (%s)" % (type,filter)
+                        filter = "(ether proto %i) and(%s)" %(type,filter)
                     else:
                         filter = "ether proto %i" % type
             if filter:
@@ -530,7 +530,7 @@ if conf.use_winpcapy and conf.use_dnet:
                 cls = conf.l2types[ll]
             else:
                 cls = conf.default_l2
-                warning("Unable to guess datalink type (interface=%s linktype=%i). Using %s" % (self.iface, ll, cls.name))
+                warning("Unable to guess datalink type(interface=%s linktype=%i). Using %s" %(self.iface, ll, cls.name))
     
             pkt = next(self.ins)
             if pkt is not None:

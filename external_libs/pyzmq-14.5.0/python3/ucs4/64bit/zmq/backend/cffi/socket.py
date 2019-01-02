@@ -1,7 +1,7 @@
 # coding: utf-8
 """zmq Socket class"""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import random
@@ -9,7 +9,7 @@ import codecs
 
 import errno as errno_mod
 
-from ._cffi import (C, ffi, new_uint64_pointer, new_int64_pointer,
+from ._cffi import(C, ffi, new_uint64_pointer, new_int64_pointer,
                     new_int_pointer, new_binary_data, value_uint64_pointer,
                     value_int64_pointer, value_int_pointer, value_binary_data,
                     IPC_PATH_MAX_LEN)
@@ -23,7 +23,7 @@ from zmq.utils.strtypes import str
 
 
 def new_pointer_from_opt(option, length=0):
-    from zmq.sugar.constants import (
+    from zmq.sugar.constants import(
         int64_sockopts, bytes_sockopts,
     )
     if option in int64_sockopts:
@@ -35,7 +35,7 @@ def new_pointer_from_opt(option, length=0):
         return new_int_pointer()
 
 def value_from_opt_pointer(option, opt_pointer, length=0):
-    from zmq.sugar.constants import (
+    from zmq.sugar.constants import(
         int64_sockopts, bytes_sockopts,
     )
     if option in int64_sockopts:
@@ -46,7 +46,7 @@ def value_from_opt_pointer(option, opt_pointer, length=0):
         return int(opt_pointer[0])
 
 def initialize_opt_pointer(option, value, length=0):
-    from zmq.sugar.constants import (
+    from zmq.sugar.constants import(
         int64_sockopts, bytes_sockopts,
     )
     if option in int64_sockopts:
@@ -108,8 +108,8 @@ class Socket(object):
                 if str is str:
                     address = address.decode('utf-8', 'replace')
                 path = address.split('://', 1)[-1]
-                msg = ('ipc path "{0}" is longer than {1} '
-                                'characters (sizeof(sockaddr_un.sun_path)).'
+                msg =('ipc path "{0}" is longer than {1} '
+                                'characters(sizeof(sockaddr_un.sun_path)).'
                                 .format(path, IPC_PATH_MAX_LEN))
                 raise ZMQError(C.zmq_errno(), msg=msg)
             else:

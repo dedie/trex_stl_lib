@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -67,12 +67,12 @@ class Packet(BasePacket, metaclass = Packet_metaclass):
     @classmethod
     def upper_bonds(self):
         for fval,upper in self.payload_guess:
-            print(("%-20s  %s" % (upper.__name__, ", ".join("%-12s" % ("%s=%r"%i) for i in list(fval.items())))))
+            print(("%-20s  %s" %(upper.__name__, ", ".join("%-12s" %("%s=%r"%i) for i in list(fval.items())))))
 
     @classmethod
     def lower_bonds(self):
         for lower,fval in list(self.overload_fields.items()):
-            print(("%-20s  %s" % (lower.__name__, ", ".join("%-12s" % ("%s=%r"%i) for i in list(fval.items())))))
+            print(("%-20s  %s" %(lower.__name__, ", ".join("%-12s" %("%s=%r"%i) for i in list(fval.items())))))
 
     def __init__(self, _pkt=b"", post_transform=None, _internal=0, _underlayer=None, **fields):
         self.time  = time.time()
@@ -174,7 +174,7 @@ class Packet(BasePacket, metaclass = Packet_metaclass):
         clone.payload.add_underlayer(clone)
         return clone
 
-    def dump_offsets (self):
+    def dump_offsets(self):
         print(("obj-id {0} {1} {2}".format(id(self),self.name ,self._offset)))
         if self.payload:
             self.payload.dump_offsets()
@@ -284,10 +284,10 @@ class Packet(BasePacket, metaclass = Packet_metaclass):
                 vcol = ct.field_value
 
                 
-            s += " %s%s%s" % (ncol(f.name),
+            s += " %s%s%s" %(ncol(f.name),
                               ct.punct("="),
                               vcol(val))
-        return "%s%s %s %s%s%s"% (ct.punct("<"),
+        return "%s%s %s %s%s%s"%(ct.punct("<"),
                                   ct.layer_name(self.__class__.__name__),
                                   s,
                                   ct.punct("|"),
@@ -335,9 +335,9 @@ class Packet(BasePacket, metaclass = Packet_metaclass):
     def __len__(self):
         return len(bytes(self))
 
-    def dump_fields_offsets (self):
+    def dump_fields_offsets(self):
         for f in self.fields_desc:
-            print(("field %-40s %02d %02d" % (f.name, f._offset,f.get_size_bytes () ) ));
+            print(("field %-40s %02d %02d" %(f.name, f._offset,f.get_size_bytes() ) ));
 
     def self_build(self, field_pos_list=None):
         if self.raw_packet_cache is not None:
@@ -357,13 +357,13 @@ class Packet(BasePacket, metaclass = Packet_metaclass):
                 sval = bytes(val)
                 p += sval
                 if field_pos_list is not None:
-                    field_pos_list.append( (f.name, sval.encode("string_escape"), len(p), len(sval) ) )
+                    field_pos_list.append((f.name, sval.encode("string_escape"), len(p), len(sval) ) )
                 f._offset= val
             else:
                 try:
                     p = f.addfield(self, p, val)
                 except Exception as e:
-                    print(('Error in %s adding %s, %s' % (self.name, f.name, e)))
+                    print(('Error in %s adding %s, %s' %(self.name, f.name, e)))
                     raise
         return p
 
@@ -376,7 +376,7 @@ class Packet(BasePacket, metaclass = Packet_metaclass):
         #print "current header size  ",len(pkt)
         self.payload._offset = self._offset + len(pkt)
 
-    def dump_layers_offset (self):
+    def dump_layers_offset(self):
         p=self;
         while True:
             print((p.name, "offset :",p._offset))
@@ -401,7 +401,7 @@ class Packet(BasePacket, metaclass = Packet_metaclass):
     def build_padding(self):
         return self.payload.build_padding()
 
-    def update_build_info (self,other):
+    def update_build_info(self,other):
         p=self;
         o=other;
         while True:
@@ -422,7 +422,7 @@ class Packet(BasePacket, metaclass = Packet_metaclass):
         p = self.do_build(result)
         p += self.build_padding()
         p = self.build_done(p)
-        self.update_build_info (result.pkt)
+        self.update_build_info(result.pkt)
         return p
     
     def post_build(self, pkt, pay):
@@ -445,11 +445,11 @@ class Packet(BasePacket, metaclass = Packet_metaclass):
                 q = p
             else:
                 r = b""
-            pl.append( (f, f.i2repr(self,self.getfieldval(f.name)), r) )
+            pl.append((f, f.i2repr(self,self.getfieldval(f.name)), r) )
             
         pkt,lst = self.payload.build_ps(internal=1)
         p += pkt
-        lst.append( (self, pl) )
+        lst.append((self, pl) )
         
         return p,lst
     
@@ -459,7 +459,7 @@ class Packet(BasePacket, metaclass = Packet_metaclass):
 #            pkt = self
 #            while pkt.haslayer(conf.padding_layer):
 #                pkt = pkt.getlayer(conf.padding_layer)
-#                lst.append( (pkt, [ ("loakjkjd", pkt.load, pkt.load) ] ) )
+#                lst.append((pkt, [("loakjkjd", pkt.load, pkt.load) ] ) )
 #                p += pkt.load
 #                pkt = pkt.payload
         return p,lst
@@ -521,7 +521,7 @@ Creates an EPS file describing a packet. If filename is not provided a temporary
 
                 
         def make_dump_txt(x,y,txt):
-            return pyx.text.text(XDSTART+x*XMUL, (YDUMP-y)*YMUL, r"\tt{%s}"%hexstr(txt), [pyx.text.size.Large])
+            return pyx.text.text(XDSTART+x*XMUL,(YDUMP-y)*YMUL, r"\tt{%s}"%hexstr(txt), [pyx.text.size.Large])
 
         def make_box(o):
             return pyx.box.rect(o.left(), o.bottom(), o.width(), o.height(), relcenter=(0.5,0.5))
@@ -590,7 +590,7 @@ Creates an EPS file describing a packet. If filename is not provided a temporary
             bkcol = next(backcolor)
             proto,fields = t.pop()
             y += 0.5
-            pt = pyx.text.text(XSTART, (YTXT-y)*YMUL, r"\font\cmssfont=cmss10\cmssfont{%s}" % proto.name, [ pyx.text.size.Large])
+            pt = pyx.text.text(XSTART,(YTXT-y)*YMUL, r"\font\cmssfont=cmss10\cmssfont{%s}" % proto.name, [ pyx.text.size.Large])
             y += 1
             ptbb=pt.bbox()
             ptbb.enlarge(pyx.unit.u_pt*2)
@@ -598,13 +598,13 @@ Creates an EPS file describing a packet. If filename is not provided a temporary
             canvas.insert(pt)
             for fname, fval, fdump in fields:
                 col = next(forecolor)
-                ft = pyx.text.text(XSTART, (YTXT-y)*YMUL, r"\font\cmssfont=cmss10\cmssfont{%s}" % tex_escape(fname.name))
+                ft = pyx.text.text(XSTART,(YTXT-y)*YMUL, r"\font\cmssfont=cmss10\cmssfont{%s}" % tex_escape(fname.name))
                 if isinstance(fval, str):
                     if len(fval) > 18:
                         fval = fval[:18]+"[...]"
                 else:
                     fval=""
-                vt = pyx.text.text(XSTART+3, (YTXT-y)*YMUL, r"\font\cmssfont=cmss10\cmssfont{%s}" % tex_escape(fval))
+                vt = pyx.text.text(XSTART+3,(YTXT-y)*YMUL, r"\font\cmssfont=cmss10\cmssfont{%s}" % tex_escape(fval))
                 y += 1.0
                 if fdump:
                     dt,target,last_shift,last_y = make_dump(fdump, last_shift, last_y, col, bkcol)
@@ -636,7 +636,7 @@ Creates an EPS file describing a packet. If filename is not provided a temporary
 
 
     def extract_padding(self, s):
-        """DEV: to be overloaded to extract current layer's padding. Return a couple of strings (actual layer, padding)"""
+        """DEV: to be overloaded to extract current layer's padding. Return a couple of strings(actual layer, padding)"""
         return s,None
 
     def post_dissect(self, s):
@@ -656,7 +656,7 @@ Creates an EPS file describing a packet. If filename is not provided a temporary
             f = flist.pop()
             f._offset = offset
             s,fval = f.getfield(self, s)
-            offset = len(raw) - (len(s[0]) if type(s) is tuple else len(s))
+            offset = len(raw) -(len(s[0]) if type(s) is tuple else len(s))
             if getattr(f, 'passon', False): # fix for DNS
                 offset += s[1]
             self.fields[f.name] = fval
@@ -680,7 +680,7 @@ Creates an EPS file describing a packet. If filename is not provided a temporary
                     if isinstance(cls,type) and issubclass(cls,Packet):
                         log_runtime.error("%s dissector failed" % cls.name)
                     else:
-                        log_runtime.error("%s.guess_payload_class() returned [%s]" % (self.__class__.__name__,repr(cls)))
+                        log_runtime.error("%s.guess_payload_class() returned [%s]" %(self.__class__.__name__,repr(cls)))
                     if cls is not None:
                         raise
                 p = conf.raw_layer(s, _internal=1, _underlayer=self)
@@ -771,14 +771,14 @@ Creates an EPS file describing a packet. If filename is not provided a temporary
             todo = []
             done = self.fields
         else:
-            todo = [ k for (k,v) in itertools.chain(list(self.default_fields.items()),
+            todo = [ k for(k,v) in itertools.chain(list(self.default_fields.items()),
                                                     list(self.overloaded_fields.items()))
                      if isinstance(v, VolatileValue) ] + list(self.fields.keys())
             done = {}
         return loop(todo, done)
 
     def __gt__(self, other):
-        """True if other is an answer from self (self ==> other)."""
+        """True if other is an answer from self(self ==> other)."""
         if isinstance(other, Packet):
             return other < self
         elif type(other) is str:
@@ -786,7 +786,7 @@ Creates an EPS file describing a packet. If filename is not provided a temporary
         else:
             raise TypeError((self, other))
     def __lt__(self, other):
-        """True if self is an answer from other (other ==> self)."""
+        """True if self is an answer from other(other ==> self)."""
         if isinstance(other, Packet):
             return self.answers(other)
         elif type(other) is str:
@@ -901,7 +901,7 @@ Creates an EPS file describing a packet. If filename is not provided a temporary
         return self.haslayer(cls)
 
     def route(self):
-        return (None,None,None)
+        return(None,None,None)
 
     def fragment(self, *args, **kargs):
         return self.payload.fragment(*args, **kargs)
@@ -913,7 +913,7 @@ Creates an EPS file describing a packet. If filename is not provided a temporary
     def show(self, indent=3, lvl="", label_lvl=""):
         """Prints a hierarchical view of the packet. "indent" gives the size of indentation for each layer."""
         ct = conf.color_theme
-        print(("%s%s %s %s" % (label_lvl,
+        print(("%s%s %s %s" %(label_lvl,
                               ct.punct("###["),
                               ct.layer_name(self.name),
                               ct.punct("]###"))))
@@ -927,13 +927,13 @@ Creates an EPS file describing a packet. If filename is not provided a temporary
                 ncol = ct.field_name
                 vcol = ct.field_value
             fvalue = self.getfieldval(f.name)
-            if isinstance(fvalue, Packet) or (f.islist and f.holds_packets and type(fvalue) is list):
-                print(("%s  \\%-10s\\" % (label_lvl+lvl, ncol(f.name))))
+            if isinstance(fvalue, Packet) or(f.islist and f.holds_packets and type(fvalue) is list):
+                print(("%s  \\%-10s\\" %(label_lvl+lvl, ncol(f.name))))
                 fvalue_gen = SetGen(fvalue,_iterpacket=0)
                 for fvalue in fvalue_gen:
                     fvalue.show(indent=indent, label_lvl=label_lvl+lvl+"   |")
             else:
-                begn = "%s  %-10s%s " % (label_lvl+lvl,
+                begn = "%s  %-10s%s " %(label_lvl+lvl,
                                         ncol(f.name),
                                         ct.punct("="),)
                 reprval = f.i2repr(self,fvalue)
@@ -942,10 +942,10 @@ Creates an EPS file describing a packet. If filename is not provided a temporary
                                                               +len(lvl)
                                                               +len(f.name)
                                                               +4))
-                print(("%s%s" % (begn,vcol(reprval))))
+                print(("%s%s" %(begn,vcol(reprval))))
         self.payload.show(indent=indent, lvl=lvl+(" "*indent*self.show_indent), label_lvl=label_lvl)
     def show2(self):
-        """Prints a hierarchical view of an assembled version of the packet, so that automatic fields are calculated (checksums, etc.)"""
+        """Prints a hierarchical view of an assembled version of the packet, so that automatic fields are calculated(checksums, etc.)"""
         self.__class__(bytes(self)).show()
 
     def sprintf(self, fmt, relax=1):
@@ -984,7 +984,7 @@ A side effect is that, to obtain "{" and "}" characters, you must use
             cond = fmt[i+1:i+j+1]
             k = cond.find(":")
             if k < 0:
-                raise Scapy_Exception("Bad condition in format string: [%s] (read sprintf doc!)"%cond)
+                raise Scapy_Exception("Bad condition in format string: [%s](read sprintf doc!)"%cond)
             cond,format = cond[:k],cond[k+1:]
             res = False
             if cond[0] == "!":
@@ -1028,13 +1028,13 @@ A side effect is that, to obtain "{" and "}" characters, you must use
                     num = int(num)
                 fmt = fmt[i+1:]
             except:
-                raise Scapy_Exception("Bad format string [%%%s%s]" % (fmt[:25], fmt[25:] and "..."))
+                raise Scapy_Exception("Bad format string [%%%s%s]" %(fmt[:25], fmt[25:] and "..."))
             else:
                 if fld == "time":
                     val = time.strftime("%H:%M:%S.%%06i", time.localtime(self.time)) % int((self.time-int(self.time))*1000000)
                 elif cls == self.__class__.__name__ and hasattr(self, fld):
                     if num > 1:
-                        val = self.payload.sprintf("%%%s,%s:%s.%s%%" % (f,cls,num-1,fld), relax)
+                        val = self.payload.sprintf("%%%s,%s:%s.%s%%" %(f,cls,num-1,fld), relax)
                         f = "s"
                     elif f[-1] == "r":  # Raw field value
                         val = getattr(self,fld)
@@ -1048,7 +1048,7 @@ A side effect is that, to obtain "{" and "}" characters, you must use
                 else:
                     val = self.payload.sprintf("%%%s%%" % sfclsfld, relax)
                     f = "s"
-                s += ("%"+f) % val
+                s +=("%"+f) % val
             
         s += fmt
         return s
@@ -1056,7 +1056,7 @@ A side effect is that, to obtain "{" and "}" characters, you must use
     def mysummary(self):
         """DEV: can be overloaded to return a string that summarizes the layer.
            Only one mysummary() is used in a whole packet summary: the one of the upper layer,
-           except if a mysummary() also returns (as a couple) a list of layers whose
+           except if a mysummary() also returns(as a couple) a list of layers whose
            mysummary() must be called if they are present."""
         return ""
 
@@ -1078,9 +1078,9 @@ A side effect is that, to obtain "{" and "}" characters, you must use
             impf = []
             for f in self.fields_desc:
                 if f in conf.emph:
-                    impf.append("%s=%s" % (f.name, f.i2repr(self, self.getfieldval(f.name))))
-            ret = "%s [%s]" % (ret," ".join(impf))
-        ret = "%s%s" % (ret,s)
+                    impf.append("%s=%s" %(f.name, f.i2repr(self, self.getfieldval(f.name))))
+            ret = "%s [%s]" %(ret," ".join(impf))
+        ret = "%s%s" %(ret,s)
         return found,ret,needed
 
     def summary(self, intern=0):
@@ -1114,7 +1114,7 @@ A side effect is that, to obtain "{" and "}" characters, you must use
                 val = str(val)
             else:
                 val = '"%s"' % str(val)
-            print(("\t%s, \t\t/* %s */" % (val,f.name)))
+            print(("\t%s, \t\t/* %s */" %(val,f.name)))
         print(");")
     def command(self):
         """Returns a string representing the command you have to type to obtain the same packet"""
@@ -1128,8 +1128,8 @@ A side effect is that, to obtain "{" and "}" characters, you must use
                 fv = "[%s]" % ",".join([ Packet.command(i) for i in fv ])
             elif not isinstance(fld, ConditionalField) or fld.cond(self):
                 fv = repr(fv)
-            f.append("%s=%s" % (fn, fv))
-        c = "%s(%s)" % (self.__class__.__name__, ", ".join(f))
+            f.append("%s=%s" %(fn, fv))
+        c = "%s(%s)" %(self.__class__.__name__, ", ".join(f))
         pc = self.payload.command()
         if pc:
             c += "/"+pc
@@ -1249,7 +1249,7 @@ class Padding(Raw):
     def self_build(self):
         return b""
     def build_padding(self):
-        return (self.getbyteval("load") if self.raw_packet_cache is None
+        return(self.getbyteval("load") if self.raw_packet_cache is None
                 else self.raw_packet_cache) + self.payload.build_padding()
 
 conf.raw_layer = Raw
@@ -1330,10 +1330,10 @@ def ls(obj=None):
     else:
         if isinstance(obj, type) and issubclass(obj, Packet):
             for f in obj.fields_desc:
-                print(("%-10s : %-20s = (%s)" % (f.name, f.__class__.__name__,  repr(f.default))))
+                print(("%-10s : %-20s =(%s)" %(f.name, f.__class__.__name__,  repr(f.default))))
         elif isinstance(obj, Packet):
             for f in obj.fields_desc:
-                print(("%-10s : %-20s = %-15s (%s)" % (f.name, f.__class__.__name__, repr(getattr(obj,f.name)), repr(f.default))))
+                print(("%-10s : %-20s = %-15s(%s)" %(f.name, f.__class__.__name__, repr(getattr(obj,f.name)), repr(f.default))))
             if not isinstance(obj.payload, NoPayload):
                 print("--")
                 ls(obj.payload)

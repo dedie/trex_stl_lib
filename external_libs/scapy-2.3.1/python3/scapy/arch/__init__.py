@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -37,8 +37,8 @@ except ImportError:
 
 
 def str2mac(s):
-    #return ("%02x:"*6)[:-1] % tuple(map(ord, s)) 
-    return ("%02x:"*6)[:-1] % tuple(s)
+    #return("%02x:"*6)[:-1] % tuple(map(ord, s)) 
+    return("%02x:"*6)[:-1] % tuple(s)
 
 
     
@@ -58,7 +58,7 @@ DARWIN=sys.platform.startswith("darwin")
 SOLARIS=sys.platform.startswith("sunos")
 WINDOWS=sys.platform.startswith("win32")
 
-X86_64 = not WINDOWS and (os.uname()[4] == 'x86_64')
+X86_64 = not WINDOWS and(os.uname()[4] == 'x86_64')
 
 #if WINDOWS:
 #  log_loading.warning("Windows support for scapy3k is currently in testing. Sniffing/sending/receiving packets should be working with WinPcap driver and Powershell. Create issues at https://github.com/phaethon/scapy")

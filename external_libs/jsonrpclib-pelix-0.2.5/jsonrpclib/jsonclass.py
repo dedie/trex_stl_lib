@@ -1,5 +1,9 @@
 #!/usr/bin/python
 # -- Content-Encoding: UTF-8 --
+import re
+import inspect
+import jsonrpclib.utils as utils
+import jsonrpclib.config
 """
 The serialization module
 
@@ -12,7 +16,7 @@ The serialization module
 
     Copyright 2015 isandlaTech
 
-    Licensed under the Apache License, Version 2.0 (the "License");
+    Licensed under the Apache License, Version 2.0(the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
@@ -35,12 +39,8 @@ __docformat__ = "restructuredtext en"
 # ------------------------------------------------------------------------------
 
 # Local package
-import jsonrpclib.config
-import jsonrpclib.utils as utils
 
 # Standard library
-import inspect
-import re
 
 # ------------------------------------------------------------------------------
 
@@ -153,7 +153,7 @@ def dump(obj, serialize_method=None, ignore_attribute=None, ignore=None,
     module_name = inspect.getmodule(type(obj)).__name__
     json_class = obj.__class__.__name__
 
-    if module_name not in ('', '__main__'):
+    if module_name not in('', '__main__'):
         json_class = '{0}.{1}'.format(module_name, json_class)
 
     # Keep the class name in the returned object
@@ -161,7 +161,7 @@ def dump(obj, serialize_method=None, ignore_attribute=None, ignore=None,
 
     # If a serialization method is defined..
     if hasattr(obj, serialize_method):
-        # Params can be a dict (keyword) or list (positional)
+        # Params can be a dict(keyword) or list(positional)
         # Attrs MUST be a dict.
         serialize = getattr(obj, serialize_method)
         params, attrs = serialize()

@@ -2,14 +2,16 @@
 import time
 
 # a generic abstract class for implementing RX services using the server
+
+
 class RXServiceAPI(object):
 
     # specify for which layer this service is
     LAYER_MODE_ANY = 0
-    LAYER_MODE_L2  = 1
-    LAYER_MODE_L3  = 2
-    
-    def __init__(self, port, layer_mode = LAYER_MODE_ANY, queue_size = 100, timeout = None, retries = None, retry_delay = 0.1):
+    LAYER_MODE_L2 = 1
+    LAYER_MODE_L3 = 2
+
+    def __init__(self, port, layer_mode=LAYER_MODE_ANY, queue_size=100, timeout=None, retries=None, retry_delay=0.1):
         self.port = port
         self.queue_size = queue_size
         self.layer_mode = layer_mode
@@ -21,8 +23,8 @@ class RXServiceAPI(object):
         self.init_ts = time.time()
 
     ################### virtual methods ######################
-    
-    def get_name (self):
+
+    def get_name(self):
         """
             returns the name of the service
 
@@ -32,8 +34,8 @@ class RXServiceAPI(object):
         """
 
         raise NotImplementedError()
-        
-    def pre_execute (self):
+
+    def pre_execute(self):
         """
             specific class code called before executing
 
@@ -42,8 +44,8 @@ class RXServiceAPI(object):
 
         """
         raise NotImplementedError()
-        
-    def generate_request (self):
+
+    def generate_request(self):
         """
             generate a request to be sent to the server
 
@@ -60,17 +62,16 @@ class RXServiceAPI(object):
             :parameters:
                 'pkt' - the packet received
                 'start_ts' - the time recorded when 'start' was called 
-                
+
             :returns:
                 None for fetching more packets
                 RC object for terminating
-                
-           
+
+
 
         """
         raise NotImplementedError()
 
-        
     def on_timeout(self):
         """
             called when a timeout occurs
@@ -81,27 +82,26 @@ class RXServiceAPI(object):
         """
         raise NotImplementedError()
 
-        
     ##################### API ######################
+
     def execute(self, *a, **k):
-        
+
         # sanity check
         rc = self.__sanity()
         if not rc:
             return rc
-                                 
+
         # first cleanup
         rc = self.port.remove_all_streams()
         if not rc:
             return rc
-
 
         # start the iteration
         try:
 
             # add the stream(s)
             self.port.add_streams(self.generate_request(*a, **k))
-            rc = self.port.set_rx_queue(size = self.queue_size)
+            rc = self.port.set_rx_queue(size=self.queue_size)
             if not rc:
                 return rc
 
@@ -112,9 +112,9 @@ class RXServiceAPI(object):
             self.port.remove_rx_queue()
             self.port.remove_all_streams()
 
-
     ##################### Internal ######################
-    def __sanity (self):
+
+    def __sanity(self):
         if not self.port.is_service_mode_on():
             return self.port.err('port service mode must be enabled for performing {0}. Please enable service mode'.format(self.get_name()))
 
@@ -126,7 +126,6 @@ class RXServiceAPI(object):
             if not self.port.is_l3_mode():
                 return self.port.err('{0} - requires L3 mode configuration'.format(self.get_name()))
 
-
         # sanity
         if self.port.is_active():
             return self.port.err('{0} - port is active, please stop the port before executing command'.format(self.get_name()))
@@ -135,12 +134,12 @@ class RXServiceAPI(object):
         rc = self.pre_execute()
         if not rc:
             return rc
-            
+
         return True
-        
 
     # main resolve function
-    def __execute_internal (self):
+
+    def __execute_internal(self):
 
         # retry for 'retries' or until timeout
         index = 0
@@ -149,19 +148,18 @@ class RXServiceAPI(object):
             if rc is not None:
                 return rc
 
-            if (self.retries is not None and index >= self.retries or
-                        self.timeout is not None and time.time() - self.init_ts >= self.timeout):
+            if(self.retries is not None and index >= self.retries or
+               self.timeout is not None and time.time() - self.init_ts >= self.timeout):
                 return self.on_timeout()
 
             index += 1
             time.sleep(self.retry_delay)
 
+    def execute_iteration(self):
 
-
-    def execute_iteration (self):
-
-        mult = {'op': 'abs', 'type' : 'percentage', 'value': 100}
-        rc = self.port.start(mul = mult, force = False, duration = -1, mask = 0xffffffff)
+        mult = {'op': 'abs', 'type': 'percentage', 'value': 100}
+        rc = self.port.start(mul=mult, force=False,
+                             duration=-1, mask=0xffffffff)
         if not rc:
             return rc
 
@@ -174,8 +172,7 @@ class RXServiceAPI(object):
 
         return self.wait_for_rx_response()
 
-
-    def wait_for_rx_response (self):
+    def wait_for_rx_response(self):
 
         # we try to fetch response for 5 times
         polling = 5
@@ -200,4 +197,3 @@ class RXServiceAPI(object):
 
             polling -= 1
             time.sleep(0.1)
-

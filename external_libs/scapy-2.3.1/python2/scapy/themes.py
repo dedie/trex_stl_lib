@@ -1,6 +1,6 @@
 #this file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -12,21 +12,21 @@ Color themes for the interactive console.
 ##################
 
 class ColorTable:
-    colors = { # Format: (ansi, pygments)
-        "normal": ("\033[0m", "noinherit"),
-        "black": ("\033[30m", "#ansiblack"),
-        "red": ("\033[31m", "#ansired"),
-        "green": ("\033[32m", "#ansigreen"),
-        "yellow": ("\033[33m", "#ansiyellow"),
-        "blue": ("\033[34m", "#ansiblue"),
-        "purple": ("\033[35m", "#ansipurple"),
-        "cyan": ("\033[36m", "#ansicyan"),
-        "grey": ("\033[37m", "#ansigrey"),
+    colors = { # Format:(ansi, pygments)
+        "normal":("\033[0m", "noinherit"),
+        "black":("\033[30m", "#ansiblack"),
+        "red":("\033[31m", "#ansired"),
+        "green":("\033[32m", "#ansigreen"),
+        "yellow":("\033[33m", "#ansiyellow"),
+        "blue":("\033[34m", "#ansiblue"),
+        "purple":("\033[35m", "#ansipurple"),
+        "cyan":("\033[36m", "#ansicyan"),
+        "grey":("\033[37m", "#ansigrey"),
 
-        "bold": ("\033[1m", "bold"),
-        "uline": ("\033[4m", "underline"),
-        "blink": ("\033[5m", ""),
-        "invert": ("\033[7m", ""),
+        "bold":("\033[1m", "bold"),
+        "uline":("\033[4m", "underline"),
+        "blink":("\033[5m", ""),
+        "invert":("\033[7m", ""),
         }
 
     def __repr__(self):
@@ -50,14 +50,14 @@ def create_styler(fmt=None, before="", after="", fmt2="%s"):
                 val = str(val)
         else:
             val = fmt % val
-        return fmt2 % (before+val+after)
+        return fmt2 %(before+val+after)
     return do_style
 
 class ColorTheme:
     def __repr__(self):
         return "<%s>" % self.__class__.__name__
     def __reduce__(self):
-        return (self.__class__, (), ())
+        return(self.__class__,(),())
     def __getattr__(self, attr):
         if attr in ["__getstate__", "__setstate__", "__getinitargs__",
                     "__reduce_ex__"]:

@@ -1,11 +1,11 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
-## Copyright (C) 6WIND <olivier.matz@6wind.com>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) 6WIND <olivier.matz@6wind.com>
 ## This program is published under a GPLv2 license
 
 """
-SCTP (Stream Control Transmission Protocol).
+SCTP(Stream Control Transmission Protocol).
 """
 
 import struct
@@ -17,7 +17,7 @@ from scapy.layers.inet6 import IP6Field
 
 IPPROTO_SCTP=132
 
-# crc32-c (Castagnoli) (crc32c_poly=0x1EDC6F41)
+# crc32-c(Castagnoli)(crc32c_poly=0x1EDC6F41)
 crc32c_table = [
     0x00000000, 0xF26B8303, 0xE13B70F7, 0x1350F3F4,
     0xC79A971F, 0x35F1141C, 0x26A1E7E8, 0xD4CA64EB,
@@ -88,26 +88,26 @@ crc32c_table = [
 def crc32c(buf):
     crc = 0xffffffff
     for c in buf:
-        #crc = (crc>>8) ^ crc32c_table[(crc^(ord(c))) & 0xFF]
-        crc = (crc>>8) ^ crc32c_table[(crc^(c)) & 0xFF]
-    crc = (~crc) & 0xffffffff
+        #crc =(crc>>8) ^ crc32c_table[(crc^(ord(c))) & 0xFF]
+        crc =(crc>>8) ^ crc32c_table[(crc^(c)) & 0xFF]
+    crc =(~crc) & 0xffffffff
     # reverse endianness
     return struct.unpack(">I",struct.pack("<I", crc))[0]
 
-# old checksum (RFC2960)
+# old checksum(RFC2960)
 """
 BASE = 65521 # largest prime smaller than 65536
 def update_adler32(adler, buf):
     s1 = adler & 0xffff
-    s2 = (adler >> 16) & 0xffff
+    s2 =(adler >> 16) & 0xffff
     print(s1,s2)
 
     for c in buf:
         print(ord(c))
-        s1 = (s1 + ord(c)) % BASE
-        s2 = (s2 + s1) % BASE
+        s1 =(s1 + ord(c)) % BASE
+        s2 =(s2 + s1) % BASE
         print(s1,s2)
-    return (s2 << 16) + s1
+    return(s2 << 16) + s1
 
 def sctp_checksum(buf):
     return update_adler32(1, buf)
@@ -175,7 +175,7 @@ sctpchunkparamtypes = {
 
 ############## SCTP header
 
-# Dummy class to guess payload type (variable parameters)
+# Dummy class to guess payload type(variable parameters)
 class _SCTPChunkGuessPayload:
     def default_payload_class(self,p):
         if len(p) < 4:
@@ -194,8 +194,8 @@ class SCTP(_SCTPChunkGuessPayload, Packet):
         if not isinstance(other, SCTP):
             return 0
         if conf.checkIPsrc:
-            if not ((self.sport == other.dport) and
-                    (self.dport == other.sport)):
+            if not((self.sport == other.dport) and
+                   (self.dport == other.sport)):
                 return 0
         return 1
     def post_build(self, p, pay):
@@ -216,7 +216,7 @@ class ChunkParamField(PacketListField):
         cls = conf.raw_layer
         if len(m) >= 4:
             #t = ord(m[0]) * 256 + ord(m[1])
-            t = (m[0]) * 256 + (m[1])
+            t =(m[0]) * 256 +(m[1])
             cls = globals().get(sctpchunkparamtypescls.get(t, "Raw"), conf.raw_layer)
         return cls(m)
 

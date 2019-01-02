@@ -35,9 +35,9 @@ class Event(object):
 
     An event
 
-    - may happen (:attr:`triggered` is ``False``),
-    - is going to happen (:attr:`triggered` is ``True``) or
-    - has happened (:attr:`processed` is ``True``).
+    - may happen(:attr:`triggered` is ``False``),
+    - is going to happen(:attr:`triggered` is ``True``) or
+    - has happened(:attr:`processed` is ``True``).
 
     Every event is bound to an environment *env* and is initially not
     triggered. Events are scheduled for processing by the environment after
@@ -54,7 +54,7 @@ class Event(object):
     being processed. If a callback handles an exception, it must set :attr:`defused`
     to ``True`` to prevent this.
 
-    This class also implements ``__and__()`` (``&``) and ``__or__()`` (``|``).
+    This class also implements ``__and__()``(``&``) and ``__or__()``(``|``).
     If you concatenate two events using one of these operators,
     a :class:`Condition` event is generated that lets you wait for both or one
     of them.
@@ -68,9 +68,9 @@ class Event(object):
         self._value = PENDING
 
     def __repr__(self):
-        """Return the description of the event (see :meth:`_desc`) with the id
+        """Return the description of the event(see :meth:`_desc`) with the id
         of the event."""
-        return '<%s object at 0x%x>' % (self._desc(), id(self))
+        return '<%s object at 0x%x>' %(self._desc(), id(self))
 
     def _desc(self):
         """Return a string *Event()*."""
@@ -84,7 +84,7 @@ class Event(object):
 
     @property
     def processed(self):
-        """Becomes ``True`` if the event has been processed (e.g., its
+        """Becomes ``True`` if the event has been processed(e.g., its
         callbacks have been invoked)."""
         return self.callbacks is None
 
@@ -103,9 +103,9 @@ class Event(object):
     def defused(self):
         """Becomes ``True`` when the failed event's exception is "defused".
 
-        When an event fails (i.e. with :meth:`fail()`), the failed event's
+        When an event fails(i.e. with :meth:`fail()`), the failed event's
         `value` is an exception that will be re-raised when the
-        :class:`~simpy.core.Environment` processes the event (i.e. in
+        :class:`~simpy.core.Environment` processes the event(i.e. in
         :meth:`~simpy.core.Environment.step()`).
 
         It is also possible for the failed event's exception to be defused by
@@ -135,7 +135,7 @@ class Event(object):
 
     def trigger(self, event):
         """Trigger the event with the state and value of the provided *event*.
-        Return *self* (this event instance).
+        Return *self*(this event instance).
 
         This method can be used directly as a callback function to trigger
         chain reactions.
@@ -185,7 +185,7 @@ class Event(object):
 
     def __or__(self, other):
         """Return a :class:`~simpy.events.Condition` that will be triggered if
-        either this event or *other* have been processed (or even both, if they
+        either this event or *other* have been processed(or even both, if they
         happened concurrently)."""
         return Condition(self.env, Condition.any_events, [self, other])
 
@@ -211,9 +211,9 @@ class Timeout(Event):
 
     def _desc(self):
         """Return a string *Timeout(delay[, value=value])*."""
-        return '%s(%s%s)' % (self.__class__.__name__, self._delay,
+        return '%s(%s%s)' %(self.__class__.__name__, self._delay,
                              '' if self._value is None else
-                             (', value=%s' % self._value))
+                            (', value=%s' % self._value))
 
 
 class Initialize(Event):
@@ -279,7 +279,7 @@ class Interruption(Event):
 class Process(Event):
     """Process an event yielding generator.
 
-    A generator (also known as a coroutine) can suspend its execution by
+    A generator(also known as a coroutine) can suspend its execution by
     yielding an event. ``Process`` will take care of resuming the generator
     with the value of that event once it has happened. The exception of failed
     events is thrown into the generator.
@@ -304,7 +304,7 @@ class Process(Event):
             # in addition to the CPython type, which renders a type check
             # impractical. To workaround this issue, we check for attribute
             # name instead of type and optimistically assume that all objects
-            # with a ``throw`` attribute are generators (the more intuitive
+            # with a ``throw`` attribute are generators(the more intuitive
             # name ``__next__`` cannot be used because it was renamed from
             # ``next`` in Python 2).
             # Remove this workaround if it causes issues in production!
@@ -323,7 +323,7 @@ class Process(Event):
 
     def _desc(self):
         """Return a string *Process(process_func_name)*."""
-        return '%s(%s)' % (self.__class__.__name__, self._generator.__name__)
+        return '%s(%s)' %(self.__class__.__name__, self._generator.__name__)
 
     @property
     def target(self):
@@ -364,7 +364,7 @@ class Process(Event):
                     event = self._generator.send(event._value)
                 else:
                     # The process has no choice but to handle the failed event
-                    # (or fail itself).
+                    #(or fail itself).
                     event._defused = True
 
                     # Create an exclusive copy of the exception for this
@@ -410,7 +410,7 @@ class Process(Event):
                     msg = 'Invalid yield value "%s"' % event
 
                 descr = _describe_frame(self._generator.gi_frame)
-                error = RuntimeError('\n%s%s' % (descr, msg))
+                error = RuntimeError('\n%s%s' %(descr, msg))
                 # Drop the AttributeError as the cause for this exception.
                 error.__cause__ = None
                 raise error
@@ -449,13 +449,13 @@ class ConditionValue(object):
         return list(self.keys())
 
     def keys(self):
-        return (event for event in self.events)
+        return(event for event in self.events)
 
     def values(self):
-        return (event._value for event in self.events)
+        return(event._value for event in self.events)
 
     def items(self):
-        return ((event, event._value) for event in self.events)
+        return((event, event._value) for event in self.events)
 
     def todict(self):
         return dict((event, event._value) for event in self.events)
@@ -477,7 +477,7 @@ class Condition(Event):
     of processed events in this list: ``evaluate(events, processed_count)``. If
     it returns ``True``, the condition is triggered. The
     :func:`Condition.all_events()` and :func:`Condition.any_events()` functions
-    are used to implement *and* (``&``) and *or* (``|``) for events.
+    are used to implement *and*(``&``) and *or*(``|``) for events.
 
     Condition events can be nested.
 
@@ -513,7 +513,7 @@ class Condition(Event):
 
     def _desc(self):
         """Return a string *Condition(evaluate, [events])*."""
-        return '%s(%s, %s)' % (self.__class__.__name__,
+        return '%s(%s, %s)' %(self.__class__.__name__,
                                self._evaluate.__name__, self._events)
 
     def _populate_value(self, value):
@@ -599,7 +599,7 @@ class AnyOf(Condition):
 
 
 class Interrupt(Exception):
-    """Exception thrown into a process if it is interrupted (see
+    """Exception thrown into a process if it is interrupted(see
     :func:`~simpy.events.Process.interrupt()`).
 
     :attr:`cause` provides the reason for the interrupt, if any.
@@ -610,7 +610,7 @@ class Interrupt(Exception):
 
     """
     def __str__(self):
-        return '%s(%r)' % (self.__class__.__name__, self.cause)
+        return '%s(%r)' %(self.__class__.__name__, self.cause)
 
     @property
     def cause(self):
@@ -628,5 +628,5 @@ def _describe_frame(frame):
             if no + 1 == lineno:
                 break
 
-    return '  File "%s", line %d, in %s\n    %s\n' % (filename, lineno, name,
+    return '  File "%s", line %d, in %s\n    %s\n' %(filename, lineno, name,
                                                       line.strip())

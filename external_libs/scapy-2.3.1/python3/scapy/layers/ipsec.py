@@ -1,7 +1,7 @@
 #############################################################################
 ## ipsec.py --- IPSec support for Scapy                                    ##
 ##                                                                         ##
-## Copyright (C) 2014  6WIND                                               ##
+## Copyright(C) 2014  6WIND                                               ##
 ##                                                                         ##
 ## This program is free software; you can redistribute it and/or modify it ##
 ## under the terms of the GNU General Public License version 2 as          ##
@@ -218,9 +218,9 @@ class CryptAlgo(object):
 
         @param key:    a byte string
         """
-        if self.key_size and not (len(key) == self.key_size or len(key) in self.key_size):
+        if self.key_size and not(len(key) == self.key_size or len(key) in self.key_size):
             raise TypeError('invalid key size %s, must be %s' %
-                            (len(key), self.key_size))
+                           (len(key), self.key_size))
 
     def generate_iv(self):
         """
@@ -240,7 +240,7 @@ class CryptAlgo(object):
         """
         if type(key) is str:
             key = key.encode('ascii')
-        if (hasattr(self.cipher, 'MODE_CTR') and self.mode == self.cipher.MODE_CTR
+        if(hasattr(self.cipher, 'MODE_CTR') and self.mode == self.cipher.MODE_CTR
             or hasattr(self.cipher, 'MODE_GCM') and self.mode == self.cipher.MODE_GCM):
             # in counter mode, the "iv" must be incremented for each block
             # it is calculated like this:
@@ -279,7 +279,7 @@ class CryptAlgo(object):
         # 2 extra bytes for padlen and nh
         data_len = len(esp.data) + 2
 
-        # according to the RFC4303, section 2.4. Padding (for Encryption)
+        # according to the RFC4303, section 2.4. Padding(for Encryption)
         # the size of the ESP payload must be a multiple of 32 bits
         align = _lcm(self.block_size, 4)
 
@@ -339,9 +339,9 @@ class CryptAlgo(object):
 
         # extract padlen and nh
         #padlen = ord(data[-2])
-        padlen = (data[-2])
+        padlen =(data[-2])
         #nh = ord(data[-1])
-        nh = (data[-1])
+        nh =(data[-1])
 
         # then use padlen to determine data and padding
         data = data[:len(data) - padlen - 2]
@@ -449,7 +449,7 @@ class AuthAlgo(object):
         """
         if self.key_size and len(key) not in self.key_size:
             raise TypeError('invalid key size %s, must be one of %s' %
-                            (len(key), self.key_size))
+                           (len(key), self.key_size))
 
     def new_mac(self, key):
         """
@@ -467,7 +467,7 @@ class AuthAlgo(object):
 
     def sign(self, pkt, key):
         """
-        Sign an IPSec (ESP or AH) packet with this algo.
+        Sign an IPSec(ESP or AH) packet with this algo.
 
         @param pkt:    a packet that contains a valid encrypted ESP or AH layer
         @param key:    the authentication key, a byte string
@@ -494,7 +494,7 @@ class AuthAlgo(object):
 
     def verify(self, pkt, key):
         """
-        Check that the integrity check value (icv) of a packet is valid.
+        Check that the integrity check value(icv) of a packet is valid.
 
         @param pkt:    a packet that contains a valid encrypted ESP or AH layer
         @param key:    the authentication key, a byte string
@@ -528,7 +528,7 @@ class AuthAlgo(object):
 
         if pkt_icv != computed_icv:
             raise IPSecIntegrityError('pkt_icv=%r, computed_icv=%r' %
-                                      (pkt_icv, computed_icv))
+                                     (pkt_icv, computed_icv))
 
 #------------------------------------------------------------------------------
 # The names of the integrity algorithms are the same than in scapy.contrib.ikev2
@@ -583,7 +583,7 @@ def split_for_transport(orig_pkt, transport_proto):
     @param orig_pkt: the packet to split. Must be an IP or IPv6 packet
     @param transport_proto: the IPSec protocol number that will be inserted
                             at the split position.
-    @return: a tuple (header, nh, payload) where nh is the protocol number of
+    @return: a tuple(header, nh, payload) where nh is the protocol number of
              payload.
     """
     header = orig_pkt.copy()
@@ -604,7 +604,7 @@ def split_for_transport(orig_pkt, transport_proto):
 
         # Since the RFC 4302 is vague about where the ESP/AH headers should be
         # inserted in IPv6, I chose to follow the linux implementation.
-        while isinstance(next_hdr, (IPv6ExtHdrHopByHop, IPv6ExtHdrRouting, IPv6ExtHdrDestOpt)):
+        while isinstance(next_hdr,(IPv6ExtHdrHopByHop, IPv6ExtHdrRouting, IPv6ExtHdrDestOpt)):
             if isinstance(next_hdr, IPv6ExtHdrHopByHop):
                 pass
             if isinstance(next_hdr, IPv6ExtHdrRouting):
@@ -624,7 +624,7 @@ def split_for_transport(orig_pkt, transport_proto):
 
 #------------------------------------------------------------------------------
 # see RFC 4302 - Appendix A. Mutability of IP Options/Extension Headers
-IMMUTABLE_IPV4_OPTIONS = (
+IMMUTABLE_IPV4_OPTIONS =(
     0, # End Of List
     1, # No OPeration
     2, # Security
@@ -681,8 +681,8 @@ def zero_mutable_fields(pkt, sending=False):
 
         next_hdr = pkt.payload
 
-        while isinstance(next_hdr, (IPv6ExtHdrHopByHop, IPv6ExtHdrRouting, IPv6ExtHdrDestOpt)):
-            if isinstance(next_hdr, (IPv6ExtHdrHopByHop, IPv6ExtHdrDestOpt)):
+        while isinstance(next_hdr,(IPv6ExtHdrHopByHop, IPv6ExtHdrRouting, IPv6ExtHdrDestOpt)):
+            if isinstance(next_hdr,(IPv6ExtHdrHopByHop, IPv6ExtHdrDestOpt)):
                 for opt in next_hdr.options:
                     if opt.otype & 0x20:
                         # option data can change en-route and must be zeroed
@@ -708,17 +708,17 @@ class SecurityAssociation(object):
     This class is responsible of "encryption" and "decryption" of IPSec packets.
     """
 
-    SUPPORTED_PROTOS = (IP, IPv6)
+    SUPPORTED_PROTOS =(IP, IPv6)
 
     def __init__(self, proto, spi, seq_num=1, crypt_algo=None, crypt_key=None,
                  auth_algo=None, auth_key=None, tunnel_header=None, nat_t_header=None):
         """
-        @param proto: the IPSec proto to use (ESP or AH)
+        @param proto: the IPSec proto to use(ESP or AH)
         @param spi: the Security Parameters Index of this SA
         @param seq_num: the initial value for the sequence number on encrypted
                         packets
-        @param crypt_algo: the encryption algorithm name (only used with ESP)
-        @param crypt_key: the encryption key (only used with ESP)
+        @param crypt_algo: the encryption algorithm name(only used with ESP)
+        @param crypt_key: the encryption key(only used with ESP)
         @param auth_algo: the integrity algorithm name
         @param auth_key: the integrity key
         @param tunnel_header: an instance of a IP(v6) header that will be used
@@ -727,7 +727,7 @@ class SecurityAssociation(object):
                              for NAT-Traversal.
         """
 
-        if proto not in (ESP, AH, ESP.name, AH.name):
+        if proto not in(ESP, AH, ESP.name, AH.name):
             raise ValueError("proto must be either ESP or AH")
         if isinstance(proto, str):
             self.proto = eval(proto)
@@ -740,7 +740,7 @@ class SecurityAssociation(object):
         if crypt_algo:
             if crypt_algo not in CRYPT_ALGOS:
                 raise TypeError('unsupported encryption algo %r, try %r' %
-                                (crypt_algo, list(CRYPT_ALGOS.keys())))
+                               (crypt_algo, list(CRYPT_ALGOS.keys())))
             self.crypt_algo = CRYPT_ALGOS[crypt_algo]
             self.crypt_algo.check_key(crypt_key)
             self.crypt_key = crypt_key
@@ -751,7 +751,7 @@ class SecurityAssociation(object):
         if auth_algo:
             if auth_algo not in AUTH_ALGOS:
                 raise TypeError('unsupported integrity algo %r, try %r' %
-                                (auth_algo, list(AUTH_ALGOS.keys())))
+                               (auth_algo, list(AUTH_ALGOS.keys())))
             self.auth_algo = AUTH_ALGOS[auth_algo]
             self.auth_algo.check_key(auth_key)
             self.auth_key = auth_key
@@ -759,8 +759,8 @@ class SecurityAssociation(object):
             self.auth_algo = AUTH_ALGOS['NULL']
             self.auth_key = None
 
-        if tunnel_header and not isinstance(tunnel_header, (IP, IPv6)):
-            raise TypeError('tunnel_header must be %s or %s' % (IP.name, IPv6.name))
+        if tunnel_header and not isinstance(tunnel_header,(IP, IPv6)):
+            raise TypeError('tunnel_header must be %s or %s' %(IP.name, IPv6.name))
         self.tunnel_header = tunnel_header
 
         if nat_t_header:
@@ -773,7 +773,7 @@ class SecurityAssociation(object):
     def check_spi(self, pkt):
         if pkt.spi != self.spi:
             raise TypeError('packet spi=0x%x does not match the SA spi=0x%x' %
-                            (pkt.spi, self.spi))
+                           (pkt.spi, self.spi))
 
     def _encrypt_esp(self, pkt, seq_num=None, iv=None):
 
@@ -854,14 +854,14 @@ class SecurityAssociation(object):
         if ip_header.version == 6 and len(ah) % 8 != 0:
             # For IPv6, the total length of the header must be a multiple of
             # 8-octet units.
-            ah.padding = chr(0) * (-len(ah) % 8)
+            ah.padding = chr(0) *(-len(ah) % 8)
         elif len(ah) % 4 != 0:
             # For IPv4, the total length of the header must be a multiple of
             # 4-octet units.
-            ah.padding = chr(0) * (-len(ah) % 4)
+            ah.padding = chr(0) *(-len(ah) % 4)
 
         # RFC 4302 - Section 2.2. Payload Length
-        # This 8-bit field specifies the length of AH in 32-bit words (4-byte
+        # This 8-bit field specifies the length of AH in 32-bit words(4-byte
         # units), minus "2".
         ah.payloadlen = len(ah) // 4 - 2
 
@@ -882,7 +882,7 @@ class SecurityAssociation(object):
 
     def encrypt(self, pkt, seq_num=None, iv=None):
         """
-        Encrypt (and encapsulate) an IP(v6) packet with ESP or AH according
+        Encrypt(and encapsulate) an IP(v6) packet with ESP or AH according
         to this SecurityAssociation.
 
         @param pkt:     the packet to encrypt
@@ -895,7 +895,7 @@ class SecurityAssociation(object):
         """
         if not isinstance(pkt, self.SUPPORTED_PROTOS):
             raise TypeError('cannot encrypt %s, supported protos are %s'
-                            % (pkt.__class__, self.SUPPORTED_PROTOS))
+                            %(pkt.__class__, self.SUPPORTED_PROTOS))
         if self.proto is ESP:
             return self._encrypt_esp(pkt, seq_num=seq_num, iv=iv)
         else:
@@ -975,7 +975,7 @@ class SecurityAssociation(object):
 
     def decrypt(self, pkt, verify=True):
         """
-        Decrypt (and decapsulate) an IP(v6) packet containing ESP or AH.
+        Decrypt(and decapsulate) an IP(v6) packet containing ESP or AH.
 
         @param pkt:     the packet to decrypt
         @param verify:  if False, do not perform the integrity check
@@ -985,11 +985,11 @@ class SecurityAssociation(object):
         """
         if not isinstance(pkt, self.SUPPORTED_PROTOS):
             raise TypeError('cannot decrypt %s, supported protos are %s'
-                            % (pkt.__class__, self.SUPPORTED_PROTOS))
+                            %(pkt.__class__, self.SUPPORTED_PROTOS))
 
         if self.proto is ESP and pkt.haslayer(ESP):
             return self._decrypt_esp(pkt, verify=verify)
         elif self.proto is AH and pkt.haslayer(AH):
             return self._decrypt_ah(pkt, verify=verify)
         else:
-            raise TypeError('%s has no %s layer' % (pkt, self.proto.name))
+            raise TypeError('%s has no %s layer' %(pkt, self.proto.name))

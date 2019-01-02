@@ -1,10 +1,10 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
-Management Information Base (MIB) parsing
+Management Information Base(MIB) parsing
 """
 
 import re
@@ -59,14 +59,14 @@ class MIBDict(DADict):
                 nodes.append(self.oidname(k),k)
         s = 'digraph "mib" {\n\trankdir=LR;\n\n'
         for k,o in nodes:
-            s += '\t"%s" [ label="%s"  ];\n' % (o,k)
+            s += '\t"%s" [ label="%s"  ];\n' %(o,k)
         s += "\n"
         for k,o in nodes:
             parent,remainder = self._findroot(o[:-1])
             remainder = remainder[1:]+o[-1]
             if parent != ".":
                 parent = self[parent]
-            s += '\t"%s" -> "%s" [label="%s"];\n' % (parent, o,remainder)
+            s += '\t"%s" -> "%s" [label="%s"];\n' %(parent, o,remainder)
         s += "}\n"
         do_graph(s, **kargs)
     def __len__(self):

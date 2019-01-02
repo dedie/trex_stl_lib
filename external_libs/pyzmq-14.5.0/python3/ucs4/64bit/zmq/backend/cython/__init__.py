@@ -1,13 +1,13 @@
 """Python bindings for core 0MQ objects."""
 
-# Copyright (C) PyZMQ Developers
-# Distributed under the terms of the Lesser GNU Public License (LGPL).
+# Copyright(C) PyZMQ Developers
+# Distributed under the terms of the Lesser GNU Public License(LGPL).
 
-from . import (constants, error, message, context,
+from . import(constants, error, message, context,
                       socket, utils, _poll, _version, _device )
 
 __all__ = []
-for submod in (constants, error, message, context,
+for submod in(constants, error, message, context,
                socket, utils, _poll, _version, _device):
     __all__.extend(submod.__all__)
 

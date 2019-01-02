@@ -1,6 +1,6 @@
 """0MQ Error classes and functions."""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -134,7 +134,7 @@ class ZMQVersionError(NotImplementedError):
         return "ZMQVersionError('%s')" % str(self)
     
     def __str__(self):
-        return "%s requires libzmq >= %s, have %s" % (self.msg, self.min_version, self.version)
+        return "%s requires libzmq >= %s, have %s" %(self.msg, self.min_version, self.version)
 
 
 def _check_version(min_version_info, msg='Feature'):

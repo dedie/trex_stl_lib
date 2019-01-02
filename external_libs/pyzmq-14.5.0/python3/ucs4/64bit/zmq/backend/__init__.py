@@ -1,6 +1,6 @@
 """Import basic exposure of libzmq C API as a backend"""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 
@@ -14,16 +14,16 @@ from .select import public_api, select_backend
 
 if 'PYZMQ_BACKEND' in os.environ:
     backend = os.environ['PYZMQ_BACKEND']
-    if backend in ('cython', 'cffi'):
+    if backend in('cython', 'cffi'):
         backend = 'zmq.backend.%s' % backend
     _ns = select_backend(backend)
 else:
     # default to cython, fallback to cffi
-    # (reverse on PyPy)
+    #(reverse on PyPy)
     if platform.python_implementation() == 'PyPy':
-        first, second = ('zmq.backend.cffi', 'zmq.backend.cython')
+        first, second =('zmq.backend.cffi', 'zmq.backend.cython')
     else:
-        first, second = ('zmq.backend.cython', 'zmq.backend.cffi')
+        first, second =('zmq.backend.cython', 'zmq.backend.cffi')
 
     try:
         _ns = select_backend(first)

@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -98,7 +98,7 @@ class AnsweringMachine(object, metaclass=ReferenceAM):
         self.send_function(reply, **self.optsend)
 
     def print_reply(self, req, reply):
-        print(("%s ==> %s" % (req.summary(),reply.summary())))
+        print(("%s ==> %s" %(req.summary(),reply.summary())))
 
     def reply(self, pkt):
         if not self.is_request(pkt):

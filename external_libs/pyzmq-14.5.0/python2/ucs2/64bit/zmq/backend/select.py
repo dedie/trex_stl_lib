@@ -1,6 +1,6 @@
 """Import basic exposure of libzmq C API as a backend"""
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 public_api = [
@@ -31,7 +31,7 @@ def select_backend(name):
         import sys
         from zmq.utils.sixcerpt import reraise
         exc_info = sys.exc_info()
-        reraise(ImportError, ImportError("Importing %s failed with %s" % (name, e)), exc_info[2])
+        reraise(ImportError, ImportError("Importing %s failed with %s" %(name, e)), exc_info[2])
     
     ns = {}
     for key in public_api:

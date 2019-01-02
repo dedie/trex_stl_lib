@@ -1,10 +1,10 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
-DHCP (Dynamic Host Configuration Protocol) d BOOTP
+DHCP(Dynamic Host Configuration Protocol) d BOOTP
 """
 
 import struct
@@ -147,7 +147,7 @@ for k,v in list(DHCPOptions.items()):
         v = None
     else:
         n = v.name
-    DHCPRevOptions[n] = (k,v)
+    DHCPRevOptions[n] =(k,v)
 del(n)
 del(v)
 del(k)
@@ -188,11 +188,11 @@ class DHCPOptionsField(StrField):
                     vv = ",".join(f.i2repr(pkt,val) for val in v[1:])
                 else:
                     vv = ",".join(repr(val) for val in v[1:])
-                r = "%s=%s" % (v[0],vv)
+                r = "%s=%s" %(v[0],vv)
                 s.append(r)
             else:
                 s.append(sane(v))
-        return "[%s]" % (" ".join(s))
+        return "[%s]" %(" ".join(s))
         
     def getfield(self, pkt, s):
         return b"", self.m2i(pkt, s)
@@ -220,7 +220,7 @@ class DHCPOptionsField(StrField):
                 if isinstance(f, str):
                     #olen = ord(x[1])
                     olen = x[1]
-                    opt.append( (f,x[2:olen+2]) )
+                    opt.append((f,x[2:olen+2]) )
                     x = x[olen+2:]
                 else:
                     olen = x[1]
@@ -267,7 +267,7 @@ class DHCPOptionsField(StrField):
                 s += bytes([len(oval)])
                 s += oval
 
-            elif (type(o) is str and o in DHCPRevOptions and 
+            elif(type(o) is str and o in DHCPRevOptions and 
                   DHCPRevOptions[o][1] == None):
                 s += bytes([DHCPRevOptions[o][0]])
             elif type(o) is int:
@@ -310,11 +310,11 @@ class BOOTP_am(AnsweringMachine):
         if type(pool) is str:
             poom = Net(pool)
         self.domain = domain
-        netw,msk = (network.split("/")+["32"])[:2]
+        netw,msk =(network.split("/")+["32"])[:2]
         msk = itom(int(msk))
         self.netmask = ltoa(msk)
         self.network = ltoa(atol(netw)&msk)
-        self.broadcast = ltoa( atol(self.network) | (0xffffffff&~msk) )
+        self.broadcast = ltoa( atol(self.network) |(0xffffffff&~msk) )
         self.gw = gw
         if isinstance(pool,Gen):
             pool = [k for k in pool if k not in [gw, self.network, self.broadcast]]
@@ -335,7 +335,7 @@ class BOOTP_am(AnsweringMachine):
         return 1
 
     def print_reply(self, req, reply):
-        print(("Reply %s to %s" % (reply.getlayer(IP).dst,reply.dst)))
+        print(("Reply %s to %s" %(reply.getlayer(IP).dst,reply.dst)))
 
     def make_reply(self, req):        
         mac = req.src
@@ -366,13 +366,13 @@ class DHCP_am(BOOTP_am):
                             for op in req[DHCP].options
                             if type(op) is tuple  and op[0] == "message-type"]
             dhcp_options += [("server_id",self.gw),
-                             ("domain", self.domain),
-                             ("router", self.gw),
-                             ("name_server", self.gw),
-                             ("broadcast_address", self.broadcast),
-                             ("subnet_mask", self.netmask),
-                             ("renewal_time", self.renewal_time),
-                             ("lease_time", self.lease_time), 
+                            ("domain", self.domain),
+                            ("router", self.gw),
+                            ("name_server", self.gw),
+                            ("broadcast_address", self.broadcast),
+                            ("subnet_mask", self.netmask),
+                            ("renewal_time", self.renewal_time),
+                            ("lease_time", self.lease_time), 
                              "end"
                              ]
             resp /= DHCP(options=dhcp_options)

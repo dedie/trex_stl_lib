@@ -1,9 +1,9 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
-## Copyright (C) 2005  Guillaume Valadon <guedou@hongo.wide.ad.jp>
+## Copyright(C) 2005  Guillaume Valadon <guedou@hongo.wide.ad.jp>
 ##                     Arnaud Ebalard <arnaud.ebalard@eads.net>
 
 """
@@ -47,7 +47,7 @@ class Route6:
         rtlst = [('Destination', 'Next Hop', "iface", "src candidates")]
 
         for net,msk,gw,iface,cset in self.routes:
-            rtlst.append(('%s/%i'% (net,msk), gw, iface, ", ".join(cset)))
+            rtlst.append(('%s/%i'%(net,msk), gw, iface, ", ".join(cset)))
 
         #colwidth = map(lambda x: max(map(lambda y: len(y), x)), apply(zip, rtlst))
         rtlst = list(zip(rtlst))
@@ -65,7 +65,7 @@ class Route6:
     def make_route(self, dst, gw=None, dev=None):
         """Internal function : create a route for 'dst' via 'gw'.
         """
-        prefix, plen = (dst.split("/")+["128"])[:2]
+        prefix, plen =(dst.split("/")+["128"])[:2]
         plen = int(plen)
 
         if gw is None:
@@ -80,7 +80,7 @@ class Route6:
             devaddrs = [ i for i in lifaddr if i[2] == dev] 
             ifaddr = construct_source_candidate_set(prefix, plen, devaddrs, LOOPBACK_NAME)
 
-        return (prefix, plen, gw, dev, ifaddr)
+        return(prefix, plen, gw, dev, ifaddr)
 
     
     def add(self, *args, **kargs):
@@ -119,7 +119,7 @@ class Route6:
             del(self.routes[i])
         
     def ifchange(self, iff, addr):
-        the_addr, the_plen = (addr.split("/")+["128"])[:2]
+        the_addr, the_plen =(addr.split("/")+["128"])[:2]
         the_plen = int(the_plen)
 
         naddr = inet_pton(socket.AF_INET6, the_addr)
@@ -131,9 +131,9 @@ class Route6:
             if iface != iff:
                 continue
             if gw == '::':
-                self.routes[i] = (the_net,the_plen,gw,iface,the_addr)
+                self.routes[i] =(the_net,the_plen,gw,iface,the_addr)
             else:
-                self.routes[i] = (net,the_plen,gw,iface,the_addr)
+                self.routes[i] =(net,the_plen,gw,iface,the_addr)
         self.invalidate_cache()
         ip6_neigh_cache.flush()
 
@@ -160,7 +160,7 @@ class Route6:
             prefix length value can be omitted. In that case, a value of 128
             will be used.
         """
-        addr, plen = (addr.split(b"/")+[b"128"])[:2]
+        addr, plen =(addr.split(b"/")+[b"128"])[:2]
         addr = in6_ptop(addr)
         plen = int(plen)
         naddr = inet_pton(socket.AF_INET6, addr)
@@ -174,7 +174,7 @@ class Route6:
         Provide best route to IPv6 destination address, based on Scapy6 
         internal routing table content.
 
-        When a set of address is passed (e.g. 2001:db8:cafe:*::1-5) an address
+        When a set of address is passed(e.g. 2001:db8:cafe:*::1-5) an address
         of the set is used. Be aware of that behavior when using wildcards in
         upper parts of addresses !
 
@@ -190,7 +190,7 @@ class Route6:
         dst = dst.replace("*","0")
         l = dst.find("-")
         while l >= 0:
-            m = (dst[l:]+":").find(":")
+            m =(dst[l:]+":").find(":")
             dst = dst[:l]+dst[l+m:]
             l = dst.find("-")
             
@@ -209,7 +209,7 @@ class Route6:
 
         pathes = []
 
-        # TODO : review all kinds of addresses (scope and *cast) to see
+        # TODO : review all kinds of addresses(scope and *cast) to see
         #        if we are able to cope with everything possible. I'm convinced 
         #        it's not the case.
         # -- arnaud
@@ -217,13 +217,13 @@ class Route6:
             if dev is not None and iface != dev:
                 continue
             if in6_isincluded(dst, p, plen):
-                pathes.append((plen, (iface, cset, gw)))
-            elif (in6_ismlladdr(dst) and in6_islladdr(p) and in6_islladdr(cset[0])):
-                pathes.append((plen, (iface, cset, gw)))
+                pathes.append((plen,(iface, cset, gw)))
+            elif(in6_ismlladdr(dst) and in6_islladdr(p) and in6_islladdr(cset[0])):
+                pathes.append((plen,(iface, cset, gw)))
                 
         if not pathes:
-            warning("No route found for IPv6 destination %s (no default route?). This affects only IPv6" % dst)
-            return (LOOPBACK_NAME, "::", "::") # XXX Linux specific
+            warning("No route found for IPv6 destination %s(no default route?). This affects only IPv6" % dst)
+            return(LOOPBACK_NAME, "::", "::") # XXX Linux specific
 
         # Sort with longest prefix first
         pathes.sort(reverse=True)
@@ -236,18 +236,18 @@ class Route6:
             tmp = p[1]
             srcaddr = get_source_addr_from_candidate_set(dst, p[1][1])
             if srcaddr is not None:
-                res.append((p[0], (tmp[0], srcaddr, tmp[2])))
+                res.append((p[0],(tmp[0], srcaddr, tmp[2])))
  
         if res == []:
             warning("Found a route for IPv6 destination '%s', but no possible source address. This affects only IPv6" % dst)
-            return (LOOPBACK_NAME, b"::", b"::") # XXX Linux specific
+            return(LOOPBACK_NAME, b"::", b"::") # XXX Linux specific
 
-        # Symptom  : 2 routes with same weight (our weight is plen)
+        # Symptom  : 2 routes with same weight(our weight is plen)
         # Solution : 
         #  - dst is unicast global. Check if it is 6to4 and we have a source 
         #    6to4 address in those available
-        #  - dst is link local (unicast or multicast) and multiple output
-        #    interfaces are available. Take main one (conf.iface6)
+        #  - dst is link local(unicast or multicast) and multiple output
+        #    interfaces are available. Take main one(conf.iface6)
         #  - if none of the previous or ambiguity persists, be lazy and keep
         #    first one
         #  XXX TODO : in a _near_ future, include metric in the game
@@ -267,7 +267,7 @@ class Route6:
             if tmp:
                 res = tmp
                 
-        # Fill the cache (including dev-specific request)
+        # Fill the cache(including dev-specific request)
         k = dst
         if dev is not None:
             k = dst + "%%" + dev

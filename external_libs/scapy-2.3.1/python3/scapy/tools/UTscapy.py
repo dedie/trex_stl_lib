@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -82,12 +82,12 @@ vzM985aHXOHAxQN2UQZbQkUv3D4Vc+lyvalAffv3Tyg4ks3a22kPXiyeCGweviNX
 0K8TKasyOhGsVamTUAZBXfQVw1zmdS4rHDnbHgtIjX3DcCt6UIr0BHTYjdV0JbPj
 r1APYgXihjQwM2M83AKIhwQQJv/F3JFOFCQNsEI0QA==""")
     def get_local_dict(cls):
-        #return dict(map(lambda (x,y): (x, y.name),  filter(lambda (x,y): isinstance(y, File), cls.__dict__.items())))
-        return dict(map(lambda a: (a[0], a[1].name),  filter(lambda a: isinstance(a[1], File), cls.__dict__.items())))
+        #return dict(map(lambda(x,y):(x, y.name),  filter(lambda(x,y): isinstance(y, File), cls.__dict__.items())))
+        return dict(map(lambda a:(a[0], a[1].name),  filter(lambda a: isinstance(a[1], File), cls.__dict__.items())))
     get_local_dict = classmethod(get_local_dict)
     def get_URL_dict(cls):
-        #return dict(map(lambda (x,y): (x, y.URL),  filter(lambda (x,y): isinstance(y, File), cls.__dict__.items())))
-        return dict(map(lambda a: (a[0], a[1].URL),  filter(lambda a: isinstance(a[1], File), cls.__dict__.items())))
+        #return dict(map(lambda(x,y):(x, y.URL),  filter(lambda(x,y): isinstance(y, File), cls.__dict__.items())))
+        return dict(map(lambda a:(a[0], a[1].URL),  filter(lambda a: isinstance(a[1], File), cls.__dict__.items())))
     get_URL_dict = classmethod(get_URL_dict)
 
 
@@ -179,7 +179,7 @@ def parse_campaign_file(campaign_file):
         if l[0] == '#':
             continue
         if l[0] == "~":
-            (test or testset or campaign_file).add_keywords(l[1:].split())
+           (test or testset or campaign_file).add_keywords(l[1:].split())
         elif l[0] == "%":
             test_campaign.title = l[1:].strip()
         elif l[0] == "+":
@@ -217,9 +217,9 @@ def dump_campaign(test_campaign):
     print()
     for ts in test_campaign:
         if ts.crc:
-            print("+--[%s]%s(%s)--" % (ts.name,"-"*max(2,80-len(ts.name)-18),ts.crc))
+            print("+--[%s]%s(%s)--" %(ts.name,"-"*max(2,80-len(ts.name)-18),ts.crc))
         else:
-            print("+--[%s]%s" % (ts.name,"-"*max(2,80-len(ts.name)-6)))
+            print("+--[%s]%s" %(ts.name,"-"*max(2,80-len(ts.name)-6)))
         if ts.keywords:
             print("  kw=%s" % ",".join(ts.keywords))
         for t in ts:
@@ -230,12 +230,12 @@ def dump_campaign(test_campaign):
             if t.crc:
                 c = "[%(crc)s] " % t
             if c or k:
-                print("    %s%s" % (c,k) )
+                print("    %s%s" %(c,k) )
 
 #### COMPUTE CAMPAIGN DIGESTS ####
 
 def crc32(x):
-    return "%08X" % (0xffffffff & zlib.crc32(x))
+    return "%08X" %(0xffffffff & zlib.crc32(x))
 
 def sha1(x):
     return hashlib.sha1(x).hexdigest().upper()
@@ -331,7 +331,7 @@ def run_campaign(test_campaign, get_interactive_session, verb=2):
     test_campaign.failed = failed
     if verb:
         print("Campaign CRC=%(crc)s  SHA=%(sha)s" % test_campaign, file = sys.stderr)
-        print("PASSED=%i FAILED=%i" % (passed, failed), file = sys.stderr)
+        print("PASSED=%i FAILED=%i" %(passed, failed), file = sys.stderr)
 
 
 #### INFO LINES ####
@@ -341,14 +341,14 @@ def info_line(test_campaign):
     if filename is None:
         return "Run %s by UTscapy" % time.ctime()
     else:
-        return "Run %s from [%s] by UTscapy" % (time.ctime(), filename)
+        return "Run %s from [%s] by UTscapy" %(time.ctime(), filename)
 
 def html_info_line(test_campaign):
     filename = test_campaign.filename
     if filename is None:
         return """Run %s by <a href="http://www.secdev.org/projects/UTscapy/">UTscapy</a><br>""" % time.ctime()
     else:
-        return """Run %s from [%s] by <a href="http://www.secdev.org/projects/UTscapy/">UTscapy</a><br>""" % (time.ctime(), filename)
+        return """Run %s from [%s] by <a href="http://www.secdev.org/projects/UTscapy/">UTscapy</a><br>""" %(time.ctime(), filename)
 
 
 #### CAMPAIGN TO something ####
@@ -517,10 +517,10 @@ def usage():
 -s\t\t: path to scapy.py
 -q\t\t: quiet mode
 -qq\t\t: [silent mode]
--n <testnum>\t: only tests whose numbers are given (eg. 1,3-7,12)
+-n <testnum>\t: only tests whose numbers are given(eg. 1,3-7,12)
 -m <module>\t: additional module to put in the namespace
--k <kw1>,<kw2>,...\t: include only tests with one of those keywords (can be used many times)
--K <kw1>,<kw2>,...\t: remove tests with one of those keywords (can be used many times)
+-k <kw1>,<kw2>,...\t: include only tests with one of those keywords(can be used many times)
+-K <kw1>,<kw2>,...\t: remove tests with one of those keywords(can be used many times)
 -P <preexecute_python_code>
 """, file = sys.stderr)
     raise SystemExit
@@ -597,14 +597,14 @@ def main(argv):
         try:
             from scapy import all as scapy
         except ImportError as e:
-            raise getopt.GetoptError("cannot import [%s]: %s" % (SCAPY,e))
+            raise getopt.GetoptError("cannot import [%s]: %s" %(SCAPY,e))
 
         for m in MODULES:
             try:
                 mod = import_module(m)
                 builtins.__dict__.update(mod.__dict__)
             except ImportError as e:
-                raise getopt.GetoptError("cannot import [%s]: %s" % (m,e))
+                raise getopt.GetoptError("cannot import [%s]: %s" %(m,e))
                 
     except getopt.GetoptError as msg:
         print("ERROR:",msg, file = sys.stderr)

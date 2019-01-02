@@ -7,7 +7,7 @@
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+   (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -25,7 +25,7 @@
     # Some examples on how to use this script:                         #
     #                      http://0xbadcab1e.lu/scapy_gsm_um-howto.txt #
     #                                                                  #
-    # tested on: scapy-version: 2.2.0 (dev)                            #
+    # tested on: scapy-version: 2.2.0(dev)                            #
     ####################################################################
 
 import logging
@@ -84,16 +84,16 @@ class ErrorLength(Exception):
         return repr(error)
 ###
 # This method computes the length of the actual IE.
-# It computes how many "None" fields have to be removed (if any).
+# It computes how many "None" fields have to be removed(if any).
 # The method returns an integer containing the number of bytes that have to be
 # cut off the packet.
 # parameter length contains the max length of the IE can be found in
 # 0408
-# The parameter fields contains the value of the fields (not the default but
+# The parameter fields contains the value of the fields(not the default but
 # the real, actual value.
 # The parameter fields2 contains fields_desc.
 # Location contains the location of the length field in the IE. Everything
-# after the the length field has to be counted (04.07 11.2.1.1.2)
+# after the the length field has to be counted(04.07 11.2.1.1.2)
 
 
 def adapt(min_length, max_length, fields, fields2, location=2):
@@ -114,7 +114,7 @@ def adapt(min_length, max_length, fields, fields2, location=2):
         i -= 1
     if mysum % 8 is 0:
         length = mysum / 8  # Number of bytes we have to delete
-        dyn_length = (max_length - min_length - length)
+        dyn_length =(max_length - min_length - length)
         if dyn_length < 0:
             dyn_length = 0
         if length is max_length:  # Fix for packets that have all values set
@@ -173,7 +173,7 @@ class MessageType(Packet):
 
 
 ##
-# Message for Radio Resources management (RR) Section 9.1
+# Message for Radio Resources management(RR) Section 9.1
 ###
 
 # Network to MS
@@ -2813,7 +2813,7 @@ def smStatus():
 
 
 # ============================================#
-# Information Elements contents (Section 10)  #
+# Information Elements contents(Section 10)  #
 # =========================================== #
 
 ####
@@ -3070,7 +3070,7 @@ class PriorityLevelHdr(Packet):
 #
 
 
-# len 6 to max for L3 message (251)
+# len 6 to max for L3 message(251)
 class BaRangeHdr(Packet):
     """ BA Range Section 10.5.2.1a """
     name = "BA Range"
@@ -3514,10 +3514,10 @@ class BaRangeHdr(Packet):
         a = []
         i = 0
         for i in range(0, len(self.fields_desc)):
-            print(("i is %s" % (i,)))
+            print(("i is %s" %(i,)))
             aList.append(self.fields_desc[i].name)
-            print(("aList %s" % (len(aList))))
-            print(("self.fields_desc %s" % (len(self.fields_desc))))
+            print(("aList %s" %(len(aList))))
+            print(("self.fields_desc %s" %(len(self.fields_desc))))
         for i in aList:
             a.append(getattr(self, i))
         res = adapt(6, 251, a, self.fields_desc)
@@ -3528,7 +3528,7 @@ class BaRangeHdr(Packet):
         return p + pay
 
 
-# len 3 to max for L3 message (251)
+# len 3 to max for L3 message(251)
 class BaListPrefHdr(Packet):
     """ BA List Pref Section 10.5.2.1c """
     name = "BA List Pref"
@@ -3601,8 +3601,8 @@ class CellDescriptionHdr(Packet):
 
 
 class CellOptionsBCCHHdr(Packet):
-    """ Cell Options (BCCH)  Section 10.5.2.3 """
-    name = "Cell Options (BCCH)"
+    """ Cell Options(BCCH)  Section 10.5.2.3 """
+    name = "Cell Options(BCCH)"
     fields_desc = [
              BitField("eightBitCOB", None, 1),
              XBitField("ieiCOB", None, 7),
@@ -3614,8 +3614,8 @@ class CellOptionsBCCHHdr(Packet):
 
 
 class CellOptionsSACCHHdr(Packet):
-    """ Cell Options (SACCH) Section 10.5.2.3a """
-    name = "Cell Options (SACCH)"
+    """ Cell Options(SACCH) Section 10.5.2.3a """
+    name = "Cell Options(SACCH)"
     fields_desc = [
              BitField("eightBitCOS", None, 1),
              XBitField("ieiCOS", None, 7),
@@ -4414,7 +4414,7 @@ class P2RestOctets(Packet):
               BitField("pageIndication3", 0x0, 1),
               BitField("spare", 0x0, 1),
 
-              # optinal (No length field!)
+              # optinal(No length field!)
               ByteField("spareB1", None),
               ByteField("spareB2", None),
               ByteField("spareB3", None),
@@ -4452,7 +4452,7 @@ class P3RestOctets(Packet):
 
 # ideas for the dynamic  packets:
 # 1] for user interaction: Create an interactive "builder" based on a
-# Q/A process (not very scapy like)
+# Q/A process(not very scapy like)
 # 2] for usage in scripts, create an alternative  packet for every
 # possible  packet layout
 #
@@ -5124,7 +5124,7 @@ class ApduIDAndApduFlags(Packet):
              ]
 
 
-# len 2 to max L3 (251) (done)
+# len 2 to max L3(251)(done)
 class ApduDataHdr(Packet):
     """APDU Data Section 10.5.2.50"""
     name = "Apdu Data"
@@ -5482,7 +5482,7 @@ class LocationUpdatingTypeAndCiphKeySeqNr(Packet):
              ]
 
 
-# len 3 to L3 max (251) (done)
+# len 3 to L3 max(251)(done)
 class NetworkNameHdr(Packet):
     """Network Name Section 10.5.3.5a"""
     name = "Network Name"
@@ -6018,7 +6018,7 @@ class BearerCapabilityHdr(Packet):
         if len(p) is 5:
             p = p[:-2]
         if self.lengthBC is None:
-            print(("len von a %s" % (len(p),)))
+            print(("len von a %s" %(len(p),)))
             p = p[:1] + struct.pack(">B", len(p)-3) + p[2:]
         return p + pay
 
@@ -6576,7 +6576,7 @@ class ConnectedSubaddressHdr(Packet):
         return p + pay
 
 
-# len 2 to L3 (251) (done)
+# len 2 to L3(251)(done)
 class FacilityHdr(Packet):
     """Facility Section 10.5.4.15"""
     name = "Facility"
@@ -7150,7 +7150,7 @@ class ReverseCallSetupDirectionHdr(Packet):
              ]
 
 
-# no upper length min 2(max for L3) (251)
+# no upper length min 2(max for L3)(251)
 class SetupContainerHdr(Packet):
     """SETUP Container $(CCBS)$ Section 10.5.4.22b"""
     name = "Setup Container $(CCBS)$"
@@ -7436,7 +7436,7 @@ class SignalHdr(Packet):
              ]
 
 
-# length 2 to max for L3 message (251)
+# length 2 to max for L3 message(251)
 class SsVersionIndicatorHdr(Packet):
     """SS Version Indicator  Section 10.5.4.24"""
     name = "SS Version Indicator"
@@ -9091,7 +9091,7 @@ class PriorityLevel(Packet):
 #
 
 
-# len 6 to max for L3 message (251)
+# len 6 to max for L3 message(251)
 class BaRange(Packet):
     """ BA Range Section 10.5.2.1a """
     name = "BA Range"
@@ -9544,7 +9544,7 @@ class BaRange(Packet):
         return p + pay
 
 
-# len 3 to max for L3 message (251)
+# len 3 to max for L3 message(251)
 class BaListPref(Packet):
     """ BA List Pref Section 10.5.2.1c """
     name = "BA List Pref"
@@ -9609,8 +9609,8 @@ class CellDescription(Packet):
 
 
 class CellOptionsBCCH(Packet):
-    """ Cell Options (BCCH)  Section 10.5.2.3 """
-    name = "Cell Options (BCCH)"
+    """ Cell Options(BCCH)  Section 10.5.2.3 """
+    name = "Cell Options(BCCH)"
     fields_desc = [
              BitField("spare", 0x0, 1),
              BitField("pwrc", 0x0, 1),
@@ -9620,8 +9620,8 @@ class CellOptionsBCCH(Packet):
 
 
 class CellOptionsSACCH(Packet):
-    """ Cell Options (SACCH) Section 10.5.2.3a """
-    name = "Cell Options (SACCH)"
+    """ Cell Options(SACCH) Section 10.5.2.3a """
+    name = "Cell Options(SACCH)"
     fields_desc = [
              BitField("dtx", 0x0, 1),
              BitField("pwrc", 0x0, 1),
@@ -10221,7 +10221,7 @@ class NeighbourCellsDescription2(Packet):
 
 # ideas for the dynamic  packets:
 # 1] for user interaction: Create an interactive "builder" based on a
-# Q/A process (not very scapy like)
+# Q/A process(not very scapy like)
 # 2] for usage in scripts, create an alternative  packet for every
 # possible  packet layout
 #
@@ -10517,7 +10517,7 @@ class ApduFlags(Packet):
              ]
 
 
-# len 1 to max L3 (251) (done)
+# len 1 to max L3(251)(done)
 class ApduData(Packet):
     """APDU Data Section 10.5.2.50"""
     name = "Apdu Data"
@@ -10794,7 +10794,7 @@ class ApduData(Packet):
 #
 
 
-# len 3 to L3 max (251) (done)
+# len 3 to L3 max(251)(done)
 class NetworkName(Packet):
     """Network Name Section 10.5.3.5a"""
     name = "Network Name"
@@ -11817,7 +11817,7 @@ class ConnectedSubaddress(Packet):
         return p + pay
 
 
-# len 2 to L3 (251) (done)
+# len 2 to L3(251)(done)
 class Facility(Packet):
     """Facility Section 10.5.4.15"""
     name = "Facility"
@@ -12362,7 +12362,7 @@ class RepeatIndicator(Packet):
              ]
 
 
-# no upper length min 2(max for L3) (251)
+# no upper length min 2(max for L3)(251)
 class SetupContainer(Packet):
     """SETUP Container $(CCBS)$ Section 10.5.4.22b"""
     name = "Setup Container $(CCBS)$"
@@ -12644,7 +12644,7 @@ class Signal(Packet):
              ]
 
 
-# length 2 to max for L3 message (251)
+# length 2 to max for L3 message(251)
 class SsVersionIndicator(Packet):
     """SS Version Indicator  Section 10.5.4.24"""
     name = "SS Version Indicator"
@@ -13116,4 +13116,4 @@ class AttachType(Packet):
 
 
 if __name__ == "__main__":
-    interact(mydict=globals(), mybanner="Scapy GSM-UM (Air) Addon")
+    interact(mydict=globals(), mybanner="Scapy GSM-UM(Air) Addon")

@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -29,7 +29,7 @@ class PacketList(BasePacketList):
     def __init__(self, res=None, name="PacketList", stats=None, vector_index = None):
         """create a packet list from a list of packets
            res: the list of packets
-           stats: a list of classes that will appear in the stats (defaults to [TCP,UDP,ICMP])"""
+           stats: a list of classes that will appear in the stats(defaults to [TCP,UDP,ICMP])"""
         if stats is None:
             stats = conf.stats_classic_protocols
         self.stats = stats
@@ -51,7 +51,7 @@ class PacketList(BasePacketList):
         if self.vector_index == None:
             return elt.summary()
         else:
-            return "%s ==> %s" % (elt[0].summary(),elt[1].summary()) 
+            return "%s ==> %s" %(elt[0].summary(),elt[1].summary()) 
 
     def _elt2show(self, elt):
         return self._elt2sum(elt)
@@ -70,13 +70,13 @@ class PacketList(BasePacketList):
         s = ""
         ct = conf.color_theme
         for p in self.stats:
-            s += " %s%s%s" % (ct.packetlist_proto(p.name),
+            s += " %s%s%s" %(ct.packetlist_proto(p.name),
                               ct.punct(":"),
                               ct.packetlist_value(stats[p]))
-        s += " %s%s%s" % (ct.packetlist_proto("Other"),
+        s += " %s%s%s" %(ct.packetlist_proto("Other"),
                           ct.punct(":"),
                           ct.packetlist_value(other))
-        return "%s%s%s%s%s" % (ct.punct("<"),
+        return "%s%s%s%s%s" %(ct.punct("<"),
                                ct.packetlist_name(self.listname),
                                ct.punct(":"),
                                s,
@@ -143,9 +143,9 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
 
     def diffplot(self, f, delay=1, lfilter=None, **kargs):
         """diffplot(f, delay=1, lfilter=None)
-        Applies a function to couples (l[i],l[i+delay])"""
+        Applies a function to couples(l[i],l[i+delay])"""
 
-        return plt.plot([ f(i, j) for i in self.res[:-delay] for j in self.res[delay:] if not lfilter or (lfilter(i) and lfilter(j))], 
+        return plt.plot([ f(i, j) for i in self.res[:-delay] for j in self.res[delay:] if not lfilter or(lfilter(i) and lfilter(j))], 
             **kargs)
 
     def multiplot(self, f, lfilter=None, **kargs):
@@ -177,7 +177,7 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
             p1 = self._elt2pkt(p)
             if lfilter is not None and not lfilter(p1):
                 continue
-            print("%s %s %s" % (conf.color_theme.id(i,fmt="%04i"),
+            print("%s %s %s" %(conf.color_theme.id(i,fmt="%04i"),
                                 p1.sprintf("%.time%"),
                                 self._elt2sum(p)))
             if p1.haslayer(conf.raw_layer):
@@ -190,7 +190,7 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
             p1 = self._elt2pkt(p)
             if lfilter is not None and not lfilter(p1):
                 continue
-            print("%s %s %s" % (conf.color_theme.id(i,fmt="%04i"),
+            print("%s %s %s" %(conf.color_theme.id(i,fmt="%04i"),
                                 p1.sprintf("%.time%"),
                                 self._elt2sum(p)))
             hexdump(p1)
@@ -201,7 +201,7 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
             p1 = self._elt2pkt(p)
             if p1.haslayer(conf.padding_layer):
                 if lfilter is None or lfilter(p1):
-                    print("%s %s %s" % (conf.color_theme.id(i,fmt="%04i"),
+                    print("%s %s %s" %(conf.color_theme.id(i,fmt="%04i"),
                                         p1.sprintf("%.time%"),
                                         self._elt2sum(p)))
                     hexdump(p1.getlayer(conf.padding_layer).load)
@@ -215,7 +215,7 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
                 if pad == pad[0]*len(pad):
                     continue
                 if lfilter is None or lfilter(p1):
-                    print("%s %s %s" % (conf.color_theme.id(i,fmt="%04i"),
+                    print("%s %s %s" %(conf.color_theme.id(i,fmt="%04i"),
                                         p1.sprintf("%.time%"),
                                         self._elt2sum(p)))
                     hexdump(p1.getlayer(conf.padding_layer).load)
@@ -223,11 +223,11 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
 
     def conversations(self, getsrcdst=None, draw = True, **kargs):
         """Graphes a conversations between sources and destinations and display it
-        (using graphviz)
+       (using graphviz)
         getsrcdst: a function that takes an element of the list and return the source and dest
                    by defaults, return source and destination IP
         if networkx library is available returns a DiGraph, or draws it if draw = True otherwise graphviz is used
-        format: output type (svg, ps, gif, jpg, etc.), passed to dot's "-T" option
+        format: output type(svg, ps, gif, jpg, etc.), passed to dot's "-T" option
         target: output filename. If None, matplotlib is used to display
         prog: which graphviz program to use"""
         if getsrcdst is None:
@@ -257,7 +257,7 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
         else:
             gr = 'digraph "conv" {\n'
             for s,d in conv:
-                gr += '\t "%s" -> "%s"\n' % (s,d)
+                gr += '\t "%s" -> "%s"\n' %(s,d)
             gr += "}\n"        
             return do_graph(gr, **kargs)
 
@@ -282,17 +282,17 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
                     n += 1
                     if e not in l:
                         l.append(e)
-                    sl[s] = (n,l)
+                    sl[s] =(n,l)
                 else:
-                    sl[s] = (1,[e])
+                    sl[s] =(1,[e])
                 if e in el:
                     n,l = el[e]
                     n+=1
                     if d not in l:
                         l.append(d)
-                    el[e] = (n,l)
+                    el[e] =(n,l)
                 else:
-                    el[e] = (1,[d])
+                    el[e] =(1,[d])
                 dl[d] = dl.get(d,0)+1
             except:
                 continue
@@ -309,9 +309,9 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
                 M = 1
             return m,M
 
-        #mins,maxs = minmax(map(lambda (x,y): x, sl.values()))
+        #mins,maxs = minmax(map(lambda(x,y): x, sl.values()))
         mins,maxs = minmax([ a[0] for a in sl.values()])
-        #mine,maxe = minmax(map(lambda (x,y): x, el.values()))
+        #mine,maxe = minmax(map(lambda(x,y): x, el.values()))
         mine,maxe = minmax([ a[0] for a in el.values()])
         mind,maxd = minmax(dl.values())
     
@@ -320,24 +320,24 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
         gr += "# src nodes\n"
         for s in sl:
             n,l = sl[s]; n = 1+(n-mins)/(maxs-mins)
-            gr += '"src.%s" [label = "%s", shape=box, fillcolor="#FF0000", style=filled, fixedsize=1, height=%.2f,width=%.2f];\n' % (repr(s),repr(s),n,n)
+            gr += '"src.%s" [label = "%s", shape=box, fillcolor="#FF0000", style=filled, fixedsize=1, height=%.2f,width=%.2f];\n' %(repr(s),repr(s),n,n)
         gr += "# event nodes\n"
         for e in el:
             n,l = el[e]; n = n = 1+(n-mine)/(maxe-mine)
-            gr += '"evt.%s" [label = "%s", shape=circle, fillcolor="#00FFFF", style=filled, fixedsize=1, height=%.2f, width=%.2f];\n' % (repr(e),repr(e),n,n)
+            gr += '"evt.%s" [label = "%s", shape=circle, fillcolor="#00FFFF", style=filled, fixedsize=1, height=%.2f, width=%.2f];\n' %(repr(e),repr(e),n,n)
         for d in dl:
             n = dl[d]; n = n = 1+(n-mind)/(maxd-mind)
-            gr += '"dst.%s" [label = "%s", shape=triangle, fillcolor="#0000ff", style=filled, fixedsize=1, height=%.2f, width=%.2f];\n' % (repr(d),repr(d),n,n)
+            gr += '"dst.%s" [label = "%s", shape=triangle, fillcolor="#0000ff", style=filled, fixedsize=1, height=%.2f, width=%.2f];\n' %(repr(d),repr(d),n,n)
 
         gr += "###\n"
         for s in sl:
             n,l = sl[s]
             for e in l:
-                gr += ' "src.%s" -> "evt.%s";\n' % (repr(s),repr(e)) 
+                gr += ' "src.%s" -> "evt.%s";\n' %(repr(s),repr(e)) 
         for e in el:
             n,l = el[e]
             for d in l:
-                gr += ' "evt.%s" -> "dst.%s";\n' % (repr(e),repr(d)) 
+                gr += ' "evt.%s" -> "dst.%s";\n' %(repr(e),repr(d)) 
             
         gr += "}"
         return do_graph(gr, **kargs)
@@ -351,7 +351,7 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
             elt = self.res[i]
             c = self._elt2pkt(elt).canvas_dump(**kargs)
             cbb = c.bbox()
-            c.text(cbb.left(),cbb.top()+1,r"\font\cmssfont=cmss12\cmssfont{Frame %i/%i}" % (i,l),[pyx.text.size.LARGE])
+            c.text(cbb.left(),cbb.top()+1,r"\font\cmssfont=cmss12\cmssfont{Frame %i/%i}" %(i,l),[pyx.text.size.LARGE])
             if conf.verb >= 2:
                 os.write(1,b".")
             d.append(pyx.document.page(c, paperformat=pyx.document.paperformat.A4,
@@ -388,8 +388,8 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
         print
 
     def sr(self,multi=0):
-        """sr([multi=1]) -> (SndRcvList, PacketList)
-        Matches packets in the list and return ( (matched couples), (unmatched packets) )"""
+        """sr([multi=1]) ->(SndRcvList, PacketList)
+        Matches packets in the list and return((matched couples),(unmatched packets) )"""
         remain = self.res[:]
         sr = []
         i = 0
@@ -442,17 +442,17 @@ lfilter: truth function to apply to each packet to decide whether it will be dis
     def replace(self, *args, **kargs):
         """
         lst.replace(<field>,[<oldvalue>,]<newvalue>)
-        lst.replace( (fld,[ov],nv),(fld,[ov,]nv),...)
+        lst.replace((fld,[ov],nv),(fld,[ov,]nv),...)
           if ov is None, all values are replaced
         ex:
           lst.replace( IP.src, "192.168.1.1", "10.0.0.1" )
           lst.replace( IP.ttl, 64 )
-          lst.replace( (IP.ttl, 64), (TCP.sport, 666, 777), )
+          lst.replace((IP.ttl, 64),(TCP.sport, 666, 777), )
         """
         delete_checksums = kargs.get("delete_checksums",False)
         x=PacketList(name="Replaced %s" % self.listname)
         if type(args[0]) is not tuple:
-            args = (args,)
+            args =(args,)
         for p in self.res:
             p = self._elt2pkt(p)
             copied = False
@@ -478,7 +478,7 @@ class SndRcvList(PacketList):
         PacketList.__init__(self, res, name, stats, vector_index = 1)
     def summary(self, prn=None, lfilter=None):
         """prints a summary of each SndRcv packet pair
-prn:     function to apply to each packet pair instead of lambda s, r: "%s ==> %s" % (s.summary(),r.summary())
+prn:     function to apply to each packet pair instead of lambda s, r: "%s ==> %s" %(s.summary(),r.summary())
 lfilter: truth function to apply to each packet pair to decide whether it will be displayed"""
         for s, r in self.res:
             if lfilter is not None:
@@ -490,9 +490,9 @@ lfilter: truth function to apply to each packet pair to decide whether it will b
                 print(prn(s, r))
     def nsummary(self,prn=None, lfilter=None):
         """prints a summary of each SndRcv packet pair with the pair's number
-prn:     function to apply to each packet pair instead of lambda s, r: "%s ==> %s" % (s.summary(),r.summary()) 
+prn:     function to apply to each packet pair instead of lambda s, r: "%s ==> %s" %(s.summary(),r.summary()) 
 lfilter: truth function to apply to each packet pair to decide whether it will be displayed"""
-        for i, (s, r) in enumerate(self.res):
+        for i,(s, r) in enumerate(self.res):
             if lfilter is not None:
                 if not lfilter(s, r):
                     continue

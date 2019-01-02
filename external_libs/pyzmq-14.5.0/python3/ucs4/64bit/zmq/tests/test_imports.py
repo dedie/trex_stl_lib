@@ -1,4 +1,4 @@
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import sys
@@ -21,7 +21,7 @@ class TestImports(TestCase):
         from zmq import constants
         from zmq import device, proxy
         from zmq import Stopwatch
-        from zmq import ( 
+        from zmq import( 
             zmq_version,
             zmq_version_info,
             pyzmq_version,

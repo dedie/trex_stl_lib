@@ -2,8 +2,8 @@
 zeromq connections.
 """
 
-# Copyright (C) 2010-2011  IPython Development Team
-# Copyright (C) 2011- PyZMQ Developers
+# Copyright(C) 2010-2011  IPython Development Team
+# Copyright(C) 2011- PyZMQ Developers
 #
 # Redistributed from IPython under the terms of the BSD License.
 
@@ -149,7 +149,7 @@ def open_tunnel(addr, server, keyfile=None, password=None, paramiko=None, timeou
     Returns
     -------
     
-    (url, tunnel) : (str, object)
+   (url, tunnel) :(str, object)
         The 0MQ url that has been forwarded, and the tunnel object
     """
     
@@ -200,7 +200,7 @@ def openssh_tunnel(lport, rport, server, remoteip='127.0.0.1', keyfile=None, pas
         Your ssh password to the ssh server. Note that if this is left None,
         you will be prompted for it if passwordless key based login is unavailable.
     timeout : int [default: 60]
-        The time (in seconds) after which no activity will result in the tunnel
+        The time(in seconds) after which no activity will result in the tunnel
         closing.  This prevents orphaned tunnels from running forever.
     """
     if pexpect is None:
@@ -213,17 +213,17 @@ def openssh_tunnel(lport, rport, server, remoteip='127.0.0.1', keyfile=None, pas
         server, port = server.split(':')
         ssh += " -p %s" % port
     
-    cmd = "%s -O check %s" % (ssh, server)
-    (output, exitstatus) = pexpect.run(cmd, withexitstatus=True)
+    cmd = "%s -O check %s" %(ssh, server)
+   (output, exitstatus) = pexpect.run(cmd, withexitstatus=True)
     if not exitstatus:
         pid = int(output[output.find("(pid=")+5:output.find(")")]) 
-        cmd = "%s -O forward -L 127.0.0.1:%i:%s:%i %s" % (
+        cmd = "%s -O forward -L 127.0.0.1:%i:%s:%i %s" %(
             ssh, lport, remoteip, rport, server)
-        (output, exitstatus) = pexpect.run(cmd, withexitstatus=True)
+       (output, exitstatus) = pexpect.run(cmd, withexitstatus=True)
         if not exitstatus:
             atexit.register(_stop_tunnel, cmd.replace("-O forward", "-O cancel", 1))
             return pid
-    cmd = "%s -f -S none -L 127.0.0.1:%i:%s:%i %s sleep %i" % (
+    cmd = "%s -f -S none -L 127.0.0.1:%i:%s:%i %s sleep %i" %(
         ssh, lport, remoteip, rport, server, timeout)
     
     # pop SSH_ASKPASS from env
@@ -274,7 +274,7 @@ def _split_server(server):
 
 def paramiko_tunnel(lport, rport, server, remoteip='127.0.0.1', keyfile=None, password=None, timeout=60):
     """launch a tunner with paramiko in a subprocess. This should only be used
-    when shell ssh is unavailable (e.g. Windows).
+    when shell ssh is unavailable(e.g. Windows).
     
     This creates a tunnel redirecting `localhost:lport` to `remoteip:rport`,
     as seen from `server`.
@@ -308,7 +308,7 @@ def paramiko_tunnel(lport, rport, server, remoteip='127.0.0.1', keyfile=None, pa
         Your ssh password to the ssh server. Note that if this is left None,
         you will be prompted for it if passwordless key based login is unavailable.
     timeout : int [default: 60]
-        The time (in seconds) after which no activity will result in the tunnel
+        The time(in seconds) after which no activity will result in the tunnel
         closing.  This prevents orphaned tunnels from running forever.
     
     """
@@ -350,7 +350,7 @@ def _paramiko_tunnel(lport, rport, server, remoteip, keyfile=None, password=None
 #        else:
 #            raise
     except Exception as e:
-        print('*** Failed to connect to %s:%d: %r' % (server, port, e))
+        print('*** Failed to connect to %s:%d: %r' %(server, port, e))
         sys.exit(1)
 
     # Don't let SIGINT kill the tunnel subprocess

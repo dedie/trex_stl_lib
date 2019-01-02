@@ -13,7 +13,7 @@ from scapy.all import *
 def isValidMCAddr(ip):
   """convert dotted quad string to long and check the first octet"""
   FirstOct=atol(ip)>>24 & 0xFF
-  return (FirstOct >= 224) and (FirstOct <= 239)
+  return(FirstOct >= 224) and(FirstOct <= 239)
 
 #--------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ sendp(a/b/c, iface="en0")
 
     Parameters:
       type    IGMP type field, 0x11, 0x12, 0x16 or 0x17
-      mrtime  Maximum Response time (zero for v1)
+      mrtime  Maximum Response time(zero for v1)
       gaddr   Multicast Group Address 224.x.x.x/4
       
 See RFC2236, Section 2. Introduction for definitions of proper 
@@ -97,17 +97,17 @@ IGMPv2 message format   http://www.faqs.org/rfcs/rfc2236.html
 
 # The rules are:
 #   1.  the Max Response time is meaningful only in Membership Queries and should be zero 
-#       otherwise (RFC 2236, section 2.2)
+#       otherwise(RFC 2236, section 2.2)
 
-    if (self.type != 0x11):         #rule 1
+    if(self.type != 0x11):         #rule 1
       self.mrtime = 0
       
-    if (self.adjust_ip(ip) == True):
-      if (self.adjust_ether(ip, ether) == True): return True
+    if(self.adjust_ip(ip) == True):
+      if(self.adjust_ether(ip, ether) == True): return True
     return False
 
 #--------------------------------------------------------------------------
-  def adjust_ether (self, ip=None, ether=None):
+  def adjust_ether(self, ip=None, ether=None):
     """Called to explicitely fixup an associated Ethernet header
 
     The function adjusts the ethernet header destination MAC address based on 
@@ -117,29 +117,29 @@ IGMPv2 message format   http://www.faqs.org/rfcs/rfc2236.html
 #   1. send to the group mac address address corresponding to the IP.dst
     if ip != None and ip.haslayer(IP) and ether != None and ether.haslayer(Ether):
       iplong = atol(ip.dst)
-      ether.dst = "01:00:5e:%02x:%02x:%02x" % ( (iplong>>16)&0x7F, (iplong>>8)&0xFF, (iplong)&0xFF )
+      ether.dst = "01:00:5e:%02x:%02x:%02x" %((iplong>>16)&0x7F,(iplong>>8)&0xFF,(iplong)&0xFF )
       # print "igmpize ip " + ip.dst + " as mac " + ether.dst 
       return True
     else:
       return False
 
 #--------------------------------------------------------------------------
-  def adjust_ip (self, ip=None):
+  def adjust_ip(self, ip=None):
     """Called to explicitely fixup an associated IP header
 
     The function adjusts the IP header based on conformance rules 
     and the group address encoded in the IGMP message.
     The rules are:
-    1. Send General Group Query to 224.0.0.1 (all systems)
-    2. Send Leave Group to 224.0.0.2 (all routers)
+    1. Send General Group Query to 224.0.0.1(all systems)
+    2. Send Leave Group to 224.0.0.2(all routers)
     3a.Otherwise send the packet to the group address
     3b.Send reports/joins to the group address
-    4. ttl = 1 (RFC 2236, section 2)
-    5. send the packet with the router alert IP option (RFC 2236, section 2)
+    4. ttl = 1(RFC 2236, section 2)
+    5. send the packet with the router alert IP option(RFC 2236, section 2)
     """
     if ip != None and ip.haslayer(IP):
-      if (self.type == 0x11):
-        if (self.gaddr == "0.0.0.0"):
+      if(self.type == 0x11):
+        if(self.gaddr == "0.0.0.0"):
           ip.dst = "224.0.0.1"                   # IP rule 1
           retCode = True                     
         elif isValidMCAddr(self.gaddr):
@@ -148,10 +148,10 @@ IGMPv2 message format   http://www.faqs.org/rfcs/rfc2236.html
         else:
           print("Warning: Using invalid Group Address")
           retCode = False
-      elif ((self.type == 0x17) and isValidMCAddr(self.gaddr)):
+      elif((self.type == 0x17) and isValidMCAddr(self.gaddr)):
           ip.dst = "224.0.0.2"                   # IP rule 2
           retCode = True
-      elif ((self.type == 0x12) or (self.type == 0x16)) and (isValidMCAddr(self.gaddr)):
+      elif((self.type == 0x12) or(self.type == 0x16)) and(isValidMCAddr(self.gaddr)):
           ip.dst = self.gaddr                    # IP rule 3b
           retCode = True
       else:

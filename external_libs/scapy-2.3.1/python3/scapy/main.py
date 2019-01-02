@@ -1,6 +1,6 @@
 ## This file is part of Scapy
 ## See http://www.secdev.org/projects/scapy for more informations
-## Copyright (C) Philippe Biondi <phil@secdev.org>
+## Copyright(C) Philippe Biondi <phil@secdev.org>
 ## This program is published under a GPLv2 license
 
 """
@@ -30,7 +30,7 @@ def _read_config_file(cf):
     try:
         exec(open(cf).read())
     except IOError as e:
-        log_loading.warning("Cannot read config file [%s] [%s]" % (cf,e))
+        log_loading.warning("Cannot read config file [%s] [%s]" %(cf,e))
     except Exception as e:
         log_loading.exception("Error during evaluation of config file [%s]" % cf)
         
@@ -118,11 +118,11 @@ def save_session(fname=None, session=None, pickleProto=4):
         
     for k in list(to_be_saved.keys()):
         if k in ["__builtins__", "In", "Out", "conf"] or k.startswith("_") or \
-                (hasattr(to_be_saved[k], "__module__") and str(to_be_saved[k].__module__).startswith('IPython')):
+               (hasattr(to_be_saved[k], "__module__") and str(to_be_saved[k].__module__).startswith('IPython')):
             del(to_be_saved[k])
             continue
         if type(to_be_saved[k]) in [type, types.ModuleType, types.MethodType]:
-             log_interactive.info("[%s] (%s) can't be saved." % (k, type(to_be_saved[k])))
+             log_interactive.info("[%s](%s) can't be saved." %(k, type(to_be_saved[k])))
              del(to_be_saved[k])
 
     try:
@@ -182,7 +182,7 @@ def scapy_write_history_file(readline):
             readline.write_history_file(conf.histfile)
         except IOError as e:
             try:
-                warning("Could not write history to [%s]\n\t (%s)" % (conf.histfile,e))
+                warning("Could not write history to [%s]\n\t(%s)" %(conf.histfile,e))
                 tmp = utils.get_temp_file(keep=True)
                 readline.write_history_file(tmp)
                 warning("Wrote history to [%s]" % tmp)
@@ -198,7 +198,7 @@ def interact(mydict=None,argv=None,mybanner=None,loglevel=20):
     if loglevel is not None:
         conf.logLevel=loglevel
 
-    the_banner = "Welcome to Scapy (%s)"
+    the_banner = "Welcome to Scapy(%s)"
     if mybanner is not None:
         the_banner += "\n"
         the_banner += mybanner
@@ -246,7 +246,7 @@ def interact(mydict=None,argv=None,mybanner=None,loglevel=20):
                 n = len(attr)
                 for word in words:
                     if word[:n] == attr and word != "__builtins__":
-                        matches.append("%s.%s" % (expr, word))
+                        matches.append("%s.%s" %(expr, word))
                 return matches
     
         readline.set_completer(ScapyCompleter().complete)
@@ -355,7 +355,7 @@ def interact(mydict=None,argv=None,mybanner=None,loglevel=20):
             IPYTHON=False
         
     if IPYTHON:
-        banner = the_banner % (conf.version) + " using IPython %s" % IPython.__version__
+        banner = the_banner %(conf.version) + " using IPython %s" % IPython.__version__
 
         if conf.ipython_embedded:
             IPython.embed(user_ns=session, banner2=banner)
@@ -363,7 +363,7 @@ def interact(mydict=None,argv=None,mybanner=None,loglevel=20):
             IPython.start_ipython(argv=[], user_ns=session)
 
     else:
-        code.interact(banner = the_banner % (conf.version),
+        code.interact(banner = the_banner %(conf.version),
                       local=session, readfunc=conf.readfunc)
 
     if conf.session:

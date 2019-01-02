@@ -29,7 +29,7 @@ def import_object(name):
     >>> import_object('tornado') is tornado
     True
     >>> import_object('tornado.missing_module')
-    Traceback (most recent call last):
+    Traceback(most recent call last):
         ...
     ImportError: No module named missing_module
     """
@@ -46,8 +46,8 @@ def import_object(name):
 
 # Fake unicode literal support:  Python 3.2 doesn't have the u'' marker for
 # literal strings, and alternative solutions like "from __future__ import
-# unicode_literals" have other problems (see PEP 414).  u() can be applied
-# to ascii strings that include \u escapes (but they must not contain
+# unicode_literals" have other problems(see PEP 414).  u() can be applied
+# to ascii strings that include \u escapes(but they must not contain
 # literal non-ascii characters).
 if type('') is not type(b''):
     def u(s):
@@ -63,7 +63,7 @@ else:
     basestring_type = str
 
 
-if sys.version_info > (3,):
+if sys.version_info >(3,):
     exec("""
 def raise_exc_info(exc_info):
     raise exc_info[1].with_traceback(exc_info[2])
@@ -90,7 +90,7 @@ def exec_in(code, glob, loc=None):
 class Configurable(object):
     """Base class for configurable interfaces.
 
-    A configurable interface is an (abstract) class whose constructor
+    A configurable interface is an(abstract) class whose constructor
     acts as a factory function for one of its implementation subclasses.
     The implementation subclass as well as optional keyword arguments to
     its initializer can be set globally at runtime with `configure`.
@@ -98,7 +98,7 @@ class Configurable(object):
     By using the constructor as the factory method, the interface
     looks like a normal class, `isinstance` works as usual, etc.  This
     pattern is most useful when the choice of implementation is likely
-    to be a global decision (e.g. when `~select.epoll` is available,
+    to be a global decision(e.g. when `~select.epoll` is available,
     always use it instead of `~select.select`), or when a
     previously-monolithic class has been split into specialized
     subclasses.
@@ -132,7 +132,7 @@ class Configurable(object):
         """Returns the base class of a configurable hierarchy.
 
         This will normally return the class in which it is defined.
-        (which is *not* necessarily the same as the cls classmethod parameter).
+       (which is *not* necessarily the same as the cls classmethod parameter).
         """
         raise NotImplementedError()
 
@@ -156,7 +156,7 @@ class Configurable(object):
         some parameters.
         """
         base = cls.configurable_base()
-        if isinstance(impl, (unicode_type, bytes_type)):
+        if isinstance(impl,(unicode_type, bytes_type)):
             impl = import_object(impl)
         if impl is not None and not issubclass(impl, cls):
             raise ValueError("Invalid subclass of %s" % cls)
@@ -174,7 +174,7 @@ class Configurable(object):
     @classmethod
     def _save_configuration(cls):
         base = cls.configurable_base()
-        return (base.__impl_class, base.__impl_kwargs)
+        return(base.__impl_class, base.__impl_kwargs)
 
     @classmethod
     def _restore_configuration(cls, saved):

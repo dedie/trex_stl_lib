@@ -8,16 +8,16 @@ Authors
 """
 
 #-----------------------------------------------------------------------------
-#  Copyright (c) 2010 Lisandro Dalcin
+#  Copyright(c) 2010 Lisandro Dalcin
 #  All rights reserved.
 #  Used under BSD License: http://www.opensource.org/licenses/bsd-license.php
 #
 #  Retrieval:
-#  Jul 23, 2010 18:00 PST (r539)
+#  Jul 23, 2010 18:00 PST(r539)
 #  http://code.google.com/p/mpi4py/source/browse/trunk/src/MPI/asbuffer.pxi
 #
 #  Modifications from original:
-#  Copyright (c) 2010-2012 Brian Granger, Min Ragan-Kelley
+#  Copyright(c) 2010-2012 Brian Granger, Min Ragan-Kelley
 #
 #  Distributed under the terms of the New BSD License.  The full license is in
 #  the file COPYING.BSD, distributed as part of this software.
@@ -32,7 +32,7 @@ Authors
 cdef extern from "pyversion_compat.h":
     pass
 
-# Python 3 buffer interface (PEP 3118)
+# Python 3 buffer interface(PEP 3118)
 cdef extern from "Python.h":
     int PY_MAJOR_VERSION
     int PY_MINOR_VERSION
@@ -65,12 +65,12 @@ cdef extern from "Python.h":
     
     object PyMemoryView_FromObject(object)
 
-# Python 2 buffer interface (legacy)
+# Python 2 buffer interface(legacy)
 cdef extern from "Python.h":
     ctypedef void const_void "const void"
     Py_ssize_t Py_END_OF_BUFFER
     int PyObject_CheckReadBuffer(object)
-    int PyObject_AsReadBuffer (object, const_void **, Py_ssize_t *) except -1
+    int PyObject_AsReadBuffer(object, const_void **, Py_ssize_t *) except -1
     int PyObject_AsWriteBuffer(object, void **, Py_ssize_t *) except -1
     
     object PyBuffer_FromMemory(void *ptr, Py_ssize_t s)
@@ -86,7 +86,7 @@ cdef extern from "Python.h":
 
 
 cdef inline int memoryview_available():
-    return PY_MAJOR_VERSION >= 3 or (PY_MAJOR_VERSION >=2 and PY_MINOR_VERSION >= 7)
+    return PY_MAJOR_VERSION >= 3 or(PY_MAJOR_VERSION >=2 and PY_MINOR_VERSION >= 7)
 
 cdef inline int oldstyle_available():
     return PY_MAJOR_VERSION < 3

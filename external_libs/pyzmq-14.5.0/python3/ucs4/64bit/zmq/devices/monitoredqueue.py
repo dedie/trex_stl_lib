@@ -1,13 +1,13 @@
 """pure Python monitored_queue function
 
-For use when Cython extension is unavailable (PyPy).
+For use when Cython extension is unavailable(PyPy).
 
 Authors
 -------
 * MinRK
 """
 
-# Copyright (C) PyZMQ Developers
+# Copyright(C) PyZMQ Developers
 # Distributed under the terms of the Modified BSD License.
 
 import zmq

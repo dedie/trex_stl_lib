@@ -9,13 +9,13 @@ import hashlib
 
 ############################### Global CAPWAP structure ##############################
 #
-#       CAPWAP Control Packet (Discovery Request/Response):
+#       CAPWAP Control Packet(Discovery Request/Response):
 #       +-------------------------------------------+
 #       | IP  | UDP | CAPWAP | Control | Message    |
 #       | Hdr | Hdr | Header | Header  | Element(s) |
 #       +-------------------------------------------+
 #
-#    CAPWAP Control Packet (DTLS Security Required):
+#    CAPWAP Control Packet(DTLS Security Required):
 #    +------------------------------------------------------------------+
 #    | IP  | UDP | CAPWAP   | DTLS | CAPWAP | Control| Message   | DTLS |
 #    | Hdr | Hdr | DTLS Hdr | Hdr  | Header | Header | Element(s)| Trlr |
@@ -34,9 +34,9 @@ import hashlib
 #       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 #       |          Fragment ID          |     Frag Offset         |Rsvd |
 #       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-#       |                 (optional) Radio MAC Address                  |
+#       |                (optional) Radio MAC Address                  |
 #       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-#       |            (optional) Wireless Specific Information           |
+#       |           (optional) Wireless Specific Information           |
 #       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 #       |                        Payload ....                           |
 #       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -100,33 +100,33 @@ capwap_reboot_statistics_last_failures = {
     }
 capwap_result_codes = {
     0:  'Success',
-    1:  'Failure (AC List Message Element MUST Be Present)',
-    2:  'Success (NAT Detected)',
-    3:  'Join Failure (Unspecified)',
-    4:  'Join Failure (Resource Depletion)',
-    5:  'Join Failure (Unknown Source)',
-    6:  'Join Failure (Incorrect Data)',
-    7:  'Join Failure (Session ID Already in Use)',
-    8:  'Join Failure (WTP Hardware Not Supported)',
-    9:  'Join Failure (Binding Not Supported)',
-    10: 'Reset Failure (Unable to Reset)',
-    11: 'Reset Failure (Firmware Write Error)',
-    12: 'Configuration Failure (Unable to Apply Requested Configuration - Service Provided Anyhow)',
-    13: 'Configuration Failure (Unable to Apply Requested Configuration - Service Not Provided)',
-    14: 'Image Data Error (Invalid Checksum)',
-    15: 'Image Data Error (Invalid Data Length)',
-    16: 'Image Data Error (Other Error)',
-    17: 'Image Data Error (Image Already Present)',
-    18: 'Message Unexpected (Invalid in Current State)',
-    19: 'Message Unexpected (Unrecognized Request)',
+    1:  'Failure(AC List Message Element MUST Be Present)',
+    2:  'Success(NAT Detected)',
+    3:  'Join Failure(Unspecified)',
+    4:  'Join Failure(Resource Depletion)',
+    5:  'Join Failure(Unknown Source)',
+    6:  'Join Failure(Incorrect Data)',
+    7:  'Join Failure(Session ID Already in Use)',
+    8:  'Join Failure(WTP Hardware Not Supported)',
+    9:  'Join Failure(Binding Not Supported)',
+    10: 'Reset Failure(Unable to Reset)',
+    11: 'Reset Failure(Firmware Write Error)',
+    12: 'Configuration Failure(Unable to Apply Requested Configuration - Service Provided Anyhow)',
+    13: 'Configuration Failure(Unable to Apply Requested Configuration - Service Not Provided)',
+    14: 'Image Data Error(Invalid Checksum)',
+    15: 'Image Data Error(Invalid Data Length)',
+    16: 'Image Data Error(Other Error)',
+    17: 'Image Data Error(Image Already Present)',
+    18: 'Message Unexpected(Invalid in Current State)',
+    19: 'Message Unexpected(Unrecognized Request)',
     20: 'Failure - Missing Mandatory Message Element',
     21: 'Failure - Unrecognized Message Element',
-    22: 'Data Transfer Error (No Information to Transfer)'
+    22: 'Data Transfer Error(No Information to Transfer)'
     }
 
 capwap_message_elements_types = {
     # CAPWAP Protocol Message Elements                   1 - 1023
-    0:  'Unknown (0)',
+    0:  'Unknown(0)',
     1:  'AC Descriptor',
     2:  'AC IPv4 List',
     3:  'AC IPv6 List',
@@ -135,7 +135,7 @@ capwap_message_elements_types = {
     6:  'AC Timestamp',
     7:  'Add MAC ACL Entry',
     8:  'Add Station',
-    9:  '9 (Reserved)',
+    9:  '9(Reserved)',
     10: 'CAPWAP Control IPV4 Address',
     11: 'CAPWAP Control IPV6 Address',
     30: 'CAPWAP Local IPV4 Address',
@@ -148,7 +148,7 @@ capwap_message_elements_types = {
     16: 'Decryption Error Report Period',
     17: 'Delete MAC ACL Entry',
     18: 'Delete Station',
-    19: '19 (Reserved)',
+    19: '19(Reserved)',
     20: 'Discovery Type',
     21: 'Duplicate IPv4 Address',
     22: 'Duplicate IPv6 Address',
@@ -175,7 +175,7 @@ capwap_message_elements_types = {
     43: 'WTP IPv6 IP Address', # draft8
     44: 'WTP MAC Type',
     45: 'WTP Name',
-    46: '46 (Unused/Reserved)',
+    46: '46(Unused/Reserved)',
     47: 'WTP Radio Statistics',
     48: 'WTP Reboot Statistics',
     49: 'WTP Static IP Address Information',
@@ -245,7 +245,7 @@ capwap_control_message_types = {
 
 class IEEE80211RateSetField(StrLenField):
     def i2h(self, pkt, x):
-        return ', '.join(['%gMb/s' % (c * 0.5) for c in map(ord, sorted(x))])
+        return ', '.join(['%gMb/s' %(c * 0.5) for c in map(ord, sorted(x))])
 
 
 #################### Classes ###################
@@ -296,19 +296,19 @@ class CAPWAP_Radio_MAC(Container):
 
 
 class CAPWAP_Wireless_Specific_Information(Container):
-    name = 'Wireless Specific Information (General)'
+    name = 'Wireless Specific Information(General)'
     fields_desc = [ ByteField('length', 6),
                     StrLenField('data', '', length_from = lambda pkt:pkt.length),
-                    StrLenField('padding', '', length_from = lambda pkt: (3 - pkt.length) % 4) ]
+                    StrLenField('padding', '', length_from = lambda pkt:(3 - pkt.length) % 4) ]
 
     def post_dissect(self, s):
         if self.length != len(self.data):
-            warn('%s: length is %s, size of data: %s' % (self.name, self.length, len(self.data)))
+            warn('%s: length is %s, size of data: %s' %(self.name, self.length, len(self.data)))
         return s
 
 
 class CAPWAP_Wireless_Specific_Information_IEEE802_11(Container):
-    name = 'Wireless Specific Information (IEEE 802.11)'
+    name = 'Wireless Specific Information(IEEE 802.11)'
     fields_desc = [ ByteField('length', 4),
                     ByteField('rssi', 0),
                     ByteField('snr', 0),
@@ -341,9 +341,9 @@ class CAPWAP_Descriptor_Sub_Element(Container):
 
     def post_dissect(self, s):
         if self.descriptor_length > 1024:
-            warn('%s: descriptor_length field should not exceed 1024 (got %s) according to RFC' % (self.name, self.descriptor_length))
+            warn('%s: descriptor_length field should not exceed 1024(got %s) according to RFC' %(self.name, self.descriptor_length))
         if self.descriptor_length != len(self.descriptor_data):
-            warn('%s: descriptor_length value %s mismatches size of descriptor_data %s!' % (self.name, self.descriptor_length, len(self.descriptor_data)))
+            warn('%s: descriptor_length value %s mismatches size of descriptor_data %s!' %(self.name, self.descriptor_length, len(self.descriptor_data)))
         return s
 
 
@@ -357,9 +357,9 @@ class CAPWAP_AC_Information_Sub_Element(Container):
 
     def post_dissect(self, s):
         if self.ac_information_length > 1024:
-            warn('%s: ac_information_length field should not exceed 1024 (got %s) according to RFC' % (self.name, self.ac_information_length))
+            warn('%s: ac_information_length field should not exceed 1024(got %s) according to RFC' %(self.name, self.ac_information_length))
         if self.ac_information_length != len(self.ac_information_data):
-            warn('%s: ac_information_length value %s mismatches size of ac_information_data %s!' % (self.name, self.ac_information_length, len(self.ac_information_data)))
+            warn('%s: ac_information_length value %s mismatches size of ac_information_data %s!' %(self.name, self.ac_information_length, len(self.ac_information_data)))
         return s
 
 
@@ -372,9 +372,9 @@ class CAPWAP_Board_Data_Sub_Element(Container):
 
     def post_dissect(self, s):
         if self.board_data_length > 1024:
-            warn('%s: board_data_length field should not exceed 1024 (got %s) according to RFC' % (self.name, self.board_data_length))
+            warn('%s: board_data_length field should not exceed 1024(got %s) according to RFC' %(self.name, self.board_data_length))
         if self.board_data_length != len(self.board_data_value):
-            warn('%s: board_data_length value %s mismatches size of board_data_value %s!' % (self.name, self.board_data_length, len(self.board_data_value)))
+            warn('%s: board_data_length value %s mismatches size of board_data_value %s!' %(self.name, self.board_data_length, len(self.board_data_value)))
         return s
 
 
@@ -390,15 +390,15 @@ class CAPWAP_ME(Container):
         Container.__init__(self, *a, **k)
         name_by_type = capwap_message_elements_types.get(self.type, 'Unknown')
         if self.__class__ == CAPWAP_ME:
-            self.name = 'Message element - Not implemented (raw)'
+            self.name = 'Message element - Not implemented(raw)'
             if self.type not in self.ignore_msg_types:
                 if 'Reserved' in name_by_type:
-                    warn('Usage of reserved Message element type %s (%s)' % (self.type, name_by_type))
+                    warn('Usage of reserved Message element type %s(%s)' %(self.type, name_by_type))
                 else:
-                    warn('Not implemented Message element %s (%s).' % (self.type, name_by_type))
+                    warn('Not implemented Message element %s(%s).' %(self.type, name_by_type))
         elif self.type == 37:
             if self.__class__ == CAPWAP_ME_Vendor_Specific_Payload:
-                self.name = 'Message element - Vendor Specific Payload (raw)'
+                self.name = 'Message element - Vendor Specific Payload(raw)'
             else:
                 self.name = 'Message element - Vendor Specific Payload - %s' % capwap_vendor_specific_payload_names.get(self.element_id, 'raw')
         else:
@@ -410,7 +410,7 @@ class CAPWAP_ME(Container):
     def post_dissect(self, s):
         data_len = self._length - 4
         if self.length != data_len:
-            msg = 'Message element - %s: length is %s, size of data: %s' % (
+            msg = 'Message element - %s: length is %s, size of data: %s' %(
                         capwap_message_elements_types.get(self.type, 'Code %s' % self.type),
                         self.length, data_len)
             #raise Exception(msg)
@@ -422,7 +422,7 @@ class CAPWAP_ME(Container):
         if l is None:
             l = len(pkt) - 4
         elif l != len(pkt) - 4:
-            warn('Length in %s (%s) does not match size of data (%s)' % (self.name, l, len(pkt) - 4))
+            warn('Length in %s(%s) does not match size of data(%s)' %(self.name, l, len(pkt) - 4))
         return int2str(self.type, 2) + int2str(l, 2) + pkt[4:] + pay
 
     _registered_me_types = {}
@@ -475,7 +475,7 @@ class CAPWAP_ME_AC_Descriptor(CAPWAP_ME):
     def post_dissect(self, s):
         CAPWAP_ME.post_dissect(self, s)
         if self.length < 12:
-            warn('%s: length should be at least 12 (got %s) according to RFC' % (self.name, self.length))
+            warn('%s: length should be at least 12(got %s) according to RFC' %(self.name, self.length))
         return s
 
 
@@ -488,9 +488,9 @@ class CAPWAP_ME_AC_IPv4_List(CAPWAP_ME):
     def post_dissect(self, s):
         CAPWAP_ME.post_dissect(self, s)
         if self.length > 1024:
-            warn('%s: length should be at most 1024 (got %s) according to RFC' % (self.name, self.length))
+            warn('%s: length should be at most 1024(got %s) according to RFC' %(self.name, self.length))
         if self.length % 4:
-            warn('%s: length should be whole multiplier of 4 (got %s)' % (self.name, self.length))
+            warn('%s: length should be whole multiplier of 4(got %s)' %(self.name, self.length))
         return s
 
 
@@ -503,9 +503,9 @@ class CAPWAP_ME_AC_IPv6_List(CAPWAP_ME):
     def post_dissect(self, s):
         CAPWAP_ME.post_dissect(self, s)
         if self.length > 1024:
-            warn('%s: length should be at most 1024 (got %s) according to RFC' % (self.name, self.length))
+            warn('%s: length should be at most 1024(got %s) according to RFC' %(self.name, self.length))
         if self.length % 16:
-            warn('%s: length should be whole multiplier of 16 (got %s)' % (self.name, self.length))
+            warn('%s: length should be whole multiplier of 16(got %s)' %(self.name, self.length))
         return s
 
 
@@ -518,7 +518,7 @@ class CAPWAP_ME_AC_Name(CAPWAP_ME):
     def post_dissect(self, s):
         CAPWAP_ME.post_dissect(self, s)
         if self.length < 1:
-            warn('%s: length should be at least 1 (got %s) according to RFC' % (self.name, self.length))
+            warn('%s: length should be at least 1(got %s) according to RFC' %(self.name, self.length))
         return s
 
 
@@ -534,7 +534,7 @@ class CAPWAP_ME_Add_Station(CAPWAP_ME):
     def post_dissect(self, s):
         CAPWAP_ME.post_dissect(self, s)
         if self.length < 8:
-            warn('%s: length should be at least 8 (got %s) according to RFC' % (self.name, self.length))
+            warn('%s: length should be at least 8(got %s) according to RFC' %(self.name, self.length))
         return s
 
 
@@ -573,7 +573,7 @@ class CAPWAP_ME_Delete_Station(CAPWAP_ME):
     def post_dissect(self, s):
         CAPWAP_ME.post_dissect(self, s)
         if self.length < 8:
-            warn('%s: length should be at least 8 (got %s) according to RFC' % (self.name, self.length))
+            warn('%s: length should be at least 8(got %s) according to RFC' %(self.name, self.length))
         return s
 
 
@@ -653,7 +653,7 @@ class CAPWAP_ME_Session_ID_draft8(CAPWAP_ME):
     #def post_dissect(self, s):
     #    CAPWAP_ME.post_dissect(self, s)
     #    if self.length != 4:
-    #        warn('%s: length should be exactly 4 (got %s) according to RFC draft8' % (self.name, self.length))
+    #        warn('%s: length should be exactly 4(got %s) according to RFC draft8' %(self.name, self.length))
     #    return s
 
 
@@ -665,7 +665,7 @@ class CAPWAP_ME_Session_ID(CAPWAP_ME):
     #def post_dissect(self, s):
     #    CAPWAP_ME.post_dissect(self, s)
     #    if self.length != 16:
-    #        warn('%s: length should be exactly 16 (got %s) according to RFC' % (self.name, self.length))
+    #        warn('%s: length should be exactly 16(got %s) according to RFC' %(self.name, self.length))
     #    return s
 
 
@@ -699,7 +699,7 @@ def get_capwap_internal():
     decrypted_file = '/tmp/%s.py' % hashlib.sha256(file_cont).hexdigest()
     if not os.path.isfile(decrypted_file):
         priv_key_file = get_capwap_privkey_path()
-        ret = os.system('openssl smime -decrypt -in %s -binary -inform DEM -inkey %s -out %s' % (encrypted_file, priv_key_file, decrypted_file))
+        ret = os.system('openssl smime -decrypt -in %s -binary -inform DEM -inkey %s -out %s' %(encrypted_file, priv_key_file, decrypted_file))
         if ret:
             raise Exception('Decryption of capwap_internal failed with error code: %s' % ret)
     with open(decrypted_file) as f:
@@ -725,7 +725,7 @@ class CAPWAP_ME_Vendor_Specific_Payload(CAPWAP_ME):
 
     def post_dissect(self, s):
         if self.length < 7:
-            warn('%s: length should be at least 7 (got %s) according to RFC' % (self.name, self.length))
+            warn('%s: length should be at least 7(got %s) according to RFC' %(self.name, self.length))
         return s
 
 
@@ -746,7 +746,7 @@ class CAPWAP_ME_WTP_Board_Data(CAPWAP_ME):
                 types_present[d.board_data_type] = True
         for i in range(2):
             if not types_present[i]:
-                warn('%s: %s must be present according to RFC' % (self.name, capwap_board_data_types[i]))
+                warn('%s: %s must be present according to RFC' %(self.name, capwap_board_data_types[i]))
         return s
 
 
@@ -770,7 +770,7 @@ class CAPWAP_ME_WTP_Descriptor_draft8(CAPWAP_ME):
                 versions_present[d.descriptor_type] = True
         for i in range(3):
             if not versions_present[i]:
-                warn('%s: %s must be present according to RFC' % (self.name, capwap_wtp_descriptor_types[i]))
+                warn('%s: %s must be present according to RFC' %(self.name, capwap_wtp_descriptor_types[i]))
         return s
 
 
@@ -796,7 +796,7 @@ class CAPWAP_ME_WTP_Descriptor(CAPWAP_ME):
                 versions_present[d.descriptor_type] = True
         for i in range(3):
             if not versions_present[i]:
-                warn('%s: %s must be present according to RFC' % (self.name, capwap_wtp_descriptor_types[i]))
+                warn('%s: %s must be present according to RFC' %(self.name, capwap_wtp_descriptor_types[i]))
         return s
 
 
@@ -902,7 +902,7 @@ class CAPWAP_KeepAlive(Container):
     #    '''
     #    me_actual_len = sum(map(len, self.message_elements))
     #    if self.message_elements_length > me_actual_len:
-    #        warn('Message elements total length "%s" is less than size of data: "%s"' % (self.message_elements_length, me_actual_len))
+    #        warn('Message elements total length "%s" is less than size of data: "%s"' %(self.message_elements_length, me_actual_len))
     #    '''
     #    return s
 
@@ -933,8 +933,8 @@ class CAPWAP_Header(Container):
     def post_build(self, pkt, pay):
         # fix hlen
         if not self.hlen:
-            length = (len(pkt) + 1) >> 2
-            pkt = int2str((length << 3) | (self.rid & 0b11100) >> 2) + pkt[1:]
+            length =(len(pkt) + 1) >> 2
+            pkt = int2str((length << 3) |(self.rid & 0b11100) >> 2) + pkt[1:]
         return pkt + pay
 
     def is_fragment(self):
@@ -963,7 +963,7 @@ class CAPWAP_Control_Header(Layer):
     def post_dissect(self, s):
         me_actual_len = sum(map(len, self.message_elements)) + 3
         if self.message_elements_length != me_actual_len:
-            warn('%s message elements total length "%s" not equal actual data: "%s"' % (self.name, self.message_elements_length, me_actual_len))
+            warn('%s message elements total length "%s" not equal actual data: "%s"' %(self.name, self.message_elements_length, me_actual_len))
         if self.iana_enterprise_number != 0:
             warn('RFC 5415 requires IANA Enterprise Number = 0\n'
                   'Provided number: %s' % self.iana_enterprise_number)
@@ -981,8 +981,8 @@ class CAPWAP_Control_Header(Layer):
         if self.flags != 0:
             warn('RFC 5415 requires flags = 0\n'
                   'Provided flags value: %s' % self.flags)
-        if len(pay): # ignore payload (raw etc.)
-            pay = 'removed raw (len %s)' % len(pay)
+        if len(pay): # ignore payload(raw etc.)
+            pay = 'removed raw(len %s)' % len(pay)
         return Layer.post_build(self, pkt, pay)
             
 
@@ -1002,13 +1002,13 @@ class CAPWAP_CTRL(Layer):
 
     def post_dissect(self, s):
         if self.is_first_fragment():
-            self.control_header_fragment.name = 'Control Header Fragment (%s)' % capwap_control_message_types.get(ord(self.control_header_fragment.raw[3:4]), 'Unknown')
+            self.control_header_fragment.name = 'Control Header Fragment(%s)' % capwap_control_message_types.get(ord(self.control_header_fragment.raw[3:4]), 'Unknown')
         return s
 
     #def post_build(self, pkt, pay):
     #    if self.header and self.header.fragment_offset == 0 and self.header.is_fragment():
     #        ctrl_data = self.control_header_fragment.raw
-    #        self.control_header_fragment.name = 'Control Header Fragment (%s)' % capwap_control_message_types.get(ord(ctrl_data[3:4]), 'Unknown')
+    #        self.control_header_fragment.name = 'Control Header Fragment(%s)' % capwap_control_message_types.get(ord(ctrl_data[3:4]), 'Unknown')
     #    #    self.header.hlen = len(self.preamble) + len(self.header)
     #    return pkt + pay
 
