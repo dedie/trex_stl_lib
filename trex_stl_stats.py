@@ -1,4 +1,4 @@
-#!/router/bin/python
+#!/usr/bin/python3
 
 import copy
 import sys

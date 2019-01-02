@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """
 DHCP service implementation
 
@@ -6,9 +8,9 @@ Description:
 
 How to use:
     <FILL ME HERE>
-    
+
 Author:
-  Itay Marom 
+  Itay Marom
 
 """
 from .trex_stl_service import STLService, STLServiceFilter

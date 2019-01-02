@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """
 Compatibility helpers for older Python versions.
 

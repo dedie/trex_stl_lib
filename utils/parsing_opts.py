@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import argparse
 from collections import namedtuple, OrderedDict
 from .common import list_intersect, list_difference, is_valid_ipv4, is_valid_ipv6, is_valid_mac, list_remove_dup

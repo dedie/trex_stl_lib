@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from .trex_stl_rx_service_api import RXServiceAPI
 
 from ..trex_stl_streams import STLStream, STLTXSingleBurst

@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
+
 #
 # texttable - module for creating simple ASCII tables
 # Copyright(C) 2003-2015 Gerome Fournier <jef(at)foutaise.org>
@@ -96,9 +97,9 @@ Maximilian Hils:
     - fix minor bug for Python 3 compatibility
 """
 
-import sys
-import string
 import re
+import string
+import sys
 
 try:
     if sys.version >= '2.3':
@@ -114,18 +115,19 @@ except ImportError:
 if sys.version >= '2.7':
     from functools import reduce
 
+
 def len(iterable):
     """Redefining len here so it will be able to work with non-ASCII characters
     """
     if not isinstance(iterable, str):
         return iterable.__len__()
-    
+
     try:
         if sys.version >= '3.0':
             return len(str)
         else:
             return len(str(iterable, 'utf'))
-    except:
+    except Exception:
         return iterable.__len__()
 
 
@@ -146,6 +148,7 @@ TEXT_CODES = {'bold': {'start': '\x1b[1m',
               'underline': {'start': '\x1b[4m',
                             'end': '\x1b[24m'}}
 
+
 class TextCodesStripper:
     keys = [re.escape(v['start']) for k,v in list(TEXT_CODES.items())]
     keys += [re.escape(v['end']) for k,v in list(TEXT_CODES.items())]
@@ -154,6 +157,7 @@ class TextCodesStripper:
     @staticmethod
     def strip(s):
         return re.sub(TextCodesStripper.pattern, '', s)
+
 
 def ansi_len(iterable):
     return len(TextCodesStripper.strip(iterable))
@@ -220,8 +224,8 @@ class Texttable:
 
         if len(array) != 4:
             raise ArraySizeError("array should contain 4 characters")
-        array = [ x[:1] for x in [ str(s) for s in array ] ]
-       (self._char_horiz, self._char_vert,
+        array = [x[:1] for x in [str(s) for s in array]]
+        (self._char_horiz, self._char_vert,
             self._char_corner, self._char_header) = array
 
     def set_deco(self, deco):
@@ -334,7 +338,7 @@ class Texttable:
 
         if not hasattr(self, "_dtype"):
             self._dtype = ["a"] * self._row_size
-            
+
         cells = []
         for i, x in enumerate(array):
             cells.append(self._str(i, x))
@@ -349,7 +353,7 @@ class Texttable:
           of the table
         """
 
-        # nb: don't use 'iter' on by-dimensional arrays, to get a 
+        # nb: don't use 'iter' on by-dimensional arrays, to get a
         #     usable code for python 2.1
         if header:
             if hasattr(rows, '__iter__') and hasattr(rows, 'next'):
@@ -390,17 +394,16 @@ class Texttable:
     def _str(self, i, x):
         """Handles string formatting of cell data
 
-            i - index of the cell datatype in self._dtype 
+            i - index of the cell datatype in self._dtype
             x - cell data to format
         """
         try:
             f = float(x)
-        except:
+        except Exception:
             try:
                 return str(x)
-            except:
+            except Exception:
                 return x.encode('utf-8')
-            
 
         n = self._precision
         dtype = self._dtype[i]

@@ -1,14 +1,14 @@
-from scapy.layers.dhcp import DHCP, BOOTP
-from scapy.layers.l2 import Ether
-from scapy.layers.inet import IP, UDP
-from scapy.packet import NoPayload
-from collections import namedtuple, OrderedDict
-
-from .trex_stl_service_fast_parser import FastParser
+#!/usr/bin/python3
 
 import struct
+from collections import OrderedDict, namedtuple
 
-import pprint
+from scapy.layers.dhcp import BOOTP, DHCP
+from scapy.layers.inet import IP, UDP
+from scapy.layers.l2 import Ether
+from scapy.packet import NoPayload
+
+from .trex_stl_service_fast_parser import FastParser
 
 
 class DHCPParser(FastParser):

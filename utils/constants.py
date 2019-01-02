@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 from collections import OrderedDict
 
 ON_OFF_DICT = OrderedDict([

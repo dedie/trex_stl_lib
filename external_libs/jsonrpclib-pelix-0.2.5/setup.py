@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 # -- Content-Encoding: UTF-8 --
 """
 Installation script

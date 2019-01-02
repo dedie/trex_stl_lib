@@ -1,4 +1,4 @@
-#!/router/bin/python
+#!/usr/bin/python3
 # STLPktBuilder(pkt=Ether()/IP())
 import base64
 import copy

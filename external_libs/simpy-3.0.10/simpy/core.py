@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """
 Core components for event-discrete simulation environments.
 

@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from .trex_stl_streams import *
 from .trex_stl_packet_builder_scapy import *
 from .utils.common import *

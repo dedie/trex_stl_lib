@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """
 The ``simpy`` module aggregates SimPy's most used components into a single
 namespace. This is purely for convenience. You can of course also access

@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """Execution environment for events that synchronizes passing of time
 with the real-time(aka *wall-clock time*).
 

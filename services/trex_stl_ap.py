@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # from trex_stl_lib.api import *
 from .trex_stl_service import STLService, STLServiceFilter
 from .trex_stl_service_int import STLServiceCtx, simpy, TXBuffer
