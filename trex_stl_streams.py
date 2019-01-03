@@ -10,15 +10,16 @@ import traceback
 from collections import format_num
 
 from scapy.error import Scapy_Exception
-from scapy.utils import ltoa, scapy
+from scapy.layers.l2 import Dot3, Ether
+from scapy.utils import RawPcapReader, ltoa, rdpcap, scapy
 
 import yaml
 
 from .trex_stl_exceptions import STLArgumentError, STLError
 from .trex_stl_packet_builder_interface import (CTrexPktBuilderInterface,
-                                                Ether, IP, Padding, Raw)
+                                                IP, Padding, Raw)
 from .trex_stl_packet_builder_scapy import STLPktBuilder
-from .trex_stl_types import validate_type, verify_exclusive_arg, OrderedDict
+from .trex_stl_types import OrderedDict, validate_type, verify_exclusive_arg
 
 
 # base class for TX mode
@@ -328,7 +329,8 @@ class STLStream(object):
                       If False, another stream activates it.
 
                   isg : float
-                     Inter-stream gap in usec. Time to wait until the stream sends the first packet.
+                     Inter-stream gap in usec. Time to wait until the stream
+                     sends the first packet.
 
                   flow_stats : :class:`trex_stl_lib.trex_stl_streams.STLFlowStats`
                       Per stream statistic object. See: STLFlowStats
@@ -619,17 +621,21 @@ class STLStream(object):
         for inst in self.fields['vm']['instructions']:
             if inst['type'] == 'flow_var':
                 vm_list.append(
-                    "STLVmFlowVar(name='{name}', size={size}, op='{op}', init_value={init_value}, min_value={min_value}, max_value={max_value}, step={step})"
+                    "STLVmFlowVar(name='{name}', size={size}, op='{op}', init_value={init_value},"
+                    + "min_value={min_value}, max_value={max_value}, step={step})"
                     .format(**inst))
             elif inst['type'] == 'write_flow_var':
                 vm_list.append(
-                    "STLVmWrFlowVar(fv_name='{name}', pkt_offset={pkt_offset}, add_val={add_value}, is_big={is_big_endian})".format(**inst))
+                    "STLVmWrFlowVar(fv_name='{name}', pkt_offset={pkt_offset}, "
+                    + "add_val={add_value}, is_big={is_big_endian})".format(**inst))
             elif inst['type'] == 'write_mask_flow_var':
                 inst = copy.copy(inst)
                 inst['mask'] = hex(inst['mask'])
                 vm_list.append(
-                    ("STLVmWrMaskFlowVar(fv_name='{name}', pkt_offset={pkt_offset}, pkt_cast_size={pkt_cast_size},"
-                     + "mask={mask}, shift={shift}, add_value={add_value}, is_big={is_big_endian})").format(**inst))
+                    ("STLVmWrMaskFlowVar(fv_name='{name}', pkt_offset={pkt_offset}, "
+                     + "pkt_cast_size={pkt_cast_size},"
+                     + "mask={mask}, shift={shift}, add_value={add_value}, "
+                     + "is_big={is_big_endian})").format(**inst))
             elif inst['type'] == 'fix_checksum_ipv4':
                 vm_list.append(
                     "STLVmFixIpv4(offset={pkt_offset})".format(**inst))
@@ -641,11 +647,14 @@ class STLStream(object):
                 inst['ip_min'] = ltoa(inst['ip_min'])
                 inst['ip_max'] = ltoa(inst['ip_max'])
                 vm_list.append(
-                    ("STLVmTupleGen(name='{name}', ip_min='{ip_min}', ip_max='{ip_max}', port_min={port_min}, "
-                     + "port_max={port_max}, limit_flows={limit_flows}, flags={flags})").format(**inst))
+                    ("STLVmTupleGen(name='{name}', ip_min='{ip_min}', "
+                     + "ip_max='{ip_max}', port_min={port_min}, "
+                     + "port_max={port_max}, limit_flows={limit_flows}, "
+                     + "flags={flags})").format(**inst))
             elif inst['type'] == 'flow_var_rand_limit':
                 vm_list.append(
-                    "STLVmFlowVarRepetableRandom(name='{name}', size={size}, limit={limit}, seed={seed}, min_value={min_value}, max_value={max_value})"
+                    "STLVmFlowVarRepetableRandom(name='{name}', size={size}, limit={limit}, "
+                    + "seed={seed}, min_value={min_value}, max_value={max_value})"
                     .format(**inst))
 
         vm_code = 'vm = STLScVmRaw([' + \
@@ -779,12 +788,14 @@ class YAMLLoader(object):
 
         elif mode_type == 'single_burst':
             defaults = STLTXSingleBurst()
-            mode = STLTXSingleBurst(total_pkts=mode_obj.get('total_pkts', defaults.fields['total_pkts']),
+            mode = STLTXSingleBurst(total_pkts=mode_obj.get('total_pkts',
+                                                            defaults.fields['total_pkts']),
                                     **rate)
 
         elif mode_type == 'multi_burst':
             defaults = STLTXMultiBurst()
-            mode = STLTXMultiBurst(pkts_per_burst=mode_obj.get('pkts_per_burst', defaults.fields['pkts_per_burst']),
+            mode = STLTXMultiBurst(pkts_per_burst=mode_obj.get('pkts_per_burst',
+                                                               defaults.fields['pkts_per_burst']),
                                    ibg=mode_obj.get(
                                        'ibg', defaults.fields['ibg']),
                                    count=mode_obj.get(
@@ -878,19 +889,23 @@ class STLProfile(object):
             profile =  STLProfile( [ STLStream( isg = 10.0, # star in delay
                                         name    ='S0',
                                         packet = STLPktBuilder(pkt = base_pkt/pad),
-                                        mode = STLTXSingleBurst( pps = 10, total_pkts = self.burst_size),
+                                        mode = STLTXSingleBurst( pps = 10,
+                                        total_pkts = self.burst_size),
                                         next = 'S1'), # point to next stream
 
-                             STLStream( self_start = False, # stream is  disabled enable trow S0
+                             STLStream( self_start = False, # stream is
+                                        disabled enable trow S0
                                         name    ='S1',
                                         packet  = STLPktBuilder(pkt = base_pkt1/pad),
-                                        mode    = STLTXSingleBurst( pps = 10, total_pkts = self.burst_size),
+                                        mode    = STLTXSingleBurst( pps = 10,
+                                        total_pkts = self.burst_size),
                                         next    = 'S2' ),
 
                              STLStream(  self_start = False, # stream is  disabled enable trow S0
                                          name   ='S2',
                                          packet = STLPktBuilder(pkt = base_pkt2/pad),
-                                         mode = STLTXSingleBurst( pps = 10, total_pkts = self.burst_size )
+                                         mode = STLTXSingleBurst( pps = 10,
+                                         total_pkts = self.burst_size )
                                         )
                             ]).get_streams()
 
@@ -992,7 +1007,8 @@ class STLProfile(object):
             t = STLProfile.get_module_tunables(module)
             # for arg in kwargs:
             #    if not arg in t:
-            #        raise STLError("Profile {0} does not support tunable '{1}' - supported tunables are: '{2}'".format(python_file, arg, t))
+            #        raise STLError("Profile {0} does not support tunable '{1}'
+            #  - supported tunables are: '{2}'".format(python_file, arg, t))
 
             streams = module.register().get_streams(direction=direction,
                                                     port_id=port_id,
@@ -1039,7 +1055,8 @@ class STLProfile(object):
                        Inter packet gap in usec. If IPG is None, IPG is taken from pcap file
 
                   speedup   : float
-                       When reading the pcap file, divide IPG by this "speedup" factor. Resulting IPG is sped up by this factor.
+                       When reading the pcap file, divide IPG by this "speedup" factor.
+                       Resulting IPG is sped up by this factor.
 
                   loop_count : uint16_t
                        Number of loops to repeat the pcap file
@@ -1232,7 +1249,8 @@ class STLProfile(object):
         return profile.meta
 
     def dump_as_pkt(self):
-        """ Dump the profile as Scapy packet. If the packet is raw, convert it to Scapy before dumping it."""
+        """ Dump the profile as Scapy packet. If the packet is raw,
+            convert it to Scapy before dumping it."""
         cnt = 0
         for stream in self.streams:
             print("=======================")
@@ -1311,8 +1329,9 @@ class PCAPReader(object):
                 ts_usec = pkt.time * 1e6
 
             if ipg_usec is None:
-                if 'prev_time' in locals():
-                    delta_usec = (ts_usec - prev_time) / float(speedup)
+                loco = locals()
+                if 'prev_time' in loco:
+                    delta_usec = (ts_usec - loco['prev_time']) / float(speedup)
                 else:
                     delta_usec = 0
                 if min_ipg_usec and delta_usec < min_ipg_usec:
@@ -1445,7 +1464,8 @@ class Graph(object):
             bad_friends = friends.intersection(node_color)
             if bad_friends:
                 raise STLError(
-                    "ERROR: failed to split PCAP file - {0} and {1} are in the same group".format(node, bad_friends))
+                    "ERROR: failed to split PCAP file - {0} and {1} are in the same group"
+                    .format(node, bad_friends))
 
             # add all the friends to the other color
             for friend in friends:

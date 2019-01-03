@@ -1,7 +1,7 @@
-## This file is part of Scapy
-## See http://www.secdev.org/projects/scapy for more informations
-## Copyright(C) Philippe Biondi <phil@secdev.org>
-## This program is published under a GPLv2 license
+# This file is part of Scapy
+# See http://www.secdev.org/projects/scapy for more informations
+# Copyright(C) Philippe Biondi <phil@secdev.org>
+# This program is published under a GPLv2 license
 
 """
 Classes and functions for layer 2 protocols.
@@ -17,11 +17,8 @@ from scapy.fields import *
 from scapy.sendrecv import srp,srp1
 from scapy.arch import get_if_hwaddr
 
-
-
-
 #################
-## Tools       ##
+# Tools         #
 #################
 
 
@@ -39,6 +36,7 @@ class Neighbor:
 
     def __repr__(self):
         return "\n".join("%-15s -> %-15s" %(l2.__name__, l3.__name__) for l2,l3 in self.resolvers)
+
 
 conf.neighbor = Neighbor()
 

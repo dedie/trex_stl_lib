@@ -206,7 +206,8 @@ Cheetah:
         Validity
             Not Before: Sep 16 19:17:57 2016 GMT
             Not After : Sep 16 19:27:57 2026 GMT
-        Subject: C=US, ST=California, L=San Jose, O=Cisco Systems, CN=AP1G4-94D469F82DE8/emailAddress=support@cisco.com
+        Subject: C=US, ST=California, L=San Jose, O=Cisco Systems,
+                 CN=AP1G4-94D469F82DE8/emailAddress=support@cisco.com
 
 eWLC:
     Data:
@@ -218,7 +219,8 @@ eWLC:
         Validity
             Not Before: May  6 10:12:56 2015 GMT
             Not After : May  6 10:22:56 2025 GMT
-        Subject: C=US, ST=California, L=San Jose, O=Cisco Systems, CN=0050569C622D/emailAddress=support@cisco.com
+        Subject: C=US, ST=California, L=San Jose, O=Cisco Systems,
+                 CN=0050569C622D/emailAddress=support@cisco.com
 
 '''
 
@@ -226,24 +228,37 @@ eWLC:
                     self.fatal('Could not set version of certificate')
                 if libcrypto.X509_set_pubkey(x509_cert, self.ssl_ctx.evp) != 1:
                     self.fatal('Could not assign public key to certificate')
-                if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'C', SSL_CONST.MBSTRING_ASC, b'US', -1, -1, 0) != 1:
+                if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'C',
+                                                        SSL_CONST.MBSTRING_ASC, b'US', -1,
+                                                        -1, 0) != 1:
                     self.fatal('Could not assign C to certificate')
-                if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'ST', SSL_CONST.MBSTRING_ASC, b'California', -1, -1, 0) != 1:
+                if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'ST',
+                                                        SSL_CONST.MBSTRING_ASC, b'California',
+                                                        -1, -1, 0) != 1:
                     self.fatal('Could not assign ST to certificate')
-                if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'L', SSL_CONST.MBSTRING_ASC, b'San Jose', -1, -1, 0) != 1:
+                if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'L',
+                                                        SSL_CONST.MBSTRING_ASC, b'San Jose',
+                                                        -1, -1, 0) != 1:
                     self.fatal('Could not assign L to certificate')
-                if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'O', SSL_CONST.MBSTRING_ASC, b'Cisco Virtual Wireless LAN Controller', -1, -1, 0) != 1:
+                if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'O',
+                                                        SSL_CONST.MBSTRING_ASC,
+                                                        b'Cisco Virtual Wireless LAN Controller',
+                                                        -1, -1, 0) != 1:
                     self.fatal('Could not assign O to certificate')
-                if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'CN', SSL_CONST.MBSTRING_ASC, b'CA-vWLC', -1, -1, 0) != 1:
+                if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'CN',
+                                                        SSL_CONST.MBSTRING_ASC, b'CA-vWLC',
+                                                        -1, -1, 0) != 1:
                     self.fatal('Could not assign CN to certificate')
                 if libcrypto.X509_set_subject_name(x509_cert, x509_name) != 1:
                     self.fatal('Could not set subject name to certificate')
                 if libcrypto.X509_set_issuer_name(x509_cert, x509_name) != 1:
                     self.fatal('Could not set issuer name to certificate')
-                if not libcrypto.X509_time_adj_ex(libcrypto.X509_getm_notBefore(x509_cert), -999, 0, None):
+                if not libcrypto.X509_time_adj_ex(libcrypto.X509_getm_notBefore(x509_cert),
+                                                  -999, 0, None):
                     self.fatal(
                         'Could not set "Not before" time to certificate"')
-                if not libcrypto.X509_time_adj_ex(libcrypto.X509_getm_notAfter(x509_cert), 999, 0, None):
+                if not libcrypto.X509_time_adj_ex(libcrypto.X509_getm_notAfter(x509_cert),
+                                                  999, 0, None):
                     self.fatal(
                         'Could not set "Not after" time to certificate"')
                 if not libcrypto.X509_sign(x509_cert, self.ssl_ctx.evp, libcrypto.EVP_sha256()):
@@ -373,7 +388,8 @@ eWLC:
 
     def is_dtls_established(self):
         with self.ssl_lock:
-            return bool(self.ssl and libssl.SSL_is_init_finished(self.ssl) and not libssl.SSL_get_shutdown(self.ssl))
+            return bool(self.ssl and libssl.SSL_is_init_finished(self.ssl)
+                        and not libssl.SSL_get_shutdown(self.ssl))
 
     def ssl_read(self):
         with self.ssl_lock:
@@ -564,7 +580,8 @@ class AP_Manager:
         else:
             raise Exception('Client with id %s does not exist!' % client_id)
 
-    def create_ap(self, trex_port_id, name, mac, ip, udp_port, radio_mac, verbose_level=AP.VERB_WARN, rsa_priv_file=None, rsa_cert_file=None):
+    def create_ap(self, trex_port_id, name, mac, ip, udp_port, radio_mac,
+                  verbose_level=AP.VERB_WARN, rsa_priv_file=None, rsa_cert_file=None):
         if trex_port_id not in self.service_ctx:
             raise Exception('TRex port %s does not exist!' % trex_port_id)
         if ':' not in mac:
@@ -584,7 +601,8 @@ class AP_Manager:
             raise Exception(
                 'AP with such radio MAC port(%s) already exists!' % radio_mac)
         ap = AP(self.ssl_ctx, self.trex_client.logger,
-                self.trex_client.ports[trex_port_id], name, mac, ip, udp_port, radio_mac, verbose_level, rsa_priv_file, rsa_cert_file)
+                self.trex_client.ports[trex_port_id], name, mac, ip, udp_port,
+                radio_mac, verbose_level, rsa_priv_file, rsa_cert_file)
         self.ap_by_id[name] = ap
         self.ap_by_id[mac] = ap
         self.ap_by_id[ip] = ap
@@ -748,7 +766,8 @@ class AP_Manager:
         if no_resp_clients:
             self.trex_client.logger.post_cmd(False)
             raise Exception(
-                'Following client(s) did not receive ARP response from WLC: %s' % ', '.join(no_resp_clients))
+                'Following client(s) did not receive ARP response from WLC: %s' % ', '
+                .join(no_resp_clients))
         self.trex_client.logger.post_cmd(True)
 
     def add_streams(self, client_id, streams):
@@ -845,7 +864,8 @@ class AP_Manager:
             self.next_ap_radio = increase_mac(self.next_ap_radio, 256)
             assert is_valid_mac(self.next_ap_radio)
 
-        return self.next_ap_name, self.next_ap_mac, self.next_ap_ip, self.next_ap_udp, self.next_ap_radio
+        return (self.next_ap_name, self.next_ap_mac, self.next_ap_ip,
+                self.next_ap_udp, self.next_ap_radio)
 
     def _gen_client_params(self):
         # mac
@@ -863,7 +883,8 @@ class AP_Manager:
     def log(self, msg):
         self.trex_client.logger.log(msg)
 
-    def set_base_values(self, name=None, mac=None, ip=None, udp=None, radio=None, client_mac=None, client_ip=None, save=None, load=None):
+    def set_base_values(self, name=None, mac=None, ip=None, udp=None, radio=None,
+                        client_mac=None, client_ip=None, save=None, load=None):
         if load:
             if any([name, mac, ip, udp, radio, client_mac, client_ip, save]):
                 raise Exception('Can not use --load with other arguments.')

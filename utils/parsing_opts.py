@@ -448,31 +448,37 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                           'type': match_multiplier_strict}),
 
               _constants.TOTAL: ArgumentPack(['-t', '--total'],
-                                             {'help': "traffic will be divided between all ports specified",
+                                             {'help': "traffic will be divided "
+                                                      + "between all ports specified",
                                               'dest': "total",
                                               'default': False,
                                               'action': "store_true"}),
 
               _constants.IPG: ArgumentPack(['-i', '--ipg'],
-                                           {'help': "IPG value in usec between packets. default will be from the pcap",
+                                           {'help': "IPG value in usec between packets. "
+                                            + "default will be from the pcap",
                                             'dest': "ipg_usec",
                                             'default':  None,
                                             'type': float}),
 
               _constants.MIN_IPG: ArgumentPack(['--min-ipg'],
-                                               {'help': "Minimal IPG value in usec between packets. Used to guard from too small IPGs.",
+                                               {'help': "Minimal IPG value in usec "
+                                                        + "between packets. Used to "
+                                                        + "guard from too small IPGs.",
                                                 'dest': "min_ipg_usec",
                                                 'default':  None,
                                                 'type': float}),
 
               _constants.SPEEDUP: ArgumentPack(['-s', '--speedup'],
-                                               {'help': "Factor to accelerate the injection. effectively means IPG = IPG / SPEEDUP",
+                                               {'help': "Factor to accelerate the injection. "
+                                                        + "effectively means IPG = IPG / SPEEDUP",
                                                 'dest': "speedup",
                                                 'default':  1.0,
                                                 'type': float}),
 
               _constants.COUNT: ArgumentPack(['-c', '--count'],
-                                             {'help': "How many times to perform action [default is 1, 0 means forever]",
+                                             {'help': "How many times to perform action "
+                                                      + "[default is 1, 0 means forever]",
                                               'dest': "count",
                                               'default':  1,
                                               'type': int}),
@@ -538,19 +544,22 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                      'action': 'store_true'}),
 
               _constants.LIMIT: ArgumentPack(['-l', '--limit'],
-                                             {'help': 'Limit the packet count to be written to the file',
+                                             {'help': 'Limit the packet count to '
+                                                      + 'be written to the file',
                                               'dest': 'limit',
                                               'default':  1000,
                                               'type': int}),
 
 
               _constants.SUPPORTED: ArgumentPack(['--supp'],
-                                                 {'help': 'Show which attributes are supported by current NICs',
+                                                 {'help': 'Show which attributes are '
+                                                          + 'supported by current NICs',
                                                   'default': None,
                                                   'action': 'store_true'}),
 
               _constants.TUNABLES: ArgumentPack(['-t'],
-                                                {'help': "Sets tunables for a profile. Example: '-t fsize=100,pg_id=7'",
+                                                {'help': "Sets tunables for a profile. "
+                                                         + "Example: '-t fsize=100,pg_id=7'",
                                                  'metavar': 'T1=VAL[,T2=VAL ...]',
                                                  'dest': "tunables",
                                                  'default': None,
@@ -563,7 +572,8 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                   'metavar': 'PORTS',
                                                   'action': 'merge',
                                                   'type': int,
-                                                  'help': "A list of ports on which to apply the command",
+                                                  'help': "A list of ports on which "
+                                                          + "to apply the command",
                                                   'default': []}),
 
 
@@ -581,7 +591,8 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                 'type': check_ip_addr}),
 
               _constants.PING_COUNT: ArgumentPack(['-n', '--count'],
-                                                  {'help': 'How many times to ping [default is 5]',
+                                                  {'help': 'How many times to ping '
+                                                           + '[default is 5]',
                                                    'dest': 'count',
                                                    'default':  5,
                                                    'type': int}),
@@ -596,7 +607,8 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
               _constants.ALL_PORTS: ArgumentPack(['-a'],
                                                  {"action": "store_true",
                                                   "dest": "all_ports",
-                                                  'help': "Set this flag to apply the command on all available ports",
+                                                  'help': "Set this flag to apply the "
+                                                          + "command on all available ports",
                                                   'default': False},),
 
               _constants.DURATION: ArgumentPack(['-d'],
@@ -618,22 +630,26 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
               _constants.FORCE: ArgumentPack(['--force'],
                                              {"action": "store_true",
                                               'default': False,
-                                              'help': "Set if you want to stop active ports before appyling command."}),
+                                              'help': "Set if you want to stop active "
+                                                      + "ports before appyling command."}),
 
               _constants.READONLY: ArgumentPack(['-r'],
                                                 {'action': 'store_true',
                                                  'dest': 'readonly',
-                                                 'help': 'Do not acquire ports, connect as read-only.'}),
+                                                 'help': 'Do not acquire ports, '
+                                                         + 'connect as read-only.'}),
 
               _constants.REMOTE_FILE: ArgumentPack(['-r', '--remote'],
                                                    {"action": "store_true",
                                                     'default': False,
-                                                    'help': "file path should be interpeted by the server(remote file)"}),
+                                                    'help': "file path should be interpeted "
+                                                            + "by the server(remote file)"}),
 
               _constants.DUAL: ArgumentPack(['--dual'],
                                             {"action": "store_true",
                                              'default': False,
-                                             'help': "Transmit in a dual mode - requires ownership on the adjacent port"}),
+                                             'help': "Transmit in a dual mode - requires "
+                                                     + "ownership on the adjacent port"}),
 
               _constants.FILE_PATH: ArgumentPack(['-f'],
                                                  {'metavar': 'FILE',
@@ -653,7 +669,8 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
 
               _constants.FILE_FROM_DB: ArgumentPack(['--db'],
                                                     {'metavar': 'LOADED_STREAM_PACK',
-                                                     'help': "A stream pack which already loaded into console cache."}),
+                                                     'help': "A stream pack which already "
+                                                             + "loaded into console cache."}),
 
               _constants.SERVER_IP: ArgumentPack(['--server'],
                                                  {'metavar': 'SERVER',
@@ -669,8 +686,10 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                     {'action': 'store_true',
                                                      'dest': 'sync',
                                                      'default': False,
-                                                     'help': 'Run the traffic with syncronized time at adjacent ports. '
-                                                     + 'Need to ensure effective ipg is at least 1000 usec.'}),
+                                                     'help': 'Run the traffic with syncronized '
+                                                             + 'time at adjacent ports. '
+                                                             + 'Need to ensure effective ipg is '
+                                                             + 'at least 1000 usec.'}),
 
               _constants.XTERM: ArgumentPack(['-x', '--xterm'],
                                              {'action': 'store_true',
@@ -714,18 +733,24 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
 
               _constants.EXTENDED_STATS: ArgumentPack(['-x'],
                                                       {'action': 'store_true',
-                                                       'help': "Fetch xstats of port, excluding lines with zero values"}),
+                                                       'help': "Fetch xstats of port, "
+                                                               + "excluding lines with "
+                                                               + "zero values"}),
 
               _constants.EXTENDED_INC_ZERO_STATS: ArgumentPack(['--xz'],
                                                                {'action': 'store_true',
-                                                                'help': "Fetch xstats of port, including lines with zero values"}),
+                                                                'help': "Fetch xstats of port, "
+                                                                        + "including lines with "
+                                                                        + "zero values"}),
 
               _constants.STREAMS_MASK: ArgumentPack(['--streams'],
                                                     {"nargs": '+',
                                                      'dest': 'streams',
                                                      'metavar': 'STREAMS',
                                                      'type': int,
-                                                     'help': "A list of stream IDs to query about. Default: analyze all streams",
+                                                     'help': "A list of stream IDs to query "
+                                                             + "about. Default: "
+                                                             + "analyze all streams",
                                                      'default': []}),
 
 
@@ -733,8 +758,11 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                  {'action': 'store_true',
                                                   'dest': 'pin_cores',
                                                   'default': False,
-                                                  'help': "Pin cores to interfaces - cores will be divided "
-                                                          + "between interfaces(performance boot for symetric profiles)"}),
+                                                  'help': "Pin cores to interfaces - "
+                                                          + "cores will be divided "
+                                                          + "between interfaces"
+                                                          + "(performance boot for "
+                                                          + "symetric profiles)"}),
 
               _constants.CORE_MASK: ArgumentPack(['--core_mask'],
                                                  {'action': 'store',
@@ -742,7 +770,8 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                   'type': hex_int,
                                                   'dest': 'core_mask',
                                                   'default': None,
-                                                  'help': "Core mask - only cores responding to the bit mask will be active"}),
+                                                  'help': "Core mask - only cores responding "
+                                                          + "to the bit mask will be active"}),
 
               _constants.SERVICE_OFF: ArgumentPack(['--off'],
                                                    {'action': 'store_false',
@@ -756,7 +785,8 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                      'metavar': 'TX',
                                                      'action': 'merge',
                                                      'type': int,
-                                                     'help': 'A list of ports to capture on the TX side',
+                                                     'help': 'A list of ports to capture '
+                                                             + 'on the TX side',
                                                      'default': []}),
 
 
@@ -766,7 +796,8 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                      'metavar': 'RX',
                                                      'action': 'merge',
                                                      'type': int,
-                                                     'help': 'A list of ports to capture on the RX side',
+                                                     'help': 'A list of ports to capture '
+                                                             + 'on the RX side',
                                                      'default': []}),
 
 
@@ -774,7 +805,8 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                             {'action': 'store_true',
                                                              'dest': 'verbose',
                                                              'default': False,
-                                                             'help': 'output to screen as verbose'}),
+                                                             'help': 'output to screen as '
+                                                                     + 'verbose'}),
 
               _constants.MONITOR_TYPE_PIPE: ArgumentPack(['-p', '--pipe'],
                                                          {'action': 'store_true',
@@ -803,12 +835,14 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                  {'dest': 'scapy_pkt',
                                                   'metavar': 'PACKET',
                                                   'type': ScapyDecoder.to_scapy,
-                                                  'help': 'A scapy notation packet(e.g.: Ether()/IP())'}),
+                                                  'help': 'A scapy notation packet(e.g.: '
+                                                          + 'Ether()/IP())'}),
 
               _constants.SHOW_LAYERS: ArgumentPack(['--layers', '-l'],
                                                    {'action': 'store_true',
                                                     'dest': 'layers',
-                                                    'help': "Show all registered layers / inspect a specific layer"}),
+                                                    'help': "Show all registered layers / "
+                                                            + "inspect a specific layer"}),
 
 
               _constants.VLAN_TAGS: ArgumentPack(['--vlan', '-v'],
@@ -835,7 +869,8 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                       {'required': True}),
 
               # advanced options
-              _constants.PORT_LIST_WITH_ALL: ArgumentGroup(_constants.MUTEX, [_constants.PORT_LIST,
+              _constants.PORT_LIST_WITH_ALL: ArgumentGroup(_constants.MUTEX, [_constants
+                                                                              .PORT_LIST,
                                                            _constants.ALL_PORTS],
                                                            {'required': False}),
 
@@ -845,7 +880,8 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                  {'required': True}),
 
 
-              _constants.STREAM_FROM_PATH_OR_FILE: ArgumentGroup(_constants.MUTEX, [_constants.FILE_PATH,
+              _constants.STREAM_FROM_PATH_OR_FILE: ArgumentGroup(_constants.MUTEX, [_constants
+                                                                                    .FILE_PATH,
                                                                  _constants.FILE_FROM_DB],
                                                                  {'required': True}),
               _constants.STATS_MASK: ArgumentGroup(_constants.MUTEX, [_constants.GLOBAL_STATS,
@@ -855,7 +891,8 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                                       _constants.CPU_STATS,
                                                                       _constants.MBUF_STATS,
                                                                       _constants.EXTENDED_STATS,
-                                                                      _constants.EXTENDED_INC_ZERO_STATS, ],
+                                                                      _constants
+                                                                      .EXTENDED_INC_ZERO_STATS, ],
                                                    {}),
 
 
@@ -863,11 +900,17 @@ OPTIONS_DB = {_constants.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                                             _constants.CORE_MASK],
                                                          {'required': False}),
 
-              _constants.CAPTURE_PORTS_GROUP: ArgumentGroup(_constants.NON_MUTEX, [_constants.TX_PORT_LIST, _constants.RX_PORT_LIST], {}),
+              _constants.CAPTURE_PORTS_GROUP: ArgumentGroup(_constants.NON_MUTEX, [_constants
+                                                                                   .TX_PORT_LIST,
+                                                                                   _constants
+                                                                                   .RX_PORT_LIST],
+                                                            {}),
 
 
-              _constants.MONITOR_TYPE: ArgumentGroup(_constants.MUTEX, [_constants.MONITOR_TYPE_VERBOSE,
-                                                                        _constants.MONITOR_TYPE_PIPE],
+              _constants.MONITOR_TYPE: ArgumentGroup(_constants.MUTEX, [_constants
+                                                                        .MONITOR_TYPE_VERBOSE,
+                                                                        _constants
+                                                                        .MONITOR_TYPE_PIPE],
                                                      {'required': False}),
 
               }
@@ -1045,11 +1088,13 @@ def populate_parser(parser, *args):
                                     **argument.options)
             else:
                 raise Exception(
-                    'Invalid arg object, should be ArgumentGroup or ArgumentPack, got: %s' % type(argument))
+                    'Invalid arg object, should be ArgumentGroup or ArgumentPack, got: %s'
+                    % type(argument))
         except KeyError as e:
             cause = e.args[0]
             raise KeyError(
-                "The attribute '{0}' is missing as a field of the {1} option.\n".format(cause, param))
+                "The attribute '{0}' is missing as a field of the {1} option.\n"
+                .format(cause, param))
 
 
 def gen_parser(stateless_client, op_name, description, *args, **kw):
