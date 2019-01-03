@@ -18,7 +18,7 @@ from .trex_stl_exceptions import STLArgumentError, STLError
 from .trex_stl_packet_builder_interface import (CTrexPktBuilderInterface,
                                                 Ether, IP, Padding, Raw)
 from .trex_stl_packet_builder_scapy import STLPktBuilder
-from .trex_stl_types import validate_type, verify_exclusive_arg
+from .trex_stl_types import validate_type, verify_exclusive_arg, OrderedDict
 
 
 # base class for TX mode
@@ -619,7 +619,8 @@ class STLStream(object):
         for inst in self.fields['vm']['instructions']:
             if inst['type'] == 'flow_var':
                 vm_list.append(
-                    "STLVmFlowVar(name='{name}', size={size}, op='{op}', init_value={init_value}, min_value={min_value}, max_value={max_value}, step={step})".format(**inst))
+                    "STLVmFlowVar(name='{name}', size={size}, op='{op}', init_value={init_value}, min_value={min_value}, max_value={max_value}, step={step})"
+                    .format(**inst))
             elif inst['type'] == 'write_flow_var':
                 vm_list.append(
                     "STLVmWrFlowVar(fv_name='{name}', pkt_offset={pkt_offset}, add_val={add_value}, is_big={is_big_endian})".format(**inst))
@@ -627,7 +628,8 @@ class STLStream(object):
                 inst = copy.copy(inst)
                 inst['mask'] = hex(inst['mask'])
                 vm_list.append(
-                    "STLVmWrMaskFlowVar(fv_name='{name}', pkt_offset={pkt_offset}, pkt_cast_size={pkt_cast_size}, mask={mask}, shift={shift}, add_value={add_value}, is_big={is_big_endian})".format(**inst))
+                    ("STLVmWrMaskFlowVar(fv_name='{name}', pkt_offset={pkt_offset}, pkt_cast_size={pkt_cast_size},"
+                     + "mask={mask}, shift={shift}, add_value={add_value}, is_big={is_big_endian})").format(**inst))
             elif inst['type'] == 'fix_checksum_ipv4':
                 vm_list.append(
                     "STLVmFixIpv4(offset={pkt_offset})".format(**inst))
@@ -639,10 +641,12 @@ class STLStream(object):
                 inst['ip_min'] = ltoa(inst['ip_min'])
                 inst['ip_max'] = ltoa(inst['ip_max'])
                 vm_list.append(
-                    "STLVmTupleGen(name='{name}', ip_min='{ip_min}', ip_max='{ip_max}', port_min={port_min}, port_max={port_max}, limit_flows={limit_flows}, flags={flags})".format(**inst))
+                    ("STLVmTupleGen(name='{name}', ip_min='{ip_min}', ip_max='{ip_max}', port_min={port_min}, "
+                     + "port_max={port_max}, limit_flows={limit_flows}, flags={flags})").format(**inst))
             elif inst['type'] == 'flow_var_rand_limit':
                 vm_list.append(
-                    "STLVmFlowVarRepetableRandom(name='{name}', size={size}, limit={limit}, seed={seed}, min_value={min_value}, max_value={max_value})".format(**inst))
+                    "STLVmFlowVarRepetableRandom(name='{name}', size={size}, limit={limit}, seed={seed}, min_value={min_value}, max_value={max_value})"
+                    .format(**inst))
 
         vm_code = 'vm = STLScVmRaw([' + \
             ',\n                 '.join(vm_list) + '])'
@@ -796,11 +800,11 @@ class YAMLLoader(object):
     def __parse_flow_stats(self, flow_stats_obj):
 
         # no such object
-        if not flow_stats_obj or flow_stats_obj.get('enabled') == False:
+        if not flow_stats_obj or flow_stats_obj.get('enabled') is False:
             return None
 
         pg_id = flow_stats_obj.get('stream_id')
-        if pg_id == None:
+        if pg_id is None:
             raise STLError(
                 "Enabled RX stats section must contain 'stream_id' field")
 
@@ -865,17 +869,17 @@ class YAMLLoader(object):
 
 # profile class
 class STLProfile(object):
-    """ Describe a list of streams   
+    """ Describe a list of streams
 
         .. code-block:: python
 
             # STLProfile Example
 
-            profile =  STLProfile( [ STLStream( isg = 10.0, # star in delay 
+            profile =  STLProfile( [ STLStream( isg = 10.0, # star in delay
                                         name    ='S0',
                                         packet = STLPktBuilder(pkt = base_pkt/pad),
                                         mode = STLTXSingleBurst( pps = 10, total_pkts = self.burst_size),
-                                        next = 'S1'), # point to next stream 
+                                        next = 'S1'), # point to next stream
 
                              STLStream( self_start = False, # stream is  disabled enable trow S0
                                         name    ='S1',
@@ -899,12 +903,12 @@ class STLProfile(object):
 
             :parameters:
 
-                  streams  : list of :class:`trex_stl_lib.trex_stl_streams.STLStream` 
-                       a list of stream objects  
+                  streams  : list of :class:`trex_stl_lib.trex_stl_streams.STLStream`
+                       a list of stream objects
 
         """
 
-        if streams == None:
+        if streams is None:
             streams = []
 
         if not type(streams) == list:
@@ -1000,7 +1004,7 @@ class STLProfile(object):
 
             return profile
 
-        except Exception as e:
+        except Exception:
             a, b, tb = sys.exc_info()
             x = ''.join(traceback.format_list(traceback.extract_tb(
                 tb)[1:])) + a.__name__ + ": " + str(b) + "\n"
@@ -1022,26 +1026,26 @@ class STLProfile(object):
                   packet_hook=None,
                   split_mode=None,
                   min_ipg_usec=None):
-        """ Convert a pcap file with a number of packets to a list of connected streams.  
+        """ Convert a pcap file with a number of packets to a list of connected streams.
 
-        packet1->packet2->packet3 etc 
+        packet1->packet2->packet3 etc
 
                 :parameters:
 
-                  pcap_file  : string 
-                       Name of the pcap file 
+                  pcap_file  : string
+                       Name of the pcap file
 
                   ipg_usec   : float
                        Inter packet gap in usec. If IPG is None, IPG is taken from pcap file
 
-                  speedup   : float 
-                       When reading the pcap file, divide IPG by this "speedup" factor. Resulting IPG is sped up by this factor. 
+                  speedup   : float
+                       When reading the pcap file, divide IPG by this "speedup" factor. Resulting IPG is sped up by this factor.
 
-                  loop_count : uint16_t 
-                       Number of loops to repeat the pcap file 
+                  loop_count : uint16_t
+                       Number of loops to repeat the pcap file
 
-                  vm        :  list 
-                        List of Field engine instructions 
+                  vm        :  list
+                        List of Field engine instructions
 
                   packet_hook : Callable or function
                         will be applied to every packet
@@ -1189,13 +1193,13 @@ class STLProfile(object):
 
     @staticmethod
     def load(filename, direction=0, port_id=0, **kwargs):
-        """ Load a profile by its type. Supported types are: 
+        """ Load a profile by its type. Supported types are:
            * py
-           * yaml 
-           * pcap file that converted to profile automaticly 
+           * yaml
+           * pcap file that converted to profile automaticly
 
            :Parameters:
-              filename  : string as filename 
+              filename  : string as filename
               direction : profile's direction(if supported by the profile)
               port_id   : which port ID this profile is being loaded to
               kwargs    : forward those key-value pairs to the profile
@@ -1398,11 +1402,11 @@ class Graph(object):
     # add a connection v1 --> v2
     def add(self, v1, v2):
         # init value for v1
-        if not v1 in self.db:
+        if v1 not in self.db:
             self.db[v1] = set()
 
         # init value for v2
-        if not v2 in self.db:
+        if v2 not in self.db:
             self.db[v2] = set()
 
         # ignore self to self edges
@@ -1429,7 +1433,7 @@ class Graph(object):
             friends = self.db[node]
 
             # node has never been seen - move to color_a
-            if not node in color_a and not node in color_b:
+            if node not in color_a and node not in color_b:
                 self.log("<NEW> {0} --> A".format(node))
                 color_a.add(node)
 

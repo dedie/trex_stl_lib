@@ -3,27 +3,42 @@
 import base64
 import copy
 import ctypes
-import libssl
-import libcrypto
 import os
 import re
 import struct
 import threading
 from collections import deque
 
+import libcrypto
+
+import libssl
+
 import yaml
 
-from scapy.contrib.capwap import *
-# ensure capwap_internal is imported
-from scapy.contrib.capwap import CAPWAP_PKTS
-from texttable import ansi_len
+from common.services.scapy.all import (LLC, SNAP, Ether, STLClient, STLError,
+                                       STLStream)
+from external_libs.trex_openssl.trex_openssl import SSL_CONST
+from scapy.contrib.capwap import (CAPWAP_DATA, CAPWAP_PKTS, CAPWAP_Header,
+                                  CAPWAP_Wireless_Specific_Information_IEEE802_11,
+                                  Dot11_swapped, Dot11QoS)
 from trex_openssl import SSL_CONST
-# from trex_stl_lib.api import *
-from trex_stl_lib.services.trex_stl_ap import *
-from trex_stl_lib.utils import parsing_opts, text_tables
+from trex_stl_lib.services.trex_stl_ap import (IP, UDP, Ether,
+                                               STLServiceApAddClients,
+                                               STLServiceApBgMaintenance,
+                                               STLServiceApDiscoverWLC,
+                                               STLServiceApEstablishDTLS,
+                                               STLServiceApJoinWLC,
+                                               STLServiceApShutdownDTLS,
+                                               STLServiceBufferedCtx)
+from trex_stl_lib.utils import (increase_mac, int2str, mac2str, parsing_opts,
+                                str2ip, str2mac, text_tables)
 from trex_stl_lib.utils.parsing_opts import (MUTEX, ArgumentGroup,
                                              ArgumentPack, check_ipv4_addr,
                                              check_mac_addr, is_valid_file)
+from trex_stl_packet_builder_scapy import is_valid_ipv4_ret
+from trex_stl_streams import STLProfile
+from trex_stl_types import validate_type
+from utils.common import get_current_user, natural_sorted_key
 
 
 class SSL_Context:
@@ -164,14 +179,14 @@ class AP:
 
     def _create_ssl(self):
         self.ssl = libssl.SSL_new(self.ssl_ctx.ctx)
-        self.openssl_buf = c_buffer(9999)
+        self.openssl_buf = ctypes.c_buffer(9999)
         self.in_bio = libcrypto.BIO_new(libcrypto.BIO_s_mem())
         self.out_bio = libcrypto.BIO_new(libcrypto.BIO_s_mem())
         if self.rsa_priv_file and self.rsa_cert_file:
             self.debug('Using provided certificate')
-            libssl.SSL_use_certificate_file(self.ssl, c_buffer(
+            libssl.SSL_use_certificate_file(self.ssl, ctypes.c_buffer(
                 self.rsa_cert_file), SSL_CONST.SSL_FILETYPE_PEM)
-            libssl.SSL_use_PrivateKey_file(self.ssl, c_buffer(
+            libssl.SSL_use_PrivateKey_file(self.ssl, ctypes.c_buffer(
                 self.rsa_priv_file), SSL_CONST.SSL_FILETYPE_PEM)
         else:
             x509_cert = None
@@ -217,10 +232,8 @@ eWLC:
                     self.fatal('Could not assign ST to certificate')
                 if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'L', SSL_CONST.MBSTRING_ASC, b'San Jose', -1, -1, 0) != 1:
                     self.fatal('Could not assign L to certificate')
-                # if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'O', SSL_CONST.MBSTRING_ASC, b'Cisco Systems', -1, -1, 0) != 1:
                 if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'O', SSL_CONST.MBSTRING_ASC, b'Cisco Virtual Wireless LAN Controller', -1, -1, 0) != 1:
                     self.fatal('Could not assign O to certificate')
-                # if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'CN', SSL_CONST.MBSTRING_ASC,('AP1G4-%s' % hex(self.mac_src, delimiter = '').upper()).encode('ascii'), -1, -1, 0) != 1:
                 if libcrypto.X509_NAME_add_entry_by_txt(x509_name, b'CN', SSL_CONST.MBSTRING_ASC, b'CA-vWLC', -1, -1, 0) != 1:
                     self.fatal('Could not assign CN to certificate')
                 if libcrypto.X509_set_subject_name(x509_cert, x509_name) != 1:
@@ -254,7 +267,7 @@ eWLC:
         if 'config_update' in self._scapy_cache:
             self._scapy_cache['config_update'][20] = struct.pack('>B', seq)
         else:
-            self._scapy_cache['config_update'] = c_buffer(
+            self._scapy_cache['config_update'] = ctypes.c_buffer(
                 bytes(CAPWAP_PKTS.config_update(self, seq)))
         return self._scapy_cache['config_update']
 
@@ -263,7 +276,7 @@ eWLC:
             self._scapy_cache['echo_pkt'][20] = struct.pack(
                 '>B', self.get_capwap_seq())
         else:
-            self._scapy_cache['echo_pkt'] = c_buffer(
+            self._scapy_cache['echo_pkt'] = ctypes.c_buffer(
                 bytes(CAPWAP_PKTS.echo(self)))
         return self._scapy_cache['echo_pkt']
 
@@ -379,11 +392,11 @@ eWLC:
                 ret = libcrypto.BIO_write(self.in_bio, buf, len(buf))
             else:
                 ret = libcrypto.BIO_write(
-                    self.in_bio, c_buffer(buf), len(buf) + 1)
+                    self.in_bio, ctypes.c_buffer(buf), len(buf) + 1)
             if ret >= 0:
                 return ret
             ret = libcrypto.BIO_test_flags(
-                out_bio, SSL_CONST.BIO_FLAGS_SHOULD_RETRY)
+                self.out_bio, SSL_CONST.BIO_FLAGS_SHOULD_RETRY)
             if ret:
                 return ''
             self.is_connected = False
@@ -395,8 +408,9 @@ eWLC:
             if isinstance(buf, ctypes.Array):
                 ret = libssl.SSL_write(self.ssl, buf, len(buf))
             else:
-                ret = libssl.SSL_write(self.ssl, c_buffer(buf), len(buf) + 1)
-            #err = SSL_CONST.ssl_err.get(libcrypto.ERR_get_error(self.ssl, ret))
+                ret = libssl.SSL_write(self.ssl, ctypes.c_buffer(buf), len(buf) + 1)
+            print('Test Encrypt out: ' + ret)  # Temp to find out what's happening - Daron
+            # err = SSL_CONST.ssl_err.get(libcrypto.ERR_get_error(self.ssl, ret))
             # if err != 'SSL_ERROR_NONE':
             #    self.fatal('Got SSL error: %s(ret %s)' %(err, ret))
             return self.ssl_read()
@@ -405,7 +419,7 @@ eWLC:
         with self.ssl_lock:
             self.ssl_write(buf)
             ret = libssl.SSL_read(self.ssl, self.openssl_buf, 20000)
-            #err = SSL_CONST.ssl_err.get(libcrypto.ERR_get_error(self.ssl, ret))
+            # err = SSL_CONST.ssl_err.get(libcrypto.ERR_get_error(self.ssl, ret))
             # if err != 'SSL_ERROR_NONE':
             #    self.fatal('Got SSL error: %s' %(err, ret))
             return self.openssl_buf[:ret]
@@ -483,7 +497,7 @@ class AP_Manager:
         base_file_dir = os.path.dirname(self.base_file_path)
         if not os.path.exists(base_file_dir):
             os.makedirs(base_file_dir, mode=0o777)
-        self._ap_name_re = re.compile('(.*?)(\d+)')
+        self._ap_name_re = re.compile(r'(.*?)(\d+)')
         self._init_base_vals()
 
     def init(self, trex_port_ids):
@@ -525,7 +539,7 @@ class AP_Manager:
     def _init_base_vals(self):
         try:
             self.set_base_values(load=True)
-        except:
+        except Exception:
             self.next_ap_name = 'test-ap-1'
             self.next_ap_mac = '94:12:12:12:12:01'
             self.next_ap_ip = '9.9.12.1'
