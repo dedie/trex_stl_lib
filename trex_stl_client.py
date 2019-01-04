@@ -11,33 +11,38 @@ import tempfile
 import threading
 import time
 import traceback
-from collections import defaultdict, format_num
+from collections import defaultdict, OrderedDict
 from contextlib import contextmanager
 from functools import wraps
 
 from scapy.layers.l2 import Ether
+from scapy.utils import RawPcapWriter
 
-from texttable import ansi_len
+import trex_stl_stats
+from services.trex_stl_service_arp import STLServiceARP
+from services.trex_stl_service_icmp import STLServiceICMP
+from services.trex_stl_service_int import STLServiceCtx
+from trex_stl_conn import Connection
+from trex_stl_exceptions import (STLArgumentError, STLError, STLTimeoutError,
+                                 STLTypeError)
+from trex_stl_packet_builder_scapy import PacketBuffer
+from trex_stl_port import Port
+from trex_stl_psv import (PortStateValidator, PSV_ACQUIRED, PSV_IDLE, PSV_L3, PSV_NON_SERVICE,
+                          PSV_RESOLVED, PSV_SERVICE, PSV_UP)
+from trex_stl_streams import STLProfile, STLStream
+from trex_stl_types import RC, RC_ERR, RC_OK, StatNotAvailable, validate_type, listify
+from trex_stl_vlan import VLAN
+from utils import common, parsing_opts, text_tables
+from utils.common import (PassiveTimer, is_sub_list,
+                          is_valid_ipv4, is_valid_ipv6, is_valid_mac,
+                          list_difference, list_intersect, list_remove_dup,
+                          sec_split_usec)
 
-from . import trex_stl_stats
-from .services.trex_stl_service_arp import STLServiceARP
-from .services.trex_stl_service_icmp import STLServiceICMP
-from .services.trex_stl_service_int import STLServiceCtx
-from .trex_stl_conn import Connection, STLProfile, STLStream
-from .trex_stl_exceptions import STLArgumentError, STLError, STLTimeoutError, STLTypeError
-from .trex_stl_packet_builder_scapy import PacketBuffer
-from .trex_stl_port import Port
-from .trex_stl_psv import (PSV_ACQUIRED, PSV_IDLE, PSV_L3, PSV_NON_SERVICE,
-                           PSV_RESOLVED, PSV_SERVICE, PSV_UP)
-from .trex_stl_streams import PortStateValidator
-from .trex_stl_types import RC, RC_ERR, RC_OK, StatNotAvailable
-from .trex_stl_vlan import VLAN
-from .utils import RawPcapWriter, common, parsing_opts, text_tables
-from .utils.common import (OrderedDict, PassiveTimer, is_sub_list, is_valid_ipv4,
-                           is_valid_ipv6, is_valid_mac, list_difference, list_intersect,
-                           list_remove_dup, sec_split_usec, validate_type)
-from .utils.text_opts import format_text, format_time, listify
-from .utils.text_tables import TRexTextTable
+from utils.text_opts import format_num, format_text, format_time
+from utils.text_tables import TRexTextTable
+
+# from texttable.TextCode import ansi_len   - not in latest scapy
+
 
 # ###########################     logger     #############################
 # ###########################                #############################
@@ -4401,8 +4406,9 @@ class STLClient(object):
 
         except STLError as e:
             for line in e.brief().splitlines():
-                if ansi_len(line.strip()):
-                    error = line
+                # if ansi_len(line.strip()):
+                #     error = line
+                error = line  # Find out what is returned and remove dependancy on ansi_len - Daron
             msg = format_text(
                 "\nError loading profile '{0}'".format(opts.file[0]), 'bold')
             self.logger.log(msg + '\n')

@@ -10,19 +10,20 @@ How to use:
     <FILL ME HERE>
 
 Author:
-  Itay Marom 
+  Itay Marom
 
 """
-from .trex_stl_service import STLService, STLServiceFilter
-from ..trex_stl_types import listify
-from ..trex_stl_exceptions import STLError
-from ..trex_stl_vlan import VLAN
-
-from scapy.layers.l2 import Ether, Dot1Q, Dot1AD
-from scapy.layers.inet import IP, ICMP
+import random
 from collections import defaultdict
 
-import random
+from scapy.layers.inet import ICMP, IP
+from scapy.layers.l2 import Ether
+
+from trex_stl_exceptions import STLError
+
+from trex_stl_vlan import VLAN
+
+from .trex_stl_service import STLService, STLServiceFilter
 
 
 class STLServiceFilterICMP(STLServiceFilter):

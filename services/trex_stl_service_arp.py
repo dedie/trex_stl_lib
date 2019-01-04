@@ -13,13 +13,13 @@ Author:
   Itay Marom
 
 """
-from .trex_stl_service import STLService, STLServiceFilter
-from ..trex_stl_vlan import VLAN
-from ..trex_stl_types import listify
-
-from scapy.layers.l2 import Ether, ARP, Dot1Q, Dot1AD
-
 from collections import defaultdict
+
+from scapy.layers.l2 import ARP, Ether
+
+# from ..trex_stl_types import listify
+from trex_stl_vlan import VLAN
+from .trex_stl_service import STLService, STLServiceFilter
 
 
 class STLServiceFilterARP(STLServiceFilter):
@@ -128,7 +128,7 @@ class ARPRecord(object):
     def __bool__(self):
         return self.dst_mac is not None
 
-    #__bool__  = __nonzero__
+    # __bool__  = __nonzero__
 
     def __str__(self):
         if self.dst_mac:

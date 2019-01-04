@@ -11,8 +11,8 @@ from .common import (is_valid_ipv4, is_valid_ipv6, is_valid_mac,
                      list_difference, list_remove_dup)
 from .constants import FLOW_CTRL_DICT, ON_OFF_DICT, UP_DOWN_DICT
 from .text_opts import bold, format_text
-from ..trex_stl_types import RC_ERR, STLError, listify
-from ..trex_stl_vlan import VLAN
+from trex_stl_types import RC_ERR, STLError, listify
+from trex_stl_vlan import VLAN
 
 ArgumentPack = namedtuple('ArgumentPack', ['name_or_flags', 'options'])
 ArgumentGroup = namedtuple('ArgumentGroup', ['type', 'args', 'options'])
@@ -905,7 +905,7 @@ OPTIONS_DB = {_option.MULTIPLIER: ArgumentPack(['-m', '--multiplier'],
                                                    'help': 'BPF filter'}),
 
 
-              _option.APTURE_ID: ArgumentPack(['-i', '--id'],
+              _option.CAPTURE_ID: ArgumentPack(['-i', '--id'],
                                               {'help': "capture ID to remove",
                                                'dest': "capture_id",
                                                'type': int,

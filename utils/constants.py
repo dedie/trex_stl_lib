@@ -23,5 +23,4 @@ FLOW_CTRL_DICT = OrderedDict([
 
 for var_name in list(vars().keys()):
     if var_name.endswith('_DICT'):
-        exec('{0}_REVERSED = OrderedDict([(val, key) '
-             + 'for key, val in {0}.items()])'.format(var_name))
+        exec('{0}_REVERSED = OrderedDict([(val, key)for key, val in {0}.items()])'.format(var_name))

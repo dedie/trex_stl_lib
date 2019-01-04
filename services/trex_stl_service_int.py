@@ -15,14 +15,16 @@ Author:
 
 """
 
-import simpy
-from simpy.core import BoundClass
-from ..trex_stl_exceptions import STLError
-from ..trex_stl_psv import *
-from scapy.layers.l2 import Ether
-from .trex_stl_service import STLService
 from collections import deque, namedtuple
 
+import simpy
+from simpy.core import BoundClass
+
+from trex_stl_exceptions import STLError
+
+from trex_stl_psv import PSV_ACQUIRED, PSV_SERVICE, PSV_UP
+
+from .trex_stl_service import STLService
 
 ##################
 #
@@ -30,6 +32,7 @@ from collections import deque, namedtuple
 #
 #
 ##################
+
 
 class STLServiceCtx(object):
     '''
@@ -44,15 +47,13 @@ class STLServiceCtx(object):
         self.port_obj = client.ports[port]
         self._reset()
 
-
-######### API functions              #########
-
+# ######## API functions              #########
 
     def run(self, services, pps=1000):
         '''
             Runs 'services' under service context
 
-            'pps' - provides a rate for services to 
+            'pps' - provides a rate for services to
                     generate traffic
         '''
 
@@ -78,7 +79,7 @@ class STLServiceCtx(object):
 
     def get_src_ipv4(self):
         '''
-            Returns the source IPv4 of 
+            Returns the source IPv4 of
             the port under the context
             or None if the port is configured as L2
         '''
@@ -94,7 +95,7 @@ class STLServiceCtx(object):
         layer_cfg = self.port_obj.get_layer_cfg()
         return layer_cfg['ether']['src']
 
-######### internal functions              #########
+# ######## internal functions              #########
 
     def _reset(self):
         self.filters = {}
@@ -108,7 +109,8 @@ class STLServiceCtx(object):
         if isinstance(services, STLService):
             self._add_single_service(services)
 
-        elif isinstance(services, (list, tuple)) and all([isinstance(s, STLService) for s in services]):
+        elif isinstance(services, (list, tuple)) and all([isinstance(s, STLService)
+                                                         for s in services]):
             for service in services:
                 self._add_single_service(service)
 
@@ -159,9 +161,10 @@ class STLServiceCtx(object):
 
             # add maintence processes
             tx_process = self.env.process(self._tx_pkts_process())
-            rx_process = self.env.process(self._rx_pkts_process())
+            self.env.process(self._rx_pkts_process())
 
-            # start the RT simulation - exit when the TX process has ended(RX has no sense if no proceesses exists)
+            # start the RT simulation - exit when the TX process has ended
+            # (RX has no sense if no proceesses exists)
             self.env.run(until=tx_process)
 
         finally:
@@ -179,7 +182,7 @@ class STLServiceCtx(object):
         filter_type = service.get_filter_type()
 
         # if the service does not have a filter installed - create it
-        if not filter_type in self.filters:
+        if filter_type not in self.filters:
             self.filters[filter_type] = {
                 'inst': filter_type(), 'capture_id': None}
 
@@ -425,9 +428,7 @@ class STLServicePipe(object):
         '''
         return self.tx_buffer.push(tx_pkt)
 
-
-################### internal functions ##########################
-
+# ################## internal functions ##########################
 
     def _on_rx_pkt(self, pkt, rx_ts):
         '''

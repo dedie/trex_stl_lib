@@ -2,9 +2,9 @@
 
 from .trex_stl_rx_service_api import RXServiceAPI
 
-from ..trex_stl_streams import STLStream, STLTXSingleBurst
-from ..trex_stl_packet_builder_scapy import *
-from ..trex_stl_types import *
+from trex_stl_streams import STLStream, STLTXSingleBurst
+from trex_stl_packet_builder_scapy import *
+from trex_stl_types import *
 
 from scapy.layers.l2 import Ether
 from scapy.layers.inet6 import *

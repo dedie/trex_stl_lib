@@ -7,19 +7,21 @@ import json
 import os
 import sys
 import traceback
-from collections import format_num
-
-from scapy.error import Scapy_Exception
-from scapy.layers.l2 import Dot3, Ether
-from scapy.utils import RawPcapReader, ltoa, rdpcap, scapy
 
 import yaml
 
-from .trex_stl_exceptions import STLArgumentError, STLError
-from .trex_stl_packet_builder_interface import (CTrexPktBuilderInterface,
-                                                IP, Padding, Raw)
-from .trex_stl_packet_builder_scapy import STLPktBuilder
-from .trex_stl_types import OrderedDict, validate_type, verify_exclusive_arg
+import scapy
+from scapy.all import Raw
+from scapy.error import Scapy_Exception
+from scapy.layers.inet import IP
+from scapy.layers.l2 import Dot3, Ether
+from scapy.utils import RawPcapReader, ltoa, rdpcap
+
+from trex_stl_exceptions import STLArgumentError, STLError
+from trex_stl_packet_builder_interface import CTrexPktBuilderInterface
+from trex_stl_packet_builder_scapy import STLPktBuilder
+from trex_stl_types import OrderedDict, validate_type, verify_exclusive_arg
+from utils.text_opts import format_num
 
 
 # base class for TX mode
@@ -592,7 +594,7 @@ class STLStream(object):
                     del layer.fields[chksum_name]
 
             # remove Paddings(FCS etc.)
-            if isinstance(layer, Padding):
+            if isinstance(layer, 'Padding'):
                 break
 
             payload = layer.payload

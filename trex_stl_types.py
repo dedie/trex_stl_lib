@@ -3,8 +3,9 @@
 import sys
 from collections import OrderedDict, namedtuple
 
-from .trex_stl_exceptions import STLError, STLTypeError
-from .utils.text_opts import format_text
+from trex_stl_exceptions import STLError, STLTypeError
+
+from utils.text_opts import format_text
 
 RpcCmdData = namedtuple('RpcCmdData', ['method', 'params', 'api_class'])
 TupleRC = namedtuple('RCT', ['rc', 'data', 'is_warn'])

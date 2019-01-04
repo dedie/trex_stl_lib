@@ -9,13 +9,15 @@ import random
 import socket
 import struct
 
-from scapy.all import Ether, FILED_TYPES, RawPcapReader, is_integer, mac2str
+from scapy.all import Ether, RawPcapReader, mac2str
+from scapy.packet import NoPayload
+from scapy.utils import hexdump, wrpcap  # , packet
+
+from trex_stl_packet_builder_interface import CTrexPktBuilderInterface
+
+from trex_stl_types import is_integer, validate_type
 
 import yaml
-
-from .trex_stl_packet_builder_interface import (CTrexPktBuilderInterface,
-                                                NoPayload, hexdump, wrpcap)
-from .trex_stl_types import Packet, validate_type
 
 
 class CTRexPacketBuildException(Exception):
@@ -187,7 +189,8 @@ class CTRexScFieldRangeBase(CTRexScriptsBase):
         self.field_type = field_type
         if self.field_type not in CTRexScFieldRangeBase.FILED_TYPES:
             raise CTRexPacketBuildException(-12,
-                                            'Field type should be in %s' % FILED_TYPES)
+                                            'Field type should be in %s'
+                                            % CTRexScFieldRangeBase.FILED_TYPES)
 
 
 class CTRexScFieldRangeValue(CTRexScFieldRangeBase):
@@ -1436,7 +1439,11 @@ class STLVmTupleGen(CTRexVmDescBase):
 # ###############################################################################################
 
 class STLPktBuilder(CTrexPktBuilderInterface):
-
+    # None of this can work as CTrexPktBuilderInterface is not completed, all functions contain
+    # raise Exception("implement me")
+    #
+    # Currently haven't worked out where "Packet" in line 1520 comes from.
+    # Needs a lot more work ..... Daron
     def __init__(self, pkt=None, pkt_buffer=None, vm=None, path_relative_to_profile=False,
                  build_raw=False, remove_fcs=True):
         """
@@ -1511,7 +1518,7 @@ class STLPktBuilder(CTrexPktBuilderInterface):
         """
         super(STLPktBuilder, self).__init__()
 
-        validate_type('pkt', pkt, (type(None), str, Packet))
+        validate_type('pkt', pkt, (type(None), str, Ether))
         validate_type('pkt_buffer', pkt_buffer, (type(None), bytes))
 
         self.pkt = None     # as input
@@ -1651,7 +1658,7 @@ class STLPktBuilder(CTrexPktBuilderInterface):
 
     def to_pkt_dump(self):
         p = self.pkt
-        if p and isinstance(p, Packet):
+        if p and isinstance(p, Ether):
             p.show2()
             hexdump(p)
             return
@@ -1670,7 +1677,7 @@ class STLPktBuilder(CTrexPktBuilderInterface):
            pkt =Ether()/IP(src="16.0.0.1",dst="48.0.0.1")/UDP(dport=12,sport=1025)/IP()/('x'*10)
 
         """
-        if isinstance(pkt, Packet):
+        if isinstance(pkt, Ether):
             self.pkt = pkt
         else:
             if isinstance(pkt, str):
@@ -1682,7 +1689,7 @@ class STLPktBuilder(CTrexPktBuilderInterface):
         if self.is_binary_source:
             return True
         p = self.pkt
-        if isinstance(p, Packet):
+        if isinstance(p, Ether):
             if isinstance(p, Ether):
                 if 'src' in p.fields:
                     return False
@@ -1692,7 +1699,7 @@ class STLPktBuilder(CTrexPktBuilderInterface):
         if self.is_binary_source:
             return True
         p = self.pkt
-        if isinstance(p, Packet):
+        if isinstance(p, 'Packet'):
             if isinstance(p, Ether):
                 if 'dst' in p.fields:
                     return False
@@ -2058,7 +2065,7 @@ class PacketBuffer:
     '''
 
     def __init__(self, buffer, port_src=False, port_dst=False):
-        if isinstance(buffer, Packet):
+        if isinstance(buffer, dict):
             self.buffer = bytes(buffer)
         else:
             validate_type('buffer', buffer, bytes)
