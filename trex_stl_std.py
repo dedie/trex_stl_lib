@@ -1,8 +1,14 @@
 #!/usr/bin/python3
 
-from .trex_stl_streams import *
-from .trex_stl_packet_builder_scapy import *
-from .utils.common import *
+from scapy.layers.l2 import Ether, IP, UDP
+
+from trex_stl_exceptions import STLError
+
+from trex_stl_packet_builder_scapy import STLPktBuilder
+
+from trex_stl_streams import STLFlowLatencyStats, STLStream, STLTXSingleBurst
+
+from utils.common import list_difference
 
 # map ports
 # will destroy all streams/data on the ports
@@ -76,7 +82,7 @@ def stl_map_ports(client, ports=None):
         port_b = table['map'][port_a]
 
         # if unknown - add to the unknown list
-        if port_b == None:
+        if port_b is None:
             table['unknown'].append(port_a)
         # self-loop, due to bug?
         elif port_a == port_b:
