@@ -1,4 +1,8 @@
+import os
 import sys
 
-# FIXME to the write path for trex_stf_lib
+cur_dir = os.path.dirname(__file__)
+
+# Run from TREX_STL_LIB directory
 sys.path.insert(0, "../")
+STL_PROFILES_PATH = cur_dir + 'profiles/stl/'

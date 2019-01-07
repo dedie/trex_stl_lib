@@ -43,6 +43,7 @@ def imix_test(server, mult):
         print("Mapped ports to sides {0} <--> {1}".format(dir_0, dir_1))
 
         # load IMIX profile
+        print(stl_path.STL_PROFILES_PATH)
         profile = STLProfile.load_py(os.path.join(stl_path.STL_PROFILES_PATH, 'imix.py'))
         streams = profile.get_streams()
 
