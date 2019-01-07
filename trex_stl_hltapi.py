@@ -3,10 +3,12 @@
 import copy
 import socket
 import sys
-from collections import (IP, IPv6, TCP, defaultdict, is_valid_ipv4_ret,
-                         is_valid_ipv6_ret, traceback)
-from time import sleep
+from collections import (defaultdict)
 
+from scapy.layers.inet import IP, IPv6, TCP
+
+from time import sleep
+import traceback
 from trex_stl_async_client import (STLClient, STLFlowStats, STLPktBuilder,
                                    STLProfile, STLScVmRaw, STLStream,
                                    STLTXCont, STLTXMultiBurst,
@@ -16,6 +18,8 @@ from trex_stl_async_client import (STLClient, STLFlowStats, STLPktBuilder,
                                    ipv4_str_to_num)
 
 from trex_stl_exceptions import STLError
+
+from trex_stl_packet_builder_scapy import is_valid_ipv4_ret, is_valid_ipv6_ret
 
 from .trex_stl_types import Dot1Q, Ether, LRU_cache, UDP, is_integer, mac2str
 from .utils.common import get_number
