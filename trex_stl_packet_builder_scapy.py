@@ -1689,7 +1689,7 @@ class STLPktBuilder(CTrexPktBuilderInterface):
         if self.is_binary_source:
             return True
         p = self.pkt
-        if isinstance(p, Ether):
+        if isinstance(p, Packet):
             if isinstance(p, Ether):
                 if 'src' in p.fields:
                     return False
@@ -1699,7 +1699,7 @@ class STLPktBuilder(CTrexPktBuilderInterface):
         if self.is_binary_source:
             return True
         p = self.pkt
-        if isinstance(p, 'Packet'):
+        if isinstance(p, Packet):
             if isinstance(p, Ether):
                 if 'dst' in p.fields:
                     return False
