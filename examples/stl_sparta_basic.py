@@ -41,7 +41,8 @@ def sparta_basic_test(server, mult):
         table = stl_map_ports(client)
         print('\n\n')
         print('Actual mapped table(all data):\n')
-        print(table + '\n')
+        print(table)
+        print('\n')
 
         dir_0 = [x[0] for x in table['bi']]
         dir_1 = [x[1] for x in table['bi']]
