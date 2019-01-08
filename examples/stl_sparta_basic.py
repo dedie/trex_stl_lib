@@ -44,7 +44,7 @@ def imix_test(server, mult):
 
         # load IMIX profile
         print(stl_path.STL_PROFILES_PATH)
-        profile = STLProfile.load_py(os.path.join(stl_path.STL_PROFILES_PATH, 'imix.py'))
+        profile = STLProfile.load_py(os.path.join(stl_path.STL_PROFILES_PATH, 'sparta_basic.py'))
         streams = profile.get_streams()
 
         # add both streams to ports

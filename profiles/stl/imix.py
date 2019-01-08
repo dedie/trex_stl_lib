@@ -41,26 +41,22 @@ class STLImix(object):
 
         # construct the base packet for the profile
         vm = STLVM()
-        
+
         # define two vars (src and dst)
         vm.var(name="src",min_value=src['start'],max_value=src['end'],size=4,op="inc")
         vm.var(name="dst",min_value=dst['start'],max_value=dst['end'],size=4,op="inc")
-        
+
         # write them
         vm.write(fv_name="src",pkt_offset= "IP.src")
         vm.write(fv_name="dst",pkt_offset= "IP.dst")
-        
+
         # fix checksum
         vm.fix_chksum()
-        
+
         # create imix streams
         return [self.create_stream(x['size'], x['pps'],x['isg'] , vm) for x in self.imix_table]
-
 
 
 # dynamic load - used for trex console or simulator
 def register():
     return STLImix()
-
-
-
