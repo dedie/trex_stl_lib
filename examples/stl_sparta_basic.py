@@ -34,7 +34,8 @@ def sparta_basic_test(server, mult):
         # take all the ports
         client.reset()
         print('Connection info:\n')
-        print(client.get_connection_info() + '\n\n')
+        print(client.get_connection_info())
+        print('\n\n')
 
         # map ports - identify the routes
         table = stl_map_ports(client)
