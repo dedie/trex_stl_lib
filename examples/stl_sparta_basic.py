@@ -1,5 +1,6 @@
 import argparse
 import os
+import pprint
 import sys
 
 import stl_path
@@ -53,9 +54,13 @@ def sparta_basic_test(server, mult):
 
         # load IMIX profile
         # print(stl_path.STL_PROFILES_PATH + '/sparta_basic.py')
-        # profile = STLProfile.load_py(os.path.join(stl_path.STL_PROFILES_PATH + '/sparta_basic.py'))
+        # profile = STLProfile.load_py(os.path.join(stl_path.STL_PROFILES_PATH
+        #                                           + '/sparta_basic.py'))
+        print('Using profile:\n')
         print(stl_path.STL_PROFILES_PATH + '/sparta_basic.py')
-        profile = STLProfile.load_pcap(os.path.join(stl_path.STL_PROFILES_PATH + '/ipv4_udp_9k.pcap'))
+        print('\n')
+        profile = STLProfile.load_pcap(os.path.join(stl_path.STL_PROFILES_PATH
+                                                    + '/ipv4_udp_9k.pcap'))
         streams = profile.get_streams()
 
         # add both streams to ports
@@ -65,8 +70,8 @@ def sparta_basic_test(server, mult):
         # clear the stats before injecting
         client.clear_stats()
 
-        # choose rate and start traffic for 10 seconds
-        duration = 10
+        # choose rate and start traffic for 20 seconds
+        duration = 20
         print("Injecting {0} <--> {1} on total rate of '{2}' for {3} seconds"
               .format(dir_0, dir_1, mult, duration))
 
@@ -79,7 +84,7 @@ def sparta_basic_test(server, mult):
         stats = client.get_stats()
 
         # use this for debug info on all the stats
-        # pprint(stats)
+        pprint(stats)
 
         # sum dir 0
         dir_0_opackets = sum([stats[i]["opackets"] for i in dir_0])
@@ -125,7 +130,7 @@ def sparta_basic_test(server, mult):
         print("\nTest has failed :-(\n")
 
 
-parser = argparse.ArgumentParser(description="Example for TRex Stateless, sending IMIX traffic")
+parser = argparse.ArgumentParser(description="Basic TRex Stateless, sending pcap traffic")
 parser.add_argument('-s', '--server',
                     dest='server',
                     help='Remote trex address',
