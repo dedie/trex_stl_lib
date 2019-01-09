@@ -84,7 +84,7 @@ def sparta_basic_test(server, mult):
         stats = client.get_stats()
 
         # use this for debug info on all the stats
-        pprint(stats)
+        pprint.pprint(stats)
 
         # sum dir 0
         dir_0_opackets = sum([stats[i]["opackets"] for i in dir_0])
