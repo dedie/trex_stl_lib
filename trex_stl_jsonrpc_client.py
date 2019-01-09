@@ -207,7 +207,7 @@ class JsonRpcClient(object):
             try:
                 # pdb.set_trace()
                 if isinstance(msg, str):
-                    msg = msg.encode("utf-8", "ignore")
+                    msg = msg  # .encode("utf-8", "ignore")
 
                 if isinstance(msg, bytes):
                     self.socket.send(msg)
