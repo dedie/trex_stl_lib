@@ -35,7 +35,8 @@ def print_table_with_header(texttable_obj, header="", untouched_header="",
     # print(format_text(header, 'cyan', 'underline') + "\n", file=buffer)
     print(header)
 
-    print((texttable_obj.draw() + "\n"), file=buffer)
+    # print((texttable_obj.draw() + "\n"), file=buffer)
+    print((texttable_obj.draw()))
 
 
 if __name__ == "__main__":
