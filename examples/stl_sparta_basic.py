@@ -55,7 +55,7 @@ def sparta_basic_test(server, mult):
         # print(stl_path.STL_PROFILES_PATH + '/sparta_basic.py')
         # profile = STLProfile.load_py(os.path.join(stl_path.STL_PROFILES_PATH + '/sparta_basic.py'))
         print(stl_path.STL_PROFILES_PATH + '/sparta_basic.py')
-        profile = STLProfile.load_py(os.path.join(stl_path.STL_PROFILES_PATH + '/ipv4_udp_9k.pcap'))
+        profile = STLProfile.load_pcap(os.path.join(stl_path.STL_PROFILES_PATH + '/ipv4_udp_9k.pcap'))
         streams = profile.get_streams()
 
         # add both streams to ports
