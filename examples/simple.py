@@ -1,6 +1,7 @@
 # import stl_path
 
-from scapy.layers.l2 import Ether, IP, UDP
+from scapy.layers.inet import IP, UDP
+from scapy.layers.l2 import Ether
 
 from trex_stl_packet_builder_scapy import STLPktBuilder
 
