@@ -32,7 +32,8 @@ def generate_trex_stats_table():
 def print_table_with_header(texttable_obj, header="", untouched_header="",
                             buffer=sys.stdout):
     header = header.replace("_", " ").title() + untouched_header
-    print(format_text(header, 'cyan', 'underline') + "\n", file=buffer)
+    # print(format_text(header, 'cyan', 'underline') + "\n", file=buffer)
+    print(header)
 
     print((texttable_obj.draw() + "\n"), file=buffer)
 
