@@ -46,8 +46,8 @@ def sparta_basic_test(server, mult):
 
         # dir_0 = [x[0] for x in table['bi']]
         # dir_1 = [x[1] for x in table['bi']]
-        dir_0 = [0]
-        dir_1 = [1]
+        dir_0 = [0, 1]
+        dir_1 = [1, 0]
 
         print("Mapped ports to sides {0} <--> {1}".format(dir_0, dir_1))
 
