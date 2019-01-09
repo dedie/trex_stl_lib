@@ -5,13 +5,10 @@ import sys
 
 import stl_path
 
-from trex_stl_client import STLClient
-
-from trex_stl_exceptions import STLError
-
-from trex_stl_std import stl_map_ports
-
-from trex_stl_streams import STLProfile
+from trex_stl_lib.trex_stl_client import STLClient
+from trex_stl_lib.trex_stl_exceptions import STLError
+from trex_stl_lib.trex_stl_std import stl_map_ports
+from trex_stl_lib.trex_stl_streams import STLProfile
 
 
 # Basic sparta test
