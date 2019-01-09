@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 
 import sys
+
+from text_opts import format_text
+
 from texttable import Texttable
-from .text_opts import format_text
 
 
 class TRexTextTable(Texttable):
