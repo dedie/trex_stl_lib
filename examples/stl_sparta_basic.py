@@ -45,10 +45,8 @@ def sparta_basic_test(server, mult):
         print(table)
         print('\n')
 
-        # dir_0 = [x[0] for x in table['bi']]
-        # dir_1 = [x[1] for x in table['bi']]
-        dir_0 = [0, 1]
-        dir_1 = [1, 0]
+        dir_0 = [x[0] for x in table['bi']]
+        dir_1 = [x[1] for x in table['bi']]
 
         print("Mapped ports to sides {0} <--> {1}".format(dir_0, dir_1))
 
@@ -57,7 +55,7 @@ def sparta_basic_test(server, mult):
         # profile = STLProfile.load_py(os.path.join(stl_path.STL_PROFILES_PATH
         #                                           + '/sparta_basic.py'))
         print('Using profile:\n')
-        print(stl_path.STL_PROFILES_PATH + '/sparta_basic.py')
+        print(stl_path.STL_PROFILES_PATH + '/ipv4_udp_9k.pcap')
         print('\n')
         profile = STLProfile.load_pcap(os.path.join(stl_path.STL_PROFILES_PATH
                                                     + '/ipv4_udp_9k.pcap'))
