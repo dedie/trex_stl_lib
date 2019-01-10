@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-import sys
 import os
 # import warnings
 import platform
+import sys
 
 # if not set - set it to default
 TREX_STL_EXT_PATH = os.environ.get('TREX_STL_EXT_PATH')

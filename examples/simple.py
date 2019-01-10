@@ -3,8 +3,9 @@
 from scapy.layers.inet import IP, UDP
 from scapy.layers.l2 import Ether
 
-from trex_stl_lib.trex_stl_packet_builder_scapy import STLPktBuilder
-from trex_stl_lib.trex_stl_streams import STLStream, STLTXCont
+from trex_stl_packet_builder_scapy import STLPktBuilder
+
+from trex_stl_streams import STLStream, STLTXCont
 
 
 class STLS1(object):
