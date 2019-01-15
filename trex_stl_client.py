@@ -18,7 +18,7 @@ from functools import wraps
 from scapy.layers.l2 import Ether
 from scapy.utils import RawPcapWriter
 
-import trex_stl_stats
+# import trex_stl_lib.trex_stl_stats
 from services.trex_stl_service_arp import STLServiceARP
 from services.trex_stl_service_icmp import STLServiceICMP
 from services.trex_stl_service_int import STLServiceCtx

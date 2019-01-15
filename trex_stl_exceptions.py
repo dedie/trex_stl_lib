@@ -4,7 +4,7 @@ import os
 import sys
 import traceback
 
-from utils.text_opts import format_text
+from trex_stl_lib.utils.text_opts import format_text
 
 try:
     str
