@@ -16,10 +16,9 @@ Author:
 from collections import defaultdict
 
 from scapy.layers.l2 import ARP, Ether
-
+from trex_stl_lib.services.trex_stl_service import STLService, STLServiceFilter
 # from ..trex_stl_types import listify
-from trex_stl_vlan import VLAN
-from .trex_stl_service import STLService, STLServiceFilter
+from trex_stl_lib.trex_stl_vlan import VLAN
 
 
 class STLServiceFilterARP(STLServiceFilter):
