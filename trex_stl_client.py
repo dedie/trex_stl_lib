@@ -11,7 +11,7 @@ import tempfile
 import threading
 import time
 import traceback
-from collections import defaultdict, OrderedDict
+from collections import OrderedDict, defaultdict
 from contextlib import contextmanager
 from functools import wraps
 
@@ -19,27 +19,27 @@ from scapy.layers.l2 import Ether
 from scapy.utils import RawPcapWriter
 
 # import trex_stl_lib.trex_stl_stats
-from services.trex_stl_service_arp import STLServiceARP
-from services.trex_stl_service_icmp import STLServiceICMP
-from services.trex_stl_service_int import STLServiceCtx
-from trex_stl_conn import Connection
-from trex_stl_exceptions import (STLArgumentError, STLError, STLTimeoutError,
-                                 STLTypeError)
-from trex_stl_packet_builder_scapy import PacketBuffer
-from trex_stl_port import Port
-from trex_stl_psv import (PortStateValidator, PSV_ACQUIRED, PSV_IDLE, PSV_L3, PSV_NON_SERVICE,
-                          PSV_RESOLVED, PSV_SERVICE, PSV_UP)
-from trex_stl_streams import STLProfile, STLStream
-from trex_stl_types import RC, RC_ERR, RC_OK, StatNotAvailable, validate_type, listify
-from trex_stl_vlan import VLAN
-from utils import common, parsing_opts, text_tables
-from utils.common import (PassiveTimer, is_sub_list,
-                          is_valid_ipv4, is_valid_ipv6, is_valid_mac,
-                          list_difference, list_intersect, list_remove_dup,
-                          sec_split_usec)
-
-from utils.text_opts import format_num, format_text, format_time
-from utils.text_tables import TRexTextTable
+from trex_stl_lib.services.trex_stl_service_arp import STLServiceARP
+from trex_stl_lib.services.trex_stl_service_icmp import STLServiceICMP
+from trex_stl_lib.services.trex_stl_service_int import STLServiceCtx
+from trex_stl_lib.trex_stl_conn import Connection
+from trex_stl_lib.trex_stl_exceptions import (STLArgumentError, STLError, STLTimeoutError,
+                                              STLTypeError)
+from trex_stl_lib.trex_stl_packet_builder_scapy import PacketBuffer
+from trex_stl_lib.trex_stl_port import Port
+from trex_stl_lib.trex_stl_psv import (PSV_ACQUIRED, PSV_IDLE, PSV_L3, PSV_NON_SERVICE,
+                                       PSV_RESOLVED, PSV_SERVICE, PSV_UP,
+                                       PortStateValidator)
+from trex_stl_lib.trex_stl_streams import STLProfile, STLStream
+from trex_stl_lib.trex_stl_types import (RC, RC_ERR, RC_OK, StatNotAvailable, listify,
+                                         validate_type)
+from trex_stl_lib.trex_stl_vlan import VLAN
+from trex_stl_lib.utils import common, parsing_opts, text_tables
+from trex_stl_lib.utils.common import (PassiveTimer, is_sub_list, is_valid_ipv4,
+                                       is_valid_ipv6, is_valid_mac, list_difference,
+                                       list_intersect, list_remove_dup, sec_split_usec)
+from trex_stl_lib.utils.text_opts import format_num, format_text, format_time
+from trex_stl_lib.utils.text_tables import TRexTextTable
 
 # from texttable.TextCode import ansi_len   - not in latest scapy
 
