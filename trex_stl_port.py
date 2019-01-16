@@ -5,10 +5,10 @@ import threading
 from collections import OrderedDict, namedtuple
 from datetime import datetime, timedelta
 
-# import trex_stl_lib.trex_stl_stats
 from trex_stl_lib.rx_services.trex_stl_rx_service_ipv6 import (RXServiceICMPv6,
                                                                RXServiceIPv6Scan)
 from trex_stl_lib.trex_stl_packet_builder_scapy import STLPktBuilder
+from trex_stl_lib.trex_stl_stats import CPortStats
 from trex_stl_lib.trex_stl_streams import STLStream
 from trex_stl_lib.trex_stl_types import RC, RC_ERR, RC_OK, RpcCmdData, listify
 from trex_stl_lib.utils.constants import FLOW_CTRL_DICT_REVERSED
@@ -72,7 +72,7 @@ class Port(object):
         self.session_id = session_id
         self.status = {}
 
-        self.port_stats = trex_stl_stats.CPortStats(self)
+        self.port_stats = CPortStats(self)
 
         self.next_available_id = 1
         self.tx_stopped_ts = None
