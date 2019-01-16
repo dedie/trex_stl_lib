@@ -9,7 +9,7 @@ Author:
 """
 from scapy.layers.l2 import Dot1AD, Dot1Q
 
-from trex_stl_exceptions import STLError
+from trex_stl_lib.trex_stl_exceptions import STLError
 
 
 class VLAN(object):

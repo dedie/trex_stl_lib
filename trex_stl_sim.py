@@ -23,13 +23,12 @@ import subprocess
 import sys
 import tempfile
 
-from trex_stl_lib.trex_stl_packet_builder_scapy import (RawPcapReader)
-
 # simulator can be run as a standalone
-from .trex_stl_exceptions import STLArgumentError, STLError
-from .trex_stl_streams import STLProfile, STLStream
-from .utils import parsing_opts, pcap
-from .utils.text_opts import format_text
+from trex_stl_lib.trex_stl_exceptions import STLArgumentError, STLError
+from trex_stl_lib.trex_stl_packet_builder_scapy import RawPcapReader
+from trex_stl_lib.trex_stl_streams import STLProfile, STLStream
+from trex_stl_lib.utils import parsing_opts, pcap
+from trex_stl_lib.utils.text_opts import format_text
 
 
 class BpSimException(Exception):

@@ -2,14 +2,11 @@
 
 from scapy.layers.inet import IP, UDP
 from scapy.layers.l2 import Ether
-
-from trex_stl_exceptions import STLError
-
-from trex_stl_packet_builder_scapy import STLPktBuilder
-
-from trex_stl_streams import STLFlowLatencyStats, STLStream, STLTXSingleBurst
-
-from utils.common import list_difference
+from trex_stl_lib.trex_stl_exceptions import STLError
+from trex_stl_lib.trex_stl_packet_builder_scapy import STLPktBuilder
+from trex_stl_lib.trex_stl_streams import (STLFlowLatencyStats, STLStream,
+                                           STLTXSingleBurst)
+from trex_stl_lib.utils.common import list_difference
 
 # map ports
 # will destroy all streams/data on the ports

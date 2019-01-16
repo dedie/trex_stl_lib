@@ -5,19 +5,15 @@ import threading
 from collections import OrderedDict, namedtuple
 from datetime import datetime, timedelta
 
-from rx_services.trex_stl_rx_service_ipv6 import (RXServiceICMPv6,
-                                                  RXServiceIPv6Scan)
-
-from trex_stl_packet_builder_scapy import STLPktBuilder
-
-import trex_stl_stats
-
-from trex_stl_streams import STLStream
-
-from trex_stl_types import RC, RC_ERR, RC_OK, RpcCmdData, listify
-
-from utils.constants import FLOW_CTRL_DICT_REVERSED
-from utils.text_opts import format_num, format_percentage, format_text, format_time
+# import trex_stl_lib.trex_stl_stats
+from trex_stl_lib.rx_services.trex_stl_rx_service_ipv6 import (RXServiceICMPv6,
+                                                               RXServiceIPv6Scan)
+from trex_stl_lib.trex_stl_packet_builder_scapy import STLPktBuilder
+from trex_stl_lib.trex_stl_streams import STLStream
+from trex_stl_lib.trex_stl_types import RC, RC_ERR, RC_OK, RpcCmdData, listify
+from trex_stl_lib.utils.constants import FLOW_CTRL_DICT_REVERSED
+from trex_stl_lib.utils.text_opts import (format_num, format_percentage,
+                                          format_text, format_time)
 
 StreamOnPort = namedtuple('StreamOnPort', ['compiled_stream', 'metadata'])
 

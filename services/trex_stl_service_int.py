@@ -20,9 +20,9 @@ from collections import deque, namedtuple
 import simpy
 from simpy.core import BoundClass
 
-from trex_stl_exceptions import STLError
+from trex_stl_lib.trex_stl_exceptions import STLError
 
-from trex_stl_psv import PSV_ACQUIRED, PSV_SERVICE, PSV_UP
+from trex_stl_lib.trex_stl_psv import PSV_ACQUIRED, PSV_SERVICE, PSV_UP
 
 from .trex_stl_service import STLService
 

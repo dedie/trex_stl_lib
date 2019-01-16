@@ -4,12 +4,10 @@ import json
 import re
 from threading import Lock
 
-from trex_stl_types import RC, RC_ERR, RC_OK
-
-from utils.common import random_id_gen
-from utils.zipmsg import ZippedMsg
-
 import zmq
+from trex_stl_lib.trex_stl_types import RC, RC_ERR, RC_OK
+from trex_stl_lib.utils.common import random_id_gen
+from trex_stl_lib.utils.zipmsg import ZippedMsg
 
 
 class bcolors:

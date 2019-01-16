@@ -13,9 +13,9 @@ from scapy.all import Ether, RawPcapReader, mac2str
 from scapy.packet import NoPayload, Packet
 from scapy.utils import hexdump, wrpcap  # , packet
 
-from trex_stl_packet_builder_interface import CTrexPktBuilderInterface
+from trex_stl_lib.trex_stl_packet_builder_interface import CTrexPktBuilderInterface
 
-from trex_stl_types import is_integer, validate_type
+from trex_stl_lib.trex_stl_types import is_integer, validate_type
 
 import yaml
 

@@ -9,10 +9,10 @@ import signal
 import threading
 import time
 
-from trex_stl_types import RC_ERR, RC_OK
+from trex_stl_lib.trex_stl_types import RC_ERR, RC_OK
 
-from utils.text_opts import format_num
-from utils.zipmsg import ZippedMsg
+from trex_stl_lib.utils.text_opts import format_num
+from trex_stl_lib.utils.zipmsg import ZippedMsg
 
 import zmq
 

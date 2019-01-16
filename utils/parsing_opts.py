@@ -6,9 +6,9 @@ import os
 import re
 from collections import namedtuple
 
-from trex_stl_types import RC_ERR, STLError, listify
+from trex_stl_lib.trex_stl_types import RC_ERR, STLError, listify
 
-from trex_stl_vlan import VLAN
+from trex_stl_lib.trex_stl_vlan import VLAN
 
 from .common import (is_valid_ipv4, is_valid_ipv6, is_valid_mac,
                      list_difference, list_remove_dup)

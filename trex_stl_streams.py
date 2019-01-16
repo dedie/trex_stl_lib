@@ -17,11 +17,11 @@ from scapy.layers.inet import IP
 from scapy.layers.l2 import Dot3, Ether
 from scapy.utils import RawPcapReader, ltoa, rdpcap
 
-from trex_stl_exceptions import STLArgumentError, STLError
-from trex_stl_packet_builder_interface import CTrexPktBuilderInterface
-from trex_stl_packet_builder_scapy import STLPktBuilder
-from trex_stl_types import OrderedDict, validate_type, verify_exclusive_arg
-from utils.text_opts import format_num
+from trex_stl_lib.trex_stl_exceptions import STLArgumentError, STLError
+from trex_stl_lib.trex_stl_packet_builder_interface import CTrexPktBuilderInterface
+from trex_stl_lib.trex_stl_packet_builder_scapy import STLPktBuilder
+from trex_stl_lib.trex_stl_types import OrderedDict, validate_type, verify_exclusive_arg
+from trex_stl_lib.utils.text_opts import format_num
 
 
 # base class for TX mode

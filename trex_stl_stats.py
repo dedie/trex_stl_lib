@@ -6,12 +6,11 @@ import threading
 import time
 from collections import OrderedDict, deque, namedtuple
 
-from trex_stl_exceptions import STLError
-
-from trex_stl_types import StatNotAvailable, is_integer
-
-from utils import text_tables
-from utils.text_opts import format_num, format_text, format_threshold
+from trex_stl_lib.trex_stl_exceptions import STLError
+from trex_stl_lib.trex_stl_types import StatNotAvailable, is_integer
+from trex_stl_lib.utils import text_tables
+from trex_stl_lib.utils.text_opts import (format_num, format_text,
+                                          format_threshold)
 
 GLOBAL_STATS = 'g'
 PORT_STATS = 'p'

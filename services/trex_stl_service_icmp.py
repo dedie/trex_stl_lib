@@ -19,9 +19,9 @@ from collections import defaultdict
 from scapy.layers.inet import ICMP, IP
 from scapy.layers.l2 import Ether
 
-from trex_stl_exceptions import STLError
+from trex_stl_lib.trex_stl_exceptions import STLError
 
-from trex_stl_vlan import VLAN
+from trex_stl_lib.trex_stl_vlan import VLAN
 
 from .trex_stl_service import STLService, STLServiceFilter
 

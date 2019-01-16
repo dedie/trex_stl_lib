@@ -4,11 +4,9 @@ import os
 import signal
 import time
 
-from trex_stl_async_client import CTRexAsyncClient
-
-from trex_stl_jsonrpc_client import JsonRpcClient
-
-from trex_stl_types import RC_OK
+from trex_stl_lib.trex_stl_async_client import CTRexAsyncClient
+from trex_stl_lib.trex_stl_jsonrpc_client import JsonRpcClient
+from trex_stl_lib.trex_stl_types import RC_OK
 
 # ###########################     RPC layer     #############################
 # ###########################                   #############################

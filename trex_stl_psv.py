@@ -7,9 +7,9 @@ Author:
 
 """
 
-from trex_stl_exceptions import STLError
+from trex_stl_lib.trex_stl_exceptions import STLError
 
-from utils.common import list_difference, list_remove_dup
+from trex_stl_lib.utils.common import list_difference, list_remove_dup
 
 # type of states to be enforced
 # types starting with _ are internally used

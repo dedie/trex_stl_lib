@@ -2,7 +2,7 @@
 
 import sys
 
-from text_opts import format_text
+# from text_opts import format_text
 
 from texttable import Texttable
 
