@@ -17,27 +17,31 @@ from functools import wraps
 
 from scapy.layers.l2 import Ether
 from scapy.utils import RawPcapWriter
-
-# import trex_stl_lib.trex_stl_stats
 from trex_stl_lib.services.trex_stl_service_arp import STLServiceARP
 from trex_stl_lib.services.trex_stl_service_icmp import STLServiceICMP
 from trex_stl_lib.services.trex_stl_service_int import STLServiceCtx
 from trex_stl_lib.trex_stl_conn import Connection
-from trex_stl_lib.trex_stl_exceptions import (STLArgumentError, STLError, STLTimeoutError,
-                                              STLTypeError)
+from trex_stl_lib.trex_stl_exceptions import (STLArgumentError, STLError,
+                                              STLTimeoutError, STLTypeError)
 from trex_stl_lib.trex_stl_packet_builder_scapy import PacketBuffer
 from trex_stl_lib.trex_stl_port import Port
-from trex_stl_lib.trex_stl_psv import (PSV_ACQUIRED, PSV_IDLE, PSV_L3, PSV_NON_SERVICE,
-                                       PSV_RESOLVED, PSV_SERVICE, PSV_UP,
-                                       PortStateValidator)
+from trex_stl_lib.trex_stl_psv import (PSV_ACQUIRED, PSV_IDLE, PSV_L3,
+                                       PSV_NON_SERVICE, PSV_RESOLVED,
+                                       PSV_SERVICE, PSV_UP, PortStateValidator)
+from trex_stl_lib.trex_stl_stats import (ALL_STATS_OPTS, COMPACT, CGlobalStats,
+                                         CLatencyStats, CPgIdStats, CRxStats,
+                                         CTRexInfoGenerator, CUtilStats,
+                                         CXStats)
 from trex_stl_lib.trex_stl_streams import STLProfile, STLStream
-from trex_stl_lib.trex_stl_types import (RC, RC_ERR, RC_OK, StatNotAvailable, listify,
-                                         validate_type)
+from trex_stl_lib.trex_stl_types import (RC, RC_ERR, RC_OK, StatNotAvailable,
+                                         listify, validate_type)
 from trex_stl_lib.trex_stl_vlan import VLAN
 from trex_stl_lib.utils import common, parsing_opts, text_tables
-from trex_stl_lib.utils.common import (PassiveTimer, is_sub_list, is_valid_ipv4,
-                                       is_valid_ipv6, is_valid_mac, list_difference,
-                                       list_intersect, list_remove_dup, sec_split_usec)
+from trex_stl_lib.utils.common import (PassiveTimer, is_sub_list,
+                                       is_valid_ipv4, is_valid_ipv6,
+                                       is_valid_mac, list_difference,
+                                       list_intersect, list_remove_dup,
+                                       sec_split_usec)
 from trex_stl_lib.utils.text_opts import format_num, format_text, format_time
 from trex_stl_lib.utils.text_tables import TRexTextTable
 
@@ -564,30 +568,30 @@ class STLClient(object):
         # connection state object
         self.conn = Connection(self.connection_info, self.logger, self)
 
-        self.global_stats = trex_stl_stats.CGlobalStats(self.connection_info,
-                                                        self.server_version,
-                                                        self.ports,
-                                                        self.event_handler)
+        self.global_stats = CGlobalStats(self.connection_info,
+                                         self.server_version,
+                                         self.ports,
+                                         self.event_handler)
 
-        self.flow_stats = trex_stl_stats.CRxStats(self.ports)
+        self.flow_stats = CRxStats(self.ports)
 
-        self.latency_stats = trex_stl_stats.CLatencyStats(self.ports)
+        self.latency_stats = CLatencyStats(self.ports)
 
-        self.pgid_stats = trex_stl_stats.CPgIdStats()
+        self.pgid_stats = CPgIdStats()
 
-        self.util_stats = trex_stl_stats.CUtilStats(self)
+        self.util_stats = CUtilStats(self)
 
-        self.xstats = trex_stl_stats.CXStats(self)
+        self.xstats = CXStats(self)
 
-        self.stats_generator = trex_stl_stats.CTRexInfoGenerator(self.global_stats,
-                                                                 self.ports,
-                                                                 self.flow_stats,
-                                                                 self.latency_stats,
-                                                                 self.util_stats,
-                                                                 self.xstats,
-                                                                 self.conn.async_connection.monitor,
-                                                                 self.pgid_stats,
-                                                                 self)
+        self.stats_generator = CTRexInfoGenerator(self.global_stats,
+                                                  self.ports,
+                                                  self.flow_stats,
+                                                  self.latency_stats,
+                                                  self.util_stats,
+                                                  self.xstats,
+                                                  self.conn.async_connection.monitor,
+                                                  self.pgid_stats,
+                                                  self)
 
         self.psv = PortStateValidator(self)
 
@@ -1078,10 +1082,10 @@ class STLClient(object):
         return self.conn.rpc.transmit_batch(batch_list)
 
     # stats
-    def _get_formatted_stats(self, port_id_list, stats_mask=trex_stl_stats.COMPACT):
+    def _get_formatted_stats(self, port_id_list, stats_mask=COMPACT):
 
         stats_opts = common.list_intersect(
-            trex_stl_stats.ALL_STATS_OPTS, stats_mask)
+            ALL_STATS_OPTS, stats_mask)
 
         stats_obj = OrderedDict()
         for stats_type in stats_opts:
@@ -4591,12 +4595,12 @@ class STLClient(object):
 
         # determine stats mask
         mask = self.__get_mask_keys(
-            **self.__filter_namespace_args(opts, trex_stl_stats.ALL_STATS_OPTS))
+            **self.__filter_namespace_args(opts, ALL_STATS_OPTS))
         if not mask:
             # set to show all stats if no filter was given
-            mask = trex_stl_stats.COMPACT
+            mask = COMPACT
 
-        # stats_opts = common.list_intersect(trex_stl_stats.ALL_STATS_OPTS, mask)
+        # stats_opts = common.list_intersect(ALL_STATS_OPTS, mask)
 
         stats = self._get_formatted_stats(opts.ports, mask)
 
