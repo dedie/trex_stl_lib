@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
 import os
-from trex_stl_lib.trex_stl_packet_builder_scapy import RawPcapReader, RawPcapWriter
+
+from scapy.utils import RawPcapReader, RawPcapWriter
 
 
 def __ts_key(a):
