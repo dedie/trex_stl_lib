@@ -123,17 +123,8 @@ def RC_WARN(warn):
     return RC(True, warn, is_warn=True)
 
 
-try:
-    int
-    long_exists = True
-except Exception:
-    long_exists = False
-
-
 def is_integer(arg):
     if type(arg) is int:
-        return True
-    if long_exists and type(arg) is int:
         return True
     return False
 
@@ -143,12 +134,10 @@ def is_integer(arg):
 
 
 def validate_type(arg_name, arg, valid_types):
-    if long_exists:
-        if valid_types is int:
-            valid_types = (int, int)
-        elif (type(valid_types) is list and int in
-              valid_types and int not in valid_types):
-            valid_types.append(int)
+    if valid_types is int:
+        valid_types = (int, int)
+    elif (type(valid_types) is list and int in valid_types and int not in valid_types):
+        valid_types.append(int)
     if type(valid_types) is list:
         valid_types = tuple(valid_types)
     if(type(valid_types) is type or  # single type, not array of types

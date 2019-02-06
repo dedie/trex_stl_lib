@@ -47,9 +47,8 @@ def try_int(i):
     except Exception:
         return i
 
-# deep mrege of dicts dst = src + dst
 
-
+# deep merge of dicts dst = src + dst
 def deep_merge_dicts(dst, src):
     for k, v in list(src.items()):
         # if not exists - deep copy it
@@ -59,16 +58,14 @@ def deep_merge_dicts(dst, src):
             if isinstance(v, dict):
                 deep_merge_dicts(dst[k], v)
 
+
 # BPS L1 from pps and BPS L2
-
-
 def calc_bps_L1(bps, pps):
     if(pps == 0) or(bps == 0):
         return 0
 
     factor = bps / (pps * 8.0)
     return bps * (1 + (20 / factor))
-#
 
 
 def is_intable(value):
@@ -78,10 +75,9 @@ def is_intable(value):
     except ValueError:
         return False
 
+
 # use to calculate diffs relative to the previous values
 # for example, BW
-
-
 def calculate_diff(samples):
     total = 0.0
 

@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='trex_stl_lib',
-    version='0.1',
+    version='0.2',
     description='Trex Stateless library',
 
     url='https://github.com/dedie/trex_stl_lib',
