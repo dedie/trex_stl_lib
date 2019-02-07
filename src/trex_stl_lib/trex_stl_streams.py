@@ -534,30 +534,10 @@ class STLStream(object):
             print(("Stream Name: ", self.name))
         scapy_b = self.scapy_pkt_builder
         if scapy_b and isinstance(scapy_b, STLPktBuilder):
-            scapy_b.to_pkt_dump()
+            dump = scapy_b.to_pkt_dump()
         else:
             print("Nothing to dump")
-
-    def to_yaml(self):
-        """ Convert to YAML  """
-        y = {}
-
-        if self.name:
-            y['name'] = self.name
-
-        if self.__next__:
-            y['next'] = self.__next__
-
-        y['stream'] = copy.deepcopy(self.fields)
-
-        # some shortcuts for YAML
-        rate_type = self.fields['mode']['rate']['type']
-        rate_value = self.fields['mode']['rate']['value']
-
-        y['stream']['mode'][rate_type] = rate_value
-        del y['stream']['mode']['rate']
-
-        return y
+        return dump
 
     # returns the Python code(text) to build this stream,
     # inside the code it will be in variable "stream"
@@ -726,17 +706,6 @@ class STLStream(object):
     @staticmethod
     def __replchars_to_hex(match):
         return r'\x{0:02x}'.format(ord(match.group()))
-
-    def dump_to_yaml(self, yaml_file=None):
-        """ Print as yaml  """
-        yaml_dump = yaml.dump([self.to_yaml()], default_flow_style=False)
-
-        # write to file if provided
-        if yaml_file:
-            with open(yaml_file, 'w') as f:
-                f.write(yaml_dump)
-
-        return yaml_dump
 
 
 class YAMLLoader(object):
